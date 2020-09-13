@@ -1,0 +1,125 @@
+const text = {
+  dp: {
+    xs: {
+      fontWeight: "medium",
+      fontSize: "36px",
+      lineHeight: "44px",
+    },
+    sm: {
+      fontWeight: "medium",
+      fontSize: "44px",
+      lineHeight: "52px",
+    },
+    md: {
+      fontWeight: "medium",
+      fontSize: "52px",
+      lineHeight: "64px",
+    },
+    lg: {
+      fontWeight: "medium",
+      fontSize: "96px",
+      lineHeight: "112px",
+    },
+  },
+  hd: {
+    xs: {
+      fontWeight: "medium",
+      fontSize: "20px",
+      lineHeight: "28px",
+    },
+    sm: {
+      fontWeight: "medium",
+      fontSize: "24px",
+      lineHeight: "32px",
+    },
+    md: {
+      fontFamily: 'body',
+      fontWeight: "medium",
+      fontSize: "28px",
+      lineHeight: "36px",
+    },
+    lg: {
+      fontWeight: "medium",
+      fontSize: "32px",
+      lineHeight: "40px",
+    },
+    xl: {
+      fontWeight: "medium",
+      fontSize: "36px",
+      lineHeight: "44px",
+    },
+    xxl: {
+      fontWeight: "medium",
+      fontSize: "40px",
+      lineHeight: "52px",
+    },
+  },
+  pg: {
+    xxs: {
+      fontWeight: "normal",
+      fontSize: "10px",
+      lineHeight: "14px",
+    },
+    xs: {
+      fontWeight: "normal",
+      fontSize: "12px",
+      lineHeight: "20px",
+    },
+    sm: {
+      fontFamily: 'heading',
+      fontWeight: "normal",
+      fontSize: "14px",
+      lineHeight: "20px",
+    },
+    md: {
+      fontFamily: 'body',
+      fontWeight: "normal",
+      fontSize: "16px",
+      lineHeight: "24px",
+    },
+    lg: {
+      fontWeight: "normal",
+      fontSize: "18px",
+      lineHeight: "28px",
+    },
+    xl: {
+      fontWeight: "normal",
+      fontSize: "24px",
+      lineHeight: "36px",
+    },
+  },
+  lb: {
+    xxs: {
+      fontWeight: "medium",
+      fontSize: "10px",
+      lineHeight: "14px",
+    },
+    xs: {
+      fontWeight: "medium",
+      fontSize: "12px",
+      lineHeight: "16px",
+    },
+    sm: {
+      fontWeight: "medium",
+      fontSize: "14px",
+      lineHeight: "16px",
+    },
+    md: {
+      fontWeight: "medium",
+      fontSize: "16px",
+      lineHeight: "20px",
+    },
+    lg: {
+      fontWeight: "medium",
+      fontSize: "18px",
+      lineHeight: "24px",
+    },
+    xl: {
+      fontWeight: "medium",
+      fontSize: "24px",
+      lineHeight: "32px",
+    },
+  },
+};
+
+export default text;
