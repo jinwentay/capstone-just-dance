@@ -23,32 +23,38 @@ const text = {
   },
   hd: {
     xs: {
+      fontFamily: "body",
       fontWeight: "medium",
       fontSize: "20px",
       lineHeight: "28px",
     },
     sm: {
+      fontFamily: "body",
       fontWeight: "medium",
       fontSize: "24px",
       lineHeight: "32px",
     },
     md: {
+      fontFamily: "body",
       fontFamily: 'body',
       fontWeight: "medium",
       fontSize: "28px",
       lineHeight: "36px",
     },
     lg: {
+      fontFamily: "body",
       fontWeight: "medium",
       fontSize: "32px",
       lineHeight: "40px",
     },
     xl: {
+      fontFamily: "body",
       fontWeight: "medium",
       fontSize: "36px",
       lineHeight: "44px",
     },
     xxl: {
+      fontFamily: "body",
       fontWeight: "medium",
       fontSize: "40px",
       lineHeight: "52px",
@@ -56,17 +62,19 @@ const text = {
   },
   pg: {
     xxs: {
+      fontFamily: "body",
       fontWeight: "normal",
       fontSize: "10px",
       lineHeight: "14px",
     },
     xs: {
+      fontFamily: "body",
       fontWeight: "normal",
       fontSize: "12px",
       lineHeight: "20px",
     },
     sm: {
-      fontFamily: 'heading',
+      fontFamily: 'body',
       fontWeight: "normal",
       fontSize: "14px",
       lineHeight: "20px",
@@ -78,11 +86,13 @@ const text = {
       lineHeight: "24px",
     },
     lg: {
+      fontFamily: "body",
       fontWeight: "normal",
       fontSize: "18px",
       lineHeight: "28px",
     },
     xl: {
+      fontFamily: "body",
       fontWeight: "normal",
       fontSize: "24px",
       lineHeight: "36px",

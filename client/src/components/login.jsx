@@ -39,6 +39,7 @@ const Login = () => {
       <Text variant="hd.md" color="primary">JustDance!</Text>
       {hasAccount ? (
         <>
+          <Text variant="hd.sm" mb="2" sx={{ textAlign: 'center' }}>Login</Text>
           <form style={{ fontFamily: 'Quicksand' }} onSubmit={handleSubmit(onSubmit)}>
             <Input
               label="Username"
@@ -70,15 +71,33 @@ const Login = () => {
               }}
               onClick={handleSubmit(onSubmit)}
             >
-              Submit
+              Login
             </Button>
           </form>
-          <Text variant="pg.sm" onClick={() => setHasAccount(false)}>New to us? Sign up now</Text>
+          <Text 
+            variant="pg.sm" 
+            onClick={() => setHasAccount(false)}
+            sx={{
+              cursor: 'pointer',
+              mt: 2
+            }}
+          >
+            New to us? Sign up now
+          </Text>
         </>
       ) : (
         <>
           <CreateUser/>
-          <Text variant="pg.sm" onClick={() => setHasAccount(true)}>New to us? Sign up now</Text>
+          <Text 
+            variant="pg.sm" 
+            onClick={() => setHasAccount(true)}
+            sx={{
+              cursor: 'pointer',
+              mt: 2
+            }}
+          >
+            New to us? Sign up now
+          </Text>
         </>
       )}
     </Flex>
