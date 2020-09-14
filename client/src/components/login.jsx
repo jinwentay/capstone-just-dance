@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { Flex, Label, Text, Button } from 'theme-ui';
+import { Flex, Text, Button } from 'theme-ui';
 import axios from 'axios';
 import CreateUser from './create-user.component';
 import Input from './input';
 import { useForm } from 'react-hook-form';
+import { connect } from 'react-redux';
 
-const Login = () => {
+const Login = ({ account, dispatch }) => {
   const [hasAccount, setHasAccount] = useState(true);
   const { register, handleSubmit, errors } = useForm();
   const onSubmit = (data) => {
@@ -15,7 +16,11 @@ const Login = () => {
         password: data.password
       }
     }).then((res) => {
-      console.log(res.data)
+      dispatch({
+        type: 'LOGIN',
+        payload: res.data[0]
+      });
+      console.log(res.data[0])
     }).catch((err) => {
       console.log(err);
     })
@@ -28,6 +33,10 @@ const Login = () => {
     }
     checkConnection();
   }, []);
+
+  useEffect(() => {
+    console.log(account);
+  }, [account])
   return (
     <Flex
       sx={{
@@ -43,7 +52,6 @@ const Login = () => {
           <form style={{ fontFamily: 'Quicksand' }} onSubmit={handleSubmit(onSubmit)}>
             <Input
               label="Username"
-              error="Username does not exist. Have you created an account yet?"
               type="text"
               name="username"
               ref={register({ required: true })}
@@ -54,7 +62,6 @@ const Login = () => {
             )}
             <Input
               label="Password"
-              error="Password does not match. Have you created an account yet?"
               type="password"
               name="password"
               ref={register({ required: true })}
@@ -104,4 +111,17 @@ const Login = () => {
   )
 };
 
-export default Login;
+const mapStateToProps = state => {
+  return { account: state.account }
+}
+
+const mapDispatchToProps = dispatch => {
+  return {
+    dispatch
+  }
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Login);

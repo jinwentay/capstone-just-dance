@@ -35,7 +35,6 @@ const text = {
       lineHeight: "32px",
     },
     md: {
-      fontFamily: "body",
       fontFamily: 'body',
       fontWeight: "medium",
       fontSize: "28px",
