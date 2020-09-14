@@ -9,7 +9,7 @@ app.use(cors());
 app.use(express.json());
 
 //connect to postgresql
-pool.connect(() => console.log("Pool Connected"));
+// pool.connect(() => console.log("Pool Connected"));
 //connect routes
 const usersRouter = require('./routes/users');
 app.use('/', usersRouter);
