@@ -1,9 +1,10 @@
 import React from 'react';
-import { BrowserRouter as Router, Route } from "react-router-dom";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { ThemeProvider } from 'theme-ui';
 import theme from './theme';
 // import Navbar from "./components/navbar.component";
 import Login from "./components/login";
+import Home from "./components/home";
 
 function App() {
   return (
@@ -11,7 +12,12 @@ function App() {
       <Router>
         {/* <Navbar/>
         <br/> */}
-        <Route path="/" exact component={Login} />
+        <Switch>
+          <Route path="/" exact>
+            <Home/>
+          </Route>
+          <Route path="/login" exact component={Login} />
+        </Switch>
       </Router>
     </ThemeProvider>
   );

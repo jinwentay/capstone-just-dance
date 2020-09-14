@@ -4,13 +4,21 @@ import "react-datepicker/dist/react-datepicker.css";
 import { Text, Button } from "theme-ui";
 import Input from './input';
 import axios from 'axios';
+import { connect } from 'react-redux';
 
-const CreateUser = () => {
+const CreateUser = ({ account, dispatch }) => {
   const { register, handleSubmit, watch, errors } = useForm();
   function onSubmit(data) {
     axios
       .post('http://localhost:5000/post/user', data)
-      .then((res) => alert(res.data.message))
+      .then((res) => {
+        alert(res.data.message);
+        dispatch({
+          type: 'LOGIN',
+          payload: res.data.account
+        });
+        console.log(res.data.account);
+      })
       .catch((err) => console.log(err));
   }
   return (
@@ -54,4 +62,17 @@ const CreateUser = () => {
   )
 }
 
-export default CreateUser;
+const mapStateToProps = state => {
+  return { account: state.account }
+}
+
+const mapDispatchToProps = dispatch => {
+  return {
+    dispatch
+  }
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(CreateUser);

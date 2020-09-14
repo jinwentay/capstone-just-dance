@@ -30,20 +30,23 @@ router.post('/post/user', (req, res) => {
   const queryText = `INSERT INTO users(username, password)
     VALUES($1, $2)
     ON CONFLICT DO NOTHING
-    RETURNING id
+    RETURNING id, username
   `;
   (async () => {
     const client = await pool.connect();
     console.log("Connect to pool");
     try {
       await client.query("BEGIN");
-      const id = await client.query(queryText, [username, password]);
+      const user = await client.query(queryText, [username, password]);
       let message = "Your account already exists. Try login!";
-      if (id.rowCount !== 0) {
+      if (user.rowCount !== 0) {
         message = "Signup success!";
       }
       console.log(message);
-      await client.query("COMMIT").then(res.send({ message: message }));
+      await client.query("COMMIT").then(res.send({ 
+        message: message,
+        account: user.rows[0] 
+      }));
     } catch (err) {
       await client.query("ROLLBACK").then(res.send({ message: err.message }));
       throw err;

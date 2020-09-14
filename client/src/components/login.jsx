@@ -5,8 +5,10 @@ import CreateUser from './create-user.component';
 import Input from './input';
 import { useForm } from 'react-hook-form';
 import { connect } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 
 const Login = ({ account, dispatch }) => {
+  const history = useHistory();
   const [hasAccount, setHasAccount] = useState(true);
   const { register, handleSubmit, errors } = useForm();
   const onSubmit = (data) => {
@@ -35,7 +37,9 @@ const Login = ({ account, dispatch }) => {
   }, []);
 
   useEffect(() => {
-    console.log(account);
+    if (account.id !== -1) {
+      history.push('/');
+    }
   }, [account])
   return (
     <Flex
