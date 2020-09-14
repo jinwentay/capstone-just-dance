@@ -7,7 +7,7 @@ import axios from 'axios';
 import { connect } from 'react-redux';
 
 const CreateUser = ({ dispatch }) => {
-  const { register, handleSubmit, watch, errors } = useForm();
+  const { register, handleSubmit, errors } = useForm();
   function onSubmit(data) {
     axios
       .post('http://localhost:5000/post/user', data)
@@ -27,7 +27,6 @@ const CreateUser = ({ dispatch }) => {
       <form style={{ fontFamily: 'Quicksand' }} onSubmit={handleSubmit(onSubmit)}>
             <Input
               label="Username"
-              error="Username already exists. Choose a different one or login to your existing account."
               type="text"
               name="username"
               ref={register({ required: true })}
@@ -38,7 +37,6 @@ const CreateUser = ({ dispatch }) => {
             )}
             <Input
               label="Password"
-              error="Password is required."
               type="password"
               name="password"
               ref={register({ required: true })}

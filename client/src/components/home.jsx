@@ -1,16 +1,17 @@
 import React, { useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { connect } from 'react-redux';
+import Navbar from './navbar';
+
 const Home = ({ account }) => {
   const history = useHistory();
   useEffect(() => {
     if (account.id === -1) {
       history.push('/login');
     }
-  }, [account])
+  }, [account, history])
   return (
-    //nav bar
-    <div></div>
+    <Navbar/>
   )
 };
 

@@ -26,6 +26,13 @@ const theme = {
     normal: 400,
     medium: 600,
   },
+  cards: {
+    profile: {
+      boxShadow: "below.low",
+      borderRadius: "8px",
+      bg: "white",
+    },
+  },
   variants: {
     divider: {
       height: "0px",

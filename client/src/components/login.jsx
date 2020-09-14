@@ -40,7 +40,7 @@ const Login = ({ account, dispatch }) => {
     if (account.id !== -1) {
       history.push('/');
     }
-  }, [account])
+  }, [account, history])
   return (
     <Flex
       sx={{
