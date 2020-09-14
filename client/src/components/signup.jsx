@@ -6,7 +6,7 @@ import Input from './input';
 import axios from 'axios';
 import { connect } from 'react-redux';
 
-const CreateUser = ({ account, dispatch }) => {
+const CreateUser = ({ dispatch }) => {
   const { register, handleSubmit, watch, errors } = useForm();
   function onSubmit(data) {
     axios
@@ -62,10 +62,6 @@ const CreateUser = ({ account, dispatch }) => {
   )
 }
 
-const mapStateToProps = state => {
-  return { account: state.account }
-}
-
 const mapDispatchToProps = dispatch => {
   return {
     dispatch
@@ -73,6 +69,5 @@ const mapDispatchToProps = dispatch => {
 }
 
 export default connect(
-  mapStateToProps,
   mapDispatchToProps
 )(CreateUser);

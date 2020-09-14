@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Flex, Text, Button } from 'theme-ui';
 import axios from 'axios';
-import CreateUser from './create-user.component';
+import CreateUser from './signup';
 import Input from './input';
 import { useForm } from 'react-hook-form';
 import { connect } from 'react-redux';
@@ -49,7 +49,7 @@ const Login = ({ account, dispatch }) => {
         p: '16px',
       }}
     >
-      <Text variant="hd.md" color="primary">JustDance!</Text>
+      <Text variant="hd.lg" color="primary" mb="2">JustDance!</Text>
       {hasAccount ? (
         <>
           <Text variant="hd.sm" mb="2" sx={{ textAlign: 'center' }}>Login</Text>

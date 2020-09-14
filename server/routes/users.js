@@ -45,7 +45,7 @@ router.post('/post/user', (req, res) => {
       console.log(message);
       await client.query("COMMIT").then(res.send({ 
         message: message,
-        account: user.rows[0] 
+        account: user.rowCount > 0 ? user.rows[0] : { id: -1, username: '' }
       }));
     } catch (err) {
       await client.query("ROLLBACK").then(res.send({ message: err.message }));
