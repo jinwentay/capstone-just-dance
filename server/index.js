@@ -1,21 +1,29 @@
 const express = require('express');
 const cors = require('cors');
 const pool = require('./pool');
-
+var connectRabbitMQ = require('./pubsub/subscriber');
 const app = express();
 const port = 5000;
-
 app.use(cors());
 app.use(express.json());
+const server = require('http').createServer(app);
+const io = require('socket.io')(server);
 
-//connect to postgresql
-// pool.connect(() => console.log("Pool Connected"));
 //connect routes
 const usersRouter = require('./routes/users');
 app.use('/', usersRouter);
 
-app.listen(port, () => {
+server.listen(port, () => {
   console.log(`Server is running on port: ${port}`);
 });
 
-module.exports = app;
+let socketIO;
+io.on('connection', (socket) => {
+  socketIO = socket;
+  socket.emit('hello', 'socket is connected');
+  connectRabbitMQ(socket);
+})
+
+exports.app = app;
+exports.io = io;
+// exports.socket = socketIO;
