@@ -2,15 +2,10 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App'; //starting point to create app
 import * as serviceWorker from './serviceWorker';
-import { Provider } from 'react-redux'
-import store from './store/index'
-window.store = store;
 
 ReactDOM.render(
   <React.StrictMode>
-    <Provider store={store}>
-      <App />
-    </Provider>
+    <App />
   </React.StrictMode>,
   document.getElementById('root')
 );

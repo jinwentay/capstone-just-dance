@@ -3,23 +3,13 @@ import { useForm } from 'react-hook-form';
 import "react-datepicker/dist/react-datepicker.css";
 import { Text, Button } from "theme-ui";
 import Input from './input';
-import axios from 'axios';
-import { connect } from 'react-redux';
+import { observer } from 'mobx-react';
+import dashboardStore from '../store/dashboardStore';
 
-const CreateUser = ({ dispatch }) => {
+const CreateUser = observer(() => {
   const { register, handleSubmit, errors } = useForm();
   function onSubmit(data) {
-    axios
-      .post('http://localhost:5000/post/user', data)
-      .then((res) => {
-        alert(res.data.message);
-        dispatch({
-          type: 'LOGIN',
-          payload: res.data.account
-        });
-        console.log(res.data.account);
-      })
-      .catch((err) => console.log(err));
+    dashboardStore.signup(data);
   }
   return (
     <div style={{ margin: '0 20px'}}>
@@ -58,14 +48,6 @@ const CreateUser = ({ dispatch }) => {
           </form>
     </div>
   )
-}
+});
 
-const mapDispatchToProps = dispatch => {
-  return {
-    dispatch
-  }
-}
-
-export default connect(
-  mapDispatchToProps
-)(CreateUser);
+export default CreateUser;

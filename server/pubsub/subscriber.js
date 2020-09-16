@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 const amqp = require('amqplib/callback_api');
-function connectRabbitMQ(io) {
+function connectRabbitMQ(io, data_type) {
   amqp.connect('amqp://localhost', (connError, connection) => {
     if (connError) {
       throw connError;
@@ -22,10 +22,11 @@ function connectRabbitMQ(io) {
         }
         console.log(' [*] Waiting for logs. To exit press CTRL+C');
 
-        channel.bindQueue(q.queue, exchange, 'accelerometer');
+        channel.bindQueue(q.queue, exchange, data_type);
         channel.prefetch(1);
         channel.consume(q.queue, function(msg) {
-          io.emit('accelerometer', JSON.parse(msg.content));
+          io.emit(data_type, JSON.parse(msg.content));
+          //send to postgresql db
           channel.ack(msg);
           console.log(" [x] %s:'%s'", msg.fields.routingKey, msg.content.toString());
         }, {
