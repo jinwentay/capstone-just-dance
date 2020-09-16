@@ -1,6 +1,5 @@
 const express = require('express');
 const cors = require('cors');
-const pool = require('./pool');
 var connectRabbitMQ = require('./pubsub/subscriber');
 const app = express();
 const port = 5000;
@@ -21,7 +20,9 @@ let socketIO;
 io.on('connection', (socket) => {
   socketIO = socket;
   socket.emit('hello', 'socket is connected');
-  connectRabbitMQ(socket);
+  connectRabbitMQ(socket, 'accelerometer');
+  connectRabbitMQ(socket, 'position');
+  connectRabbitMQ(socket, 'dance');
 })
 
 exports.app = app;

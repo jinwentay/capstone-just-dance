@@ -1,11 +1,14 @@
 import React, { useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
-import { connect } from 'react-redux';
 import Navbar from './navbar';
+import { observer } from 'mobx-react';
+import dashboardStore from '../store/dashboardStore';
 
-const Home = ({ account }) => {
+const Home = observer(() => {
   const history = useHistory();
+  const { account } = dashboardStore;
   useEffect(() => {
+    console.log(account);
     if (account.id === -1) {
       history.push('/login');
     }
@@ -13,10 +16,6 @@ const Home = ({ account }) => {
   return (
     <Navbar/>
   )
-};
+});
 
-const mapStateToProps = state => {
-  return { account: state.account }
-};
-
-export default connect(mapStateToProps)(Home);
+export default Home;

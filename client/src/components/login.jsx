@@ -4,28 +4,17 @@ import axios from 'axios';
 import CreateUser from './signup';
 import Input from './input';
 import { useForm } from 'react-hook-form';
-import { connect } from 'react-redux';
 import { useHistory } from 'react-router-dom';
+import { observer } from 'mobx-react';
+import dashboardStore from '../store/dashboardStore';
 
-const Login = ({ account, dispatch }) => {
+const Login = observer(() => {
   const history = useHistory();
+  const { account } = dashboardStore;
   const [hasAccount, setHasAccount] = useState(true);
   const { register, handleSubmit, errors } = useForm();
   const onSubmit = (data) => {
-    axios.get("/get/user", {
-      params: {
-        username: data.username,
-        password: data.password
-      }
-    }).then((res) => {
-      dispatch({
-        type: 'LOGIN',
-        payload: res.data[0]
-      });
-      console.log(res.data[0])
-    }).catch((err) => {
-      console.log(err);
-    })
+    dashboardStore.login(data);
   }
 
   useEffect(() => {
@@ -34,10 +23,11 @@ const Login = ({ account, dispatch }) => {
       console.log(res);
     }
     checkConnection();
-  }, []);
+    console.log(account)
+  }, [account]);
 
   useEffect(() => {
-    if (account.id !== -1) {
+    if (dashboardStore.account.id !== -1) {
       history.push('/');
     }
   }, [account, history])
@@ -113,19 +103,6 @@ const Login = ({ account, dispatch }) => {
       )}
     </Flex>
   )
-};
+});
 
-const mapStateToProps = state => {
-  return { account: state.account }
-}
-
-const mapDispatchToProps = dispatch => {
-  return {
-    dispatch
-  }
-}
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Login);
+export default Login;

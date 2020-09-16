@@ -4,7 +4,8 @@ import { Box, Flex, Text, Card } from 'theme-ui';
 import { Menu, MenuButton, MenuItem, MenuList } from '@reach/menu-button';
 import styled from "@emotion/styled";
 import { ReactComponent as Profile } from '../icons/profile.svg';
-import { connect } from 'react-redux';
+import { observer } from 'mobx-react';
+import dashboardStore from '../store/dashboardStore';
 
 const SList = styled(MenuList)`
   background-color: transparent;
@@ -48,13 +49,8 @@ const Link = styled(NavLink)`
   }
   padding: 12px;
 `
-const Navbar = ({ account, dispatch }) => {
-  function logout() {
-    dispatch({
-      type: 'LOGIN',
-      payload: { id: -1, username: account.username }
-    })
-  }
+const Navbar = observer(() => {
+  const { logout } = dashboardStore;
   return (
     <Box
       sx={{
@@ -124,19 +120,6 @@ const Navbar = ({ account, dispatch }) => {
       </Flex>
     </Box>
   )
-}
+});
 
-const mapStateToProps = state => {
-  return { account: state.account }
-}
-
-const mapDispatchToProps = dispatch => {
-  return {
-    dispatch
-  }
-}
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Navbar);
+export default Navbar;

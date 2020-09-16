@@ -17,10 +17,10 @@ amqp.connect('amqp://localhost', (connError, connection) => {
     setInterval(() => {
       let msg = JSON.stringify({
         sensor: 'accelerometer',
-        time: Date.now(),
+        time: new Date(),
         value: Math.ceil(Math.random() * 64),
-        id: 1,
-        session: 1
+        id: 1, //user id
+        session: 1 //session id
       });
       channel.publish(EXCHANGE, 'accelerometer', Buffer.from(msg), {
         persistent: true
