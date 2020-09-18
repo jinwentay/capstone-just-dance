@@ -1,7 +1,14 @@
 import { observable, action, runInAction } from 'mobx';
 import axios from 'axios';
+import ls from 'local-storage';
 
 class DashboardStore {
+  constructor() {
+    const currentUser = ls.get('account');
+    if (currentUser) {
+      this.account = currentUser;
+    }
+  }
   @observable 
   account = {
     id: -1,
@@ -23,6 +30,7 @@ class DashboardStore {
         this.account = res.data[0];
         this.state = "done";
       })
+      ls.set('account', res.data[0])//{ id: number, username: string }
     }).catch((err) => {
       this.state = "error";
       console.log(err);
@@ -39,6 +47,7 @@ class DashboardStore {
           this.account = res.data[0];
           this.state = "done";
         })
+        ls.set('account', res.data[0])//{ id: number, username: string }
         console.log(res.data.account);
       })
       .catch((err) => {
@@ -53,6 +62,7 @@ class DashboardStore {
       id: -1,
       username: ''
     }
+    ls.set('account', null)//{ id: number, username: string }
   }
 }
 

@@ -12,6 +12,9 @@ const io = require('socket.io')(server);
 const usersRouter = require('./routes/users');
 app.use('/', usersRouter);
 
+const danceRouter = require('./routes/danceSession');
+app.use('/', danceRouter);
+
 server.listen(port, () => {
   console.log(`Server is running on port: ${port}`);
 });

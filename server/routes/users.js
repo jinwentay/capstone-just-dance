@@ -1,6 +1,3 @@
-var status = require('../status');
-var successMessage = require('../status');
-var errorMessage = require('../status');
 var router = require('express').Router();//create route
 var pool = require('../pool');
 router.get("/hello", (req, res) => {
