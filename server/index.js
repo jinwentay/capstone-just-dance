@@ -20,6 +20,10 @@ let socketIO;
 io.on('connection', (socket) => {
   socketIO = socket;
   socket.emit('hello', 'socket is connected');
+  socket.on('user_joined', (msg) => {
+    console.log(msg);
+    io.emit('update_joined', msg);
+  })
   connectRabbitMQ(socket, 'accelerometer');
   connectRabbitMQ(socket, 'position');
   connectRabbitMQ(socket, 'dance');

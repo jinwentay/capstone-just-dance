@@ -1,5 +1,7 @@
 import io from 'socket.io-client';
-import { observable, action } from 'mobx';
+import { observable, action, runInAction, autorun, computed } from 'mobx';
+import axios from 'axios';
+import dashboardStore from './dashboardStore';
 
 class SocketStore {
   // constructor() {
@@ -8,6 +10,8 @@ class SocketStore {
   //     this.session = currentUser.session;
   //   }
   // }
+  @observable 
+  startSession = false;
 
   @observable
   isConnected = false;
@@ -37,6 +41,51 @@ class SocketStore {
   //     }
   //   }
   // );
+  @computed
+  get first() {
+    let first = [];
+    Object.entries(this.currentPositions).map(([key, value]) => {
+      console.log(key);
+      if (value === 1) {
+        first.push(key);
+      }
+    })
+    return first;
+  }
+
+  @computed
+  get second() {
+    let second = [];
+    Object.entries(this.currentPositions).map(([key, value]) => {
+      if (value === 2) {
+        second.push(key);
+      }
+    })
+    return second;
+  }
+
+  @computed
+  get third() {
+    let third = [];
+    Object.entries(this.currentPositions).map(([key, value]) => {
+      if (value === 3) {
+        third.push(key);
+      }
+    })
+    return third;
+  }
+  @observable
+  dancers = new Map();
+
+  @observable
+  currentPositions = {};
+
+  @observable
+  deviceUsers = {
+    '1': '',
+    '2': '',
+    '3': '',
+  }
 
   @action
   connect = () => {
@@ -52,13 +101,34 @@ class SocketStore {
     this.socket.on('disconnect', () => {
       this.isConnected = false;
       // this.connect();
-      if (this.isDebug) {
-        console.log('Disconnected');
-      }
+      // if (this.isDebug) {
+      //   console.log('Disconnected');
+      // }
     });
 
     this.socket.on('accelerometer', () => {
 
+    })
+
+    this.socket.on('position', (data) => {
+      const username = this.deviceUsers[`${data.id}`];
+      this.currentPositions[username] = data.value;
+      let positions = this.dancers.get(username) || [];
+      positions.push(data.value);
+      this.dancers.set(username, positions);
+    })
+
+    this.socket.on('update_joined', (data) => {
+      this.deviceUsers[`${data.deviceId}`] = data.username;
+      this.currentPositions[data.username] = data.deviceId;
+      this.dancers.set(data.username, [Number(data.deviceId)]);
+      console.log(this.dancers);
+      console.log('USER JOINED', data.deviceId, this.deviceUsers[`${data.deviceId}`]);
+    })
+
+    this.socket.on('update_left', (data) => {
+      this.deviceUsers[`${data.deviceId}`] = '';
+      console.log('USER LEFT', data);
     })
   };
 
@@ -70,6 +140,22 @@ class SocketStore {
       this.isConnected = false;
     });
   };
+
+  @action
+  joinedSession = (deviceId) => {
+    if (!this.socket) return;
+    this.startSession = true;
+    this.socket.emit('user_joined', { deviceId: deviceId, username: dashboardStore.account.username})
+    console.log('YOU JOINED: ', dashboardStore.account.username, deviceId);
+  }
+
+  @action
+  leaveSession = (deviceId) => {
+    if (!this.socket) return;
+    this.startSession = false;
+    this.socket.emit('user_left', { deviceId: deviceId, username: dashboardStore.account.username})
+    console.log('YOU LEFT: ', dashboardStore.account.username, deviceId);
+  }
 }
 
 const socketStore = new SocketStore();

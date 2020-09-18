@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Flex, Text, Button } from 'theme-ui';
 import axios from 'axios';
 import CreateUser from './signup';
-import Input from './input';
+import Input from '../components/input';
 import { useForm } from 'react-hook-form';
 import { useHistory } from 'react-router-dom';
 import { observer } from 'mobx-react';

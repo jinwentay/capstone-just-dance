@@ -2,7 +2,7 @@ import React from 'react';
 import { useForm } from 'react-hook-form';
 import "react-datepicker/dist/react-datepicker.css";
 import { Text, Button } from "theme-ui";
-import Input from './input';
+import Input from '../components/input';
 import { observer } from 'mobx-react';
 import dashboardStore from '../store/dashboardStore';
 

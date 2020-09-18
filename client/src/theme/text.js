@@ -99,31 +99,37 @@ const text = {
   },
   lb: {
     xxs: {
+      fontFamily: "body",
       fontWeight: "medium",
       fontSize: "10px",
       lineHeight: "14px",
     },
     xs: {
+      fontFamily: "body",
       fontWeight: "medium",
       fontSize: "12px",
       lineHeight: "16px",
     },
     sm: {
+      fontFamily: "body",
       fontWeight: "medium",
       fontSize: "14px",
       lineHeight: "16px",
     },
     md: {
+      fontFamily: "body",
       fontWeight: "medium",
       fontSize: "16px",
       lineHeight: "20px",
     },
     lg: {
+      fontFamily: "body",
       fontWeight: "medium",
       fontSize: "18px",
       lineHeight: "24px",
     },
     xl: {
+      fontFamily: "body",
       fontWeight: "medium",
       fontSize: "24px",
       lineHeight: "32px",
