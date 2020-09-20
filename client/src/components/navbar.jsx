@@ -1,11 +1,13 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { Box, Flex, Text, Card } from 'theme-ui';
+import { Box, Flex, Text, Card, Button } from 'theme-ui';
 import { Menu, MenuButton, MenuItem, MenuList } from '@reach/menu-button';
 import styled from "@emotion/styled";
 import { ReactComponent as Profile } from '../icons/profile.svg';
 import { observer } from 'mobx-react';
 import dashboardStore from '../store/dashboardStore';
+import store from '../store/store';
+import ls from 'local-storage';
 
 const SList = styled(MenuList)`
   background-color: transparent;
@@ -51,6 +53,7 @@ const Link = styled(NavLink)`
 `
 const Navbar = observer(() => {
   const { logout } = dashboardStore;
+  const { leaveSession, startSession } = store;
   return (
     <Box
       sx={{
@@ -73,6 +76,23 @@ const Navbar = observer(() => {
       >
         <Text variant="hd.md" color="primary">JustDance!</Text>
         <Flex sx={{ alignItems: 'center' }}>
+          {startSession && (
+            <Button
+              variant="default"
+              sx={{
+                backgroundColor: 'danger',
+                width: '130px',
+                mr: 1
+              }}
+              onClick={() => {
+                const deviceId = ls.get('deviceId');
+                console.log(deviceId)
+                leaveSession(deviceId);
+              }}
+            >
+              Stop session
+            </Button>
+          )}
           <Link to="/">Live</Link>
           <Link to="/">Offline</Link>
           <Menu>

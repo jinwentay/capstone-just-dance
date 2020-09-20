@@ -26,6 +26,7 @@ const Home = observer(() => {
   const { account } = dashboardStore;
   const {
     startSession,
+    createSession,
     joinedSession,
     leaveSession,
   } = socketStore;
@@ -89,7 +90,7 @@ const Home = observer(() => {
               mt: 2,
               width: '300px',
             }}
-            onClick={() => joinedSession(selectedDevice)}
+            onClick={() => createSession(selectedDevice)}
           >
             Start session
           </Button>
