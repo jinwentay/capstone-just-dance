@@ -5,6 +5,7 @@
   "dependencies": {
     "@babel/plugin-proposal-decorators": "^7.10.5",
     "@reach/menu-button": "^0.11.2",
+    "@reach/tabs": "^0.11.2",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",

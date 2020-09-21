@@ -1,8 +1,9 @@
 import io from 'socket.io-client';
-import { observable, action, runInAction, autorun, computed } from 'mobx';
+import { observable, action, runInAction, computed } from 'mobx';
 import axios from 'axios';
 import dashboardStore from './dashboardStore';
 import ls from 'local-storage';
+import { states } from './types';
 
 class SocketStore {
   // constructor() {
@@ -113,6 +114,7 @@ class SocketStore {
 
     this.socket.on('position', (data) => {
       const username = this.deviceUsers[`${data.id}`];
+      console.log(this.deviceUsers);
       this.currentPositions[username] = data.value;
       let positions = this.dancers.get(username) || [];
       positions.push(data.value);
@@ -123,7 +125,6 @@ class SocketStore {
       this.deviceUsers[`${data.deviceId}`] = data.username;
       this.currentPositions[data.username] = data.deviceId;
       this.dancers.set(data.username, [Number(data.deviceId)]);
-      console.log(this.dancers);
       console.log('USER JOINED', data.deviceId, this.deviceUsers[`${data.deviceId}`]);
     })
 
@@ -142,12 +143,15 @@ class SocketStore {
     });
   };
 
+  @observable
+  joinState = states.INITIAL // 'LOADING', 'DONE', 'ERROR'
+
   @action
   createSession = (deviceId) => {
     if (!this.socket) return;
-    this.socket.emit('user_joined', { deviceId: deviceId, username: dashboardStore.account.username })
+    this.joinState = states.LOADING;
     axios
-      .post('/create/session', { id: dashboardStore.account.id })
+      .post('/create/session', { id: dashboardStore.account.id, device: deviceId })
       .then((res) => {
         if (res.status === 400) {
           alert('You got disconnected. Try logging in again to create a session.');
@@ -158,29 +162,50 @@ class SocketStore {
           ls.set('session', res.data.session);
           ls.set('deviceId', deviceId);
           runInAction(() => this.startSession = true);
+          this.socket.emit('user_joined', { deviceId: deviceId, username: dashboardStore.account.username })
           console.log('YOU CREATED SESSION: ', dashboardStore.account.username, deviceId);
         } else {
           alert('Unable to create session.');
         }
       })
+      .finally(() => this.joinState = states.DONE)
   }
 
   @action
   joinedSession = (deviceId, sessionId) => {
     if (!this.socket) return;
-    this.socket.emit('user_joined', { deviceId: deviceId, username: dashboardStore.account.username})
-    console.log('YOU JOINED: ', dashboardStore.account.username, deviceId);
+    if (!sessionId) {
+      return alert('Select a session to join or create a new one!');
+    }
+    this.joinState = states.LOADING;
     axios
-      .post('/join/session', { id: sessionId, uid: dashboardStore.account.id })
+      .post('/join/session', { id: sessionId, uid: dashboardStore.account.id, device: deviceId })
       .then((res) => {
-        if (res.data[0]) {
-          ls.set('session', res.data[0]);
-          ls.set('deviceId', deviceId);
-          runInAction(() => this.startSession = true);
-        } else {
-          alert('Unable to join session.');
+        if (res.status === 500) {
+          alert(res.data.error);
+          return;
         }
-      })
+        ls.set('session', sessionId);
+        ls.set('deviceId', deviceId);
+        runInAction(() => {
+          this.startSession = true;
+          console.log('USERS', res.data);
+          if (res.data.length > 0) {
+            res.data.forEach((user) => {
+              console.log('USER', user);
+              this.deviceUsers[`${user.device}`] = user.username;
+              this.dancers.set(user.username, [Number(user.device)]);
+            })
+          }
+          // res.data.map((user) => {
+          //   console.log('USER', user);
+          //   this.deviceUsers[`${user.device}`] = user.username;
+          //   this.dancers.set(user.username, [Number(user.device)]);
+          // })
+        });
+        this.socket.emit('user_joined', { deviceId: deviceId, username: dashboardStore.account.username})
+        console.log('YOU JOINED: ', dashboardStore.account.username, sessionId);
+      }).finally(() => this.joinState = states.DONE)
   }
 
   @observable
@@ -192,7 +217,8 @@ class SocketStore {
       .get('/get/session')
       .then((res) => {
         runInAction(() => {
-          this.sessions = res.data;
+          this.sessions = res.data;//[{ sid: 1 }, { sid: 2}]
+          console.log(res.data);
         });
       })
       .catch((err) => {
@@ -211,6 +237,8 @@ class SocketStore {
         if (res.status === 200) {
           runInAction(() => this.startSession = false);
           this.socket.emit('user_left', { deviceId: deviceId, username: dashboardStore.account.username})
+          ls.set('session', 0);
+          this.sessions = [];
         } else {
           alert(res.data.error);
         }
