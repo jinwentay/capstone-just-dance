@@ -52,7 +52,7 @@ const Link = styled(NavLink)`
   padding: 12px;
 `
 const Navbar = observer(() => {
-  const { logout } = dashboardStore;
+  const { account, logout } = dashboardStore;
   const { leaveSession, startSession } = store;
   return (
     <Box
@@ -127,7 +127,7 @@ const Navbar = observer(() => {
                     borderBottom: '1px solid',
                   }}
                 >
-                  <Text variant="pg.sm">Settings</Text>
+                  <Text variant="pg.sm">{account.username}</Text>
                 </Item>
                 <Item
                   onClick={logout}

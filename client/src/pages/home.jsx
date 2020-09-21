@@ -76,7 +76,8 @@ const Home = observer(() => {
         </Grid>
       ) : (
         <STabs>
-          <Flex sx={{ justifyContent: 'center', mb: 3 }}>
+          <Flex sx={{ alignItems: 'center', flexDirection: 'column', mb: 3 }}>
+            <Text variant="hd.lg" mb="3">Hey {account.username}! Let's start dancing!</Text>
             <STabList>
               <STab>Create Session</STab>
               <STab>Join Session</STab>

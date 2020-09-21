@@ -15,6 +15,11 @@ class SocketStore {
   @observable 
   startSession = false;
 
+  @action
+  setStartSession = (isStart) => {
+    this.startSession = isStart;
+  }
+
   @observable
   isConnected = false;
 

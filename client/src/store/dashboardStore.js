@@ -1,6 +1,7 @@
 import { observable, action, runInAction } from 'mobx';
 import axios from 'axios';
 import ls from 'local-storage';
+import socketStore from './store';
 
 class DashboardStore {
   constructor() {
@@ -62,6 +63,7 @@ class DashboardStore {
       id: -1,
       username: ''
     }
+    socketStore.setStartSession(false);
     ls.set('account', null)//{ id: number, username: string }
   }
 }
