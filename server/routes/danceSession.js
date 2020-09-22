@@ -2,6 +2,8 @@ var router = require('express').Router();//create route
 var pool = require('../pool');
 var app = require('../index');
 var redis = app.redis_client;
+var helper = require('../script.store');
+
 router.post('/create/session', (req, res) => {
   const queryText = `INSERT INTO Session(startTime)
     VALUES(date_trunc('second', NOW()))
@@ -15,13 +17,24 @@ router.post('/create/session', (req, res) => {
       console.log("Connect to pool");
       try {
         await client.query("BEGIN");
-        const data = (await client.query(queryText)).rows[0];//{ sid: 1 }
-        await client.query(`INSERT INTO Participants(id, sid, device)
-        VALUES($1, $2, $3)`, [user, data.sid, device]);
-        await client.query("COMMIT")
-        res.send({ session: data.sid });
-        redis.HSET('session', 'id', data.sid, 'isStart', 'true');
-        console.log(redis.HGET('session', 'id'));
+        const {rows, rowCount} = await client.query(queryText);//{ sid: 1 }
+        console.log('CREATE SESSION DATA', rows);
+        if (rowCount) {
+          await client.query(`INSERT INTO Participants(id, sid, device)
+          VALUES($1, $2, $3)`, [user, rows[0].sid, device]);
+          await client.query("COMMIT").then(() => {
+            res.send({ session: rows[0].sid });
+            redis.HMSET('session', {
+              'id': `${rows[0].sid}`, 
+              'isStart': 'true'
+            });
+          })
+        } else {
+          throw new Error('no session id')
+        }
+        redis.HGET('session', 'id', (err, reply) => {
+          console.log(reply);
+        });
       } catch (err) {
         await client.query("ROLLBACK");
         throw err;
@@ -30,7 +43,7 @@ router.post('/create/session', (req, res) => {
       }
     })().catch(e => console.error(e.stack));
   } else {
-    res.status(400).send({ error: 'User id not found when creating session.'})
+    res.status(400).send(JSON.stringify({ error: 'User id not found when creating session.'}))
   }
 })
 
@@ -38,7 +51,8 @@ router.post('/join/session', (req, res) => {
   const sessionId = req.body.id;
   const userId = req.body.uid;
   const device = req.body.device;
-  (async () => {
+  console.log('device', device);
+  ;(async () => {
     const client = await pool.connect();
     console.log("Connect to pool");
     const insertQuery = `INSERT INTO Participants(id, sid, device)
@@ -48,16 +62,17 @@ router.post('/join/session', (req, res) => {
     RETURNING sid`
     try {
       await client.query("BEGIN");
-      const data = await client.query(insertQuery, [userId, sessionId, device]);//
-      console.log("SID", sessionId);
+      const { rows } = await client.query(insertQuery, [userId, sessionId, device]);//
       const users = await client.query(`SELECT id, username, device FROM Participants JOIN Users using(id) WHERE sid=$1`, [sessionId]);
+      await client.query("COMMIT");
       res.send(users.rows);
-      redis.HSET('session', 'id', data.sid, 'isStart', 'true');
-      await client.query("COMMIT")
+      redis.HMSET('session', {
+        'id': `${sessionId}`, 
+        'isStart': 'true'
+      });
       console.log("USERS", users.rows);
     } catch (err) {
-      await client.query("ROLLBACK");
-      res.status(500).send({ error: 'Unable to join session' });
+      await client.query("ROLLBACK");//.then(res.status(500).send(JSON.stringify({ error: 'Unable to join session' })));
       throw err;
     } finally {
       client.release();
@@ -68,21 +83,46 @@ router.post('/join/session', (req, res) => {
 router.post('/stop/session', (req, res) => {
   const sessionId = req.body.id;
   console.log('Session id', sessionId);
-  pool.query(`UPDATE Session
-    SET endTime = date_trunc('second', NOW())
-    WHERE sid = $1`, [sessionId],
-    (q_err, q_res) => {
-      if (q_err) {
-        q_err.
-        console.log(q_err);
-        res.status(500).send({ error: 'An unexpected error occurred. Session could not be stopped.' })
-      } else {
-        console.log('Stop session success', q_res);
-        res.status(200).send({ success: 'Success' });
+  ;(async () => {
+    const client = await pool.connect();
+    console.log('Pool connected!');
+    try {
+      await client.query("BEGIN");
+      await client.query(`UPDATE Session
+      SET endTime = date_trunc('second', NOW())
+      WHERE sid = $1`, [sessionId]);
+      helper.storePositions(async function(query) {
+        console.log(query);
+        if (query)
+          await client.query(query)
+      });
+      await client.query("COMMIT").then(() => {
         redis.HSET('session', 'isStart', 'false');
-      }
+        res.status(200).send({ success: 'Success' });
+      });
+      redis.DEL('position');
+    } catch (err) {
+      await client.query("ROLLBACK")//.then(res.status(500).send({ error: 'An unexpected error occurred. Session could not be stopped.' }));
+      throw err;
+    } finally {
+      client.release();
     }
-  );
+  })().catch(e => console.error(e.stack));
+  // pool.query(`UPDATE Session
+  //   SET endTime = date_trunc('second', NOW())
+  //   WHERE sid = $1`, [sessionId],
+  //   (q_err, q_res) => {
+  //     if (q_err) {
+  //       q_err.
+  //       console.log(q_err);
+  //       res.status(500).send({ error: 'An unexpected error occurred. Session could not be stopped.' })
+  //     } else {
+  //       console.log('Stop session success', q_res);
+  //       res.status(200).send({ success: 'Success' });
+  //       redis.HSET('session', 'isStart', 'false');
+  //     }
+  //   }
+  // );
 })
 
 router.get('/get/session', (req, res) => {

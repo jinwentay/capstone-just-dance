@@ -66,13 +66,13 @@ io.on('connection', (socket) => {
     redis_client.HSET('session', `device${msg.deviceId}`, msg.id);
   })
   socket.on('stop_session', (msg) => {
-    console.log(msg);
+    console.log("SESSION STOPPED", msg);
     io.emit('session_stopped', msg);
   })
-  connectRabbitMQ(socket, 'accelerometer');
-  connectRabbitMQ(socket, 'position');
-  connectRabbitMQ(socket, 'dance');
 })
+connectRabbitMQ(io, 'accelerometer');
+connectRabbitMQ(io, 'position');
+connectRabbitMQ(io, 'dance');
 
 exports.app = app;
 exports.io = io;

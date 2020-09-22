@@ -113,10 +113,6 @@ class SocketStore {
       // }
     });
 
-    this.socket.on('accelerometer', () => {
-
-    })
-
     this.socket.on('position', (data) => {
       const username = this.deviceUsers[`${data.id}`];
       console.log(this.deviceUsers);
@@ -133,9 +129,11 @@ class SocketStore {
       console.log('USER JOINED', data.deviceId, this.deviceUsers[`${data.deviceId}`]);
     })
 
-    this.socket.on('update_left', (data) => {
+    this.socket.on('session_stopped', (data) => {
+      //get new data from db
       this.deviceUsers[`${data.deviceId}`] = '';
       console.log('USER LEFT', data);
+      this.startSession = false;
     })
   };
 
@@ -167,7 +165,7 @@ class SocketStore {
           ls.set('session', res.data.session);
           ls.set('deviceId', deviceId);
           runInAction(() => this.startSession = true);
-          this.socket.emit('user_joined', { deviceId: deviceId, username: dashboardStore.account.username })
+          this.socket.emit('user_joined', { deviceId: deviceId, username: dashboardStore.account.username, id: dashboardStore.account.id })
           console.log('YOU CREATED SESSION: ', dashboardStore.account.username, deviceId);
         } else {
           alert('Unable to create session.');
@@ -183,6 +181,7 @@ class SocketStore {
       return alert('Select a session to join or create a new one!');
     }
     this.joinState = states.LOADING;
+    console.log('DEVICE', deviceId);
     axios
       .post('/join/session', { id: sessionId, uid: dashboardStore.account.id, device: deviceId })
       .then((res) => {
@@ -208,7 +207,7 @@ class SocketStore {
           //   this.dancers.set(user.username, [Number(user.device)]);
           // })
         });
-        this.socket.emit('user_joined', { deviceId: deviceId, username: dashboardStore.account.username})
+        this.socket.emit('user_joined', { deviceId: deviceId, username: dashboardStore.account.username, id: dashboardStore.account.id })
         console.log('YOU JOINED: ', dashboardStore.account.username, sessionId);
       }).finally(() => this.joinState = states.DONE)
   }
@@ -235,13 +234,14 @@ class SocketStore {
   leaveSession = (deviceId) => {
     if (!this.socket) return;
     console.log('YOU LEFT: ', dashboardStore.account.username, deviceId);
+    const sid = ls.get('session');
     axios
-      .post('/stop/session', { id: ls.get('session') })
+      .post('/stop/session', { id: sid })
       .then((res) => {
         console.log(res.status);
         if (res.status === 200) {
           runInAction(() => this.startSession = false);
-          this.socket.emit('user_left', { deviceId: deviceId, username: dashboardStore.account.username})
+          this.socket.emit('stop_session', { sid: sid, deviceId: deviceId, username: dashboardStore.account.username })
           ls.set('session', 0);
           this.sessions = [];
         } else {

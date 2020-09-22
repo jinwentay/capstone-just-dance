@@ -1,6 +1,8 @@
 #!/usr/bin/env node
 var app = require('../index');
 var redis = app.redis_client;
+var { DateTime } = require('luxon');
+
 const amqp = require('amqplib/callback_api');
 function connectRabbitMQ(io, data_type) {
   amqp.connect('amqp://localhost', (connError, connection) => {
@@ -30,19 +32,21 @@ function connectRabbitMQ(io, data_type) {
           let data = JSON.parse(msg.content);
           io.emit(data_type, data);
           //send to postgresql db
-          console.log('redis msg', data.id);
+          console.log('redis msg', data);
+          data['time'] = DateTime.fromJSDate(new Date(data.time)).toFormat('yyyy-MM-dd hh:mm:ss');
           redis.HMGET('session', 'id', `device${data.id}`, 'isStart', function (err, reply) {
             if (err) {
               console.log(err);
               return;
             }
-            console.log('Start session: ', reply[2]);
+            // console.log('Start session: ', reply[2]);
             if (reply[2] === 'true') {
               console.log('Redis session', reply);
               data['sid'] = Number(reply[0]);
               data['id'] = reply[1];
               console.log('Redis modified data', data);
-              redis.RPUSH(data_type, JSON.stringify(data));
+              if (data['sid'] && data['id'])
+                redis.RPUSH(data_type, JSON.stringify(data));
             }
           });
           // }
