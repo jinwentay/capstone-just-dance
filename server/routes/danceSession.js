@@ -1,12 +1,14 @@
 var router = require('express').Router();//create route
 var pool = require('../pool');
-
+var app = require('../index');
+var redis = app.redis_client;
 router.post('/create/session', (req, res) => {
   const queryText = `INSERT INTO Session(startTime)
     VALUES(date_trunc('second', NOW()))
     RETURNING sid
   `;
   const user = req.body.id;
+  const device = req.body.device;
   if (user) {
     (async () => {
       const client = await pool.connect();
@@ -14,14 +16,14 @@ router.post('/create/session', (req, res) => {
       try {
         await client.query("BEGIN");
         const data = (await client.query(queryText)).rows[0];//{ sid: 1 }
-        console.log("SID", data.sid);
-        await client.query(`INSERT INTO Participants(id, sid)
-        VALUES($1, $2)`, [user, data.sid]);
+        await client.query(`INSERT INTO Participants(id, sid, device)
+        VALUES($1, $2, $3)`, [user, data.sid, device]);
         await client.query("COMMIT")
         res.send({ session: data.sid });
+        redis.HSET('session', 'id', data.sid, 'isStart', 'true');
+        console.log(redis.HGET('session', 'id'));
       } catch (err) {
         await client.query("ROLLBACK");
-        res.send({ message: err.message });
         throw err;
       } finally {
         client.release();
@@ -32,25 +34,40 @@ router.post('/create/session', (req, res) => {
   }
 })
 
-router.post('/join/session', (req) => {
+router.post('/join/session', (req, res) => {
   const sessionId = req.body.id;
   const userId = req.body.uid;
-  pool.query(`INSERT INTO Participants(id, sid)
-    VALUES($1, $2)
-    RETURNING sid
+  const device = req.body.device;
+  (async () => {
+    const client = await pool.connect();
+    console.log("Connect to pool");
+    const insertQuery = `INSERT INTO Participants(id, sid, device)
+    VALUES($1, $2, $3)
     ON CONFLICT (id, sid)
-    DO
-      SELECT sid FROM Participants WHERE sid=$2`,
-    [userId, sessionId],
-    (q_err, q_res) => {
-      console.log("JOIN SESSION", q_res.rows);
-      q_res.json(q_res.rows);
+    DO NOTHING
+    RETURNING sid`
+    try {
+      await client.query("BEGIN");
+      const data = await client.query(insertQuery, [userId, sessionId, device]);//
+      console.log("SID", sessionId);
+      const users = await client.query(`SELECT id, username, device FROM Participants JOIN Users using(id) WHERE sid=$1`, [sessionId]);
+      res.send(users.rows);
+      redis.HSET('session', 'id', data.sid, 'isStart', 'true');
+      await client.query("COMMIT")
+      console.log("USERS", users.rows);
+    } catch (err) {
+      await client.query("ROLLBACK");
+      res.status(500).send({ error: 'Unable to join session' });
+      throw err;
+    } finally {
+      client.release();
     }
-  );
+  })().catch(e => console.error(e.stack));
 })
 
 router.post('/stop/session', (req, res) => {
   const sessionId = req.body.id;
+  console.log('Session id', sessionId);
   pool.query(`UPDATE Session
     SET endTime = date_trunc('second', NOW())
     WHERE sid = $1`, [sessionId],
@@ -62,6 +79,7 @@ router.post('/stop/session', (req, res) => {
       } else {
         console.log('Stop session success', q_res);
         res.status(200).send({ success: 'Success' });
+        redis.HSET('session', 'isStart', 'false');
       }
     }
   );
@@ -73,7 +91,8 @@ router.get('/get/session', (req, res) => {
     WHERE endTime is null
   `, [],
   (q_err, q_res) => {
-    q_res.json(q_res.rows);
+    res.send(q_res.rows);
+    console.log(q_res.rows);
   })
 })
 
