@@ -18,7 +18,7 @@ amqp.connect('amqp://localhost', (connError, connection) => {
     setInterval(() => {
       let msg1 = JSON.stringify({
         time: new Date(),
-        value: danceMove[Math.ceil(Math.random() * 10) - 1],
+        move: danceMove[Math.ceil(Math.random() * 10) - 1],
         id: 1, //device id
       });
       channel.publish(EXCHANGE, 'dance', Buffer.from(msg1), {
@@ -26,7 +26,7 @@ amqp.connect('amqp://localhost', (connError, connection) => {
       });
       let msg2 = JSON.stringify({
         time: new Date(),
-        value: danceMove[Math.ceil(Math.random() * 10) - 1],
+        move: danceMove[Math.ceil(Math.random() * 10) - 1],
         id: 2, //device id
       });
       channel.publish(EXCHANGE, 'dance', Buffer.from(msg2), {
@@ -34,7 +34,7 @@ amqp.connect('amqp://localhost', (connError, connection) => {
       });
       let msg3 = JSON.stringify({
         time: new Date(),
-        value: danceMove[Math.ceil(Math.random() * 10) - 1],
+        move: danceMove[Math.ceil(Math.random() * 10) - 1],
         id: 3, //device id
       });
       channel.publish(EXCHANGE, 'dance', Buffer.from(msg3), {

@@ -76,5 +76,3 @@ connectRabbitMQ(io, 'dance');
 
 exports.app = app;
 exports.io = io;
-
-// exports.socket = socketIO;

@@ -94,6 +94,9 @@ class SocketStore {
     '3': '',
   }
 
+  @observable
+  currDanceMove = '';
+
   @action
   connect = () => {
     if (this.socket || this.isConnected) return;
@@ -120,6 +123,12 @@ class SocketStore {
       let positions = this.dancers.get(username) || [];
       positions.push(data.value);
       this.dancers.set(username, positions);
+    })
+
+    this.socket.on('dance', (data) => {
+      if (data.id === dashboardStore.account.id) {
+        this.currDanceMove = data.move;
+      }
     })
 
     this.socket.on('update_joined', (data) => {

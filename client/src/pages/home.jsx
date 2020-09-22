@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import { Navbar, Card, DancePosition, STabs, STabList, STab, STabPanels, STabPanel, Button } from '../components';
+import { Navbar, Card, DancePosition, STabs, STabList, STab, STabPanels, STabPanel, Button, DanceMove } from '../components';
 import { observer } from 'mobx-react';
 import dashboardStore from '../store/dashboardStore';
 import socketStore from '../store/store';
@@ -70,7 +70,7 @@ const Home = observer(() => {
           }}
         >
           <Card title='DANCE POSITIONS' children={<DancePosition socketStore={socketStore}/>}/>
-          <Card title='DANCE POSITIONS' children={<div/>}/>
+          <Card title='MOVE PREDICTION' children={<DanceMove socketStore={socketStore}/>}/>
           <Card title='DANCE POSITIONS' children={<div/>}/>
           <Card title='DANCE POSITIONS' children={<div/>}/>
         </Grid>

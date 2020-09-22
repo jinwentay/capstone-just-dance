@@ -96,6 +96,11 @@ router.post('/stop/session', (req, res) => {
         if (query)
           await client.query(query)
       });
+      helper.storeMoves(async function(query) {
+        console.log(query);
+        if (query)
+          await client.query(query)
+      });
       await client.query("COMMIT").then(() => {
         redis.HSET('session', 'isStart', 'false');
         res.status(200).send({ success: 'Success' });
