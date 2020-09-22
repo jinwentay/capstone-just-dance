@@ -16,7 +16,8 @@ CREATE TABLE Session
 CREATE TABLE Participants
 (
   id INTEGER,
-  sid INTEGER
+  sid INTEGER,
+  device INTEGER,
   foreign key (id) references Users(id) on delete cascade,
   foreign key (sid) references Session(sid) on delete cascade,
   primary key (id, sid)
@@ -24,6 +25,8 @@ CREATE TABLE Participants
 
 CREATE TABLE Position 
 (
+  id INTEGER,
+  sid INTEGER,
   value integer not null,
   time TIMESTAMP,
   foreign key (id) references Users(id) on delete cascade,

@@ -1,4 +1,8 @@
 #!/usr/bin/env node
+var app = require('../index');
+var redis = app.redis_client;
+var { DateTime } = require('luxon');
+
 const amqp = require('amqplib/callback_api');
 function connectRabbitMQ(io, data_type) {
   amqp.connect('amqp://localhost', (connError, connection) => {
@@ -25,30 +29,33 @@ function connectRabbitMQ(io, data_type) {
         channel.bindQueue(q.queue, exchange, data_type);
         channel.prefetch(1);
         channel.consume(q.queue, function(msg) {
-          io.emit(data_type, JSON.parse(msg.content));
+          let data = JSON.parse(msg.content);
+          io.emit(data_type, data);
           //send to postgresql db
+          console.log('redis msg', data);
+          data['time'] = DateTime.fromJSDate(new Date(data.time)).toFormat('yyyy-MM-dd hh:mm:ss');
+          redis.HMGET('session', 'id', `device${data.id}`, 'isStart', function (err, reply) {
+            if (err) {
+              console.log(err);
+              return;
+            }
+            // console.log('Start session: ', reply[2]);
+            if (reply[2] === 'true') {
+              console.log('Redis session', reply);
+              data['sid'] = Number(reply[0]);
+              data['id'] = reply[1];
+              console.log('Redis modified data', data);
+              if (data['sid'] && data['id'])
+                redis.RPUSH(data_type, JSON.stringify(data));
+            }
+          });
+          // }
           channel.ack(msg);
-          console.log(" [x] %s:'%s'", msg.fields.routingKey, msg.content.toString());
+          // console.log(" [x] %s:'%s'", msg.fields.routingKey, msg.content.toString());
         }, {
           noAck: false
         });
       });
-      // const QUEUE = 'test'
-      // channel.assertQueue(QUEUE, {
-      //   durable: true
-      // });
-      // channel.prefetch(1); //won't get assigned a task if already preoccupied with one
-      // //receive message
-      // channel.consume(QUEUE, (msg) => {
-      //   var secs = msg.content.toString().split('.').length - 1;
-      //   setTimeout(() => {
-      //     console.log("Task done");
-      //     channel.ack(msg);//allow message to be deleted from queue once task is complete
-      //   }, secs * 1000);
-      //   console.log(`Message received: ${msg.content}`);
-      // }, {
-      //   noAck: false
-      // })
     })
   })
 }

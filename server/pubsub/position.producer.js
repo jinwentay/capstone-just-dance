@@ -18,8 +18,7 @@ amqp.connect('amqp://localhost', (connError, connection) => {
       let msg1 = JSON.stringify({
         time: new Date(),
         value: Math.ceil(Math.random() * 3),
-        id: 1, //user id
-        session: 1 //session id
+        id: 1, //device id
       });
       channel.publish(EXCHANGE, 'position', Buffer.from(msg1), {
         persistent: true
@@ -27,8 +26,7 @@ amqp.connect('amqp://localhost', (connError, connection) => {
       let msg2 = JSON.stringify({
         time: new Date(),
         value: Math.ceil(Math.random() * 3),
-        id: 2, //user id
-        session: 1 //session id
+        id: 2, //device id
       });
       channel.publish(EXCHANGE, 'position', Buffer.from(msg2), {
         persistent: true
@@ -36,13 +34,12 @@ amqp.connect('amqp://localhost', (connError, connection) => {
       let msg3 = JSON.stringify({
         time: new Date(),
         value: Math.ceil(Math.random() * 3),
-        id: 3, //user id
-        session: 1 //session id
+        id: 3, //device id
       });
       channel.publish(EXCHANGE, 'position', Buffer.from(msg3), {
         persistent: true
       });
-    }, 3000);
+    }, 6000);
   });
   // setTimeout(function() {
   //   connection.close();

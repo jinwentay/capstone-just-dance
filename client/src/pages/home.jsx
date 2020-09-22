@@ -80,7 +80,7 @@ const Home = observer(() => {
             <Text variant="hd.lg" mb="3">Hey {account.username}! Let's start dancing!</Text>
             <STabList>
               <STab>Create Session</STab>
-              <STab>Join Session</STab>
+              <STab onClick={getSession}>Join Session</STab>
             </STabList>
           </Flex>
           <STabPanels>
