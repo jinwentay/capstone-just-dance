@@ -31,9 +31,11 @@ function connectRabbitMQ(io, data_type) {
         channel.consume(q.queue, function(msg) {
           let data = JSON.parse(msg.content);
           io.emit(data_type, data);
-          //send to postgresql db
+
+          //save in redis
           console.log('redis msg', data);
           data['time'] = DateTime.fromJSDate(new Date(data.time)).toFormat('yyyy-MM-dd hh:mm:ss');
+
           redis.HMGET('session', 'id', `device${data.id}`, 'isStart', function (err, reply) {
             if (err) {
               console.log(err);
@@ -43,10 +45,14 @@ function connectRabbitMQ(io, data_type) {
             if (reply[2] === 'true') {
               console.log('Redis session', reply);
               data['sid'] = Number(reply[0]);
-              data['id'] = reply[1];
-              console.log('Redis modified data', data);
-              if (data['sid'] && data['id'])
+              if (data_type !== 'correct_position') {
+                data['id'] = reply[1];
+                console.log('Redis modified data', data);
+                if (data['sid'] && data['id'])
+                  redis.RPUSH(data_type, JSON.stringify(data));
+              } else {
                 redis.RPUSH(data_type, JSON.stringify(data));
+              }
             }
           });
           // }

@@ -2,12 +2,12 @@ var app = require('./index');
 var redis = app.redis_client;
 
 exports.storePositions = (callback) => {
-  const insertText = 'INSERT INTO Position(id, sid, value, time) VALUES'
+  const insertText = 'INSERT INTO Position(id, sid, value, time, index) VALUES'
   let values = '';
   redis.LRANGE('position', 0, -1, function (err, positions) {
     positions.forEach((position) => {
       const data = JSON.parse(position);
-      const text = `(${data.id}, ${data.sid}, ${data.value}, '${data.time}'),`; 
+      const text = `(${data.id}, ${data.sid}, ${data.value}, '${data.time}', '${data.index}'),`; 
       values += text;
     })
     values = values.slice(0, -1);
