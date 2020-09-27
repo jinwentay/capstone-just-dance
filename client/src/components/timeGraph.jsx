@@ -68,19 +68,13 @@ const TimeGraph = observer(() => {
         }]
       }}
       options={{
-        title: {
-          display: true,
-          text: 'Bar chart (hotizontal scroll) sample'
-        },
         scales: {
           xAxes: [{
             type: 'realtime',
             realtime: {
               duration: 10000,
-              // refresh: 1000,
               delay: 1000,
               unit: 'millisecond'
-              // onRefresh: onRefresh
             }
           }],
           yAxes: [{
@@ -89,7 +83,6 @@ const TimeGraph = observer(() => {
                 return danceMove[value];
               }
             },
-            // labels: danceMove,
             scaleLabel: {
               display: true,
               labelString: 'Dance Move'

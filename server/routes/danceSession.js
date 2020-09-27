@@ -107,7 +107,6 @@ router.post('/stop/session', (req, res) => {
         redis.DEL('dance');
         res.status(200).send({ success: 'Success' });
       });
-      redis.DEL('position');
     } catch (err) {
       await client.query("ROLLBACK")//.then(res.status(500).send({ error: 'An unexpected error occurred. Session could not be stopped.' }));
       throw err;

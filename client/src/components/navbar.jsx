@@ -42,9 +42,9 @@ const Link = styled(NavLink)`
   color: initial;
   &:focus, &:hover, &:visited, &:link, &:active {
       text-decoration: none;
-      color: primary;
+      color: #7151C9;
   };
-  &:active, &:focus {
+  &:link, &:active, &:focus {
     border-bottom: 2px solid;
     border-color: #7151C9;
     color: #7151C9;
@@ -94,7 +94,7 @@ const Navbar = observer(() => {
             </Button>
           )}
           <Link to="/">Live</Link>
-          <Link to="/">Offline</Link>
+          {/* <Link to="/">Offline</Link> */}
           <Menu>
             <SButton>
               <Flex
@@ -109,6 +109,7 @@ const Navbar = observer(() => {
                   alignItems: 'center',
                   justifyContent: 'center',
                   backgroundColor: 'white',
+                  ml: 2,
                 }}
               >
                 <Profile

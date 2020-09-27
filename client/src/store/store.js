@@ -154,7 +154,7 @@ class SocketStore {
       Object.entries(this.deviceUsers).forEach(([device, username]) => {
         console.log(device, username);
         if (username === dashboardStore.account.username) {
-          const index = data.value.findIndex(Number(device));
+          const index = data.value.findIndex((id) => id === Number(device));
           console.log("Correct position", index + 1);
           if (index > -1)
             this.correctPositions.push(index + 1);
@@ -180,6 +180,13 @@ class SocketStore {
       this.deviceUsers[`${data.deviceId}`] = '';
       console.log('USER LEFT', data);
       this.startSession = false;
+      this.getSession();
+    })
+
+    this.socket.on('new_sessions', (data) => {
+      console.log('New session');
+      // this.sessions.push(data.sid);
+      this.getSession();
     })
   };
 
@@ -211,6 +218,7 @@ class SocketStore {
           ls.set('session', res.data.session);
           ls.set('deviceId', deviceId);
           runInAction(() => this.startSession = true);
+          this.socket.emit('created_session', { sid: res.data.session });
           this.socket.emit('user_joined', { deviceId: deviceId, username: dashboardStore.account.username, id: dashboardStore.account.id })
           console.log('YOU CREATED SESSION: ', dashboardStore.account.username, deviceId);
         } else {
@@ -261,17 +269,23 @@ class SocketStore {
   @observable
   sessions = [];
 
+  @observable
+  sessionState = 'INITIAL'; //'LOADING' 'DONE'
+
   @action
   getSession = () => {
+    this.sessionState = 'LOADING';
     axios
       .get('/get/session')
       .then((res) => {
         runInAction(() => {
+          this.sessionState = 'DONE';
           this.sessions = res.data;//[{ sid: 1 }, { sid: 2}]
           console.log(res.data);
         });
       })
       .catch((err) => {
+        this.sessionState = 'DONE';
         console.log(err);
       })
   }

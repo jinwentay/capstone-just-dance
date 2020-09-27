@@ -13,7 +13,7 @@ import {
 import { observer } from 'mobx-react';
 import dashboardStore from '../store/dashboardStore';
 import socketStore from '../store/store';
-import { Grid, Box, Flex, Text, Select } from 'theme-ui';
+import { Grid, Box, Flex, Text, Select, Spinner } from 'theme-ui';
 import ls from 'local-storage';
 
 const deviceOptions = [
@@ -43,6 +43,7 @@ const Home = observer(() => {
     joinState,
     accuracy,
     correctPositions,
+    sessionState,
   } = socketStore;
   useEffect(() => {
     console.log(account);
@@ -134,37 +135,52 @@ const Home = observer(() => {
               </STabPanel>
               <STabPanel>
                 <Text variant="lb.md" my="3" sx={{ textAlign: 'center' }}>Choose a session</Text>
-                <Select
-                  name="session"
-                  defaultValue={sessions.length ? selectedSession : 0}
-                  onChange={(e) => {
-                    // ls.set('session', e.target.value);
-                    console.log(e.target.value);
-                    setSession(e.target.value);
-                  }}
-                  sx={{
-                    width: '300px'
-                  }}
-                >
-                  {sessions.map((session) => (
-                    <option value={session.sid}>Session {session.sid}</option>
-                  ))}
-                  {!sessions.length && (
-                    <option value={0}>No sessions available</option>
-                  )}
-                </Select>
-                <Button
-                  variant="default"
-                  sx={{
-                    mt: 2,
-                    width: '300px',
-                  }}
-                  loading={joinState === 'LOADING'}
-                  disabled={!selectedSession}
-                  onClick={joinState === 'LOADING' ? () => {} : () => joinedSession(selectedDevice, selectedSession)}
-                >
-                  Join session
-                </Button>
+                {sessionState === 'LOADING' ? (
+                  <Flex 
+                    sx={{
+                      flexDirection: 'column',
+                      justifyContent: 'center',
+                      alignItems: 'center'
+                    }}
+                  >
+                    <Spinner />
+                    <Text variant="pg.lg">Loading sessions available</Text>
+                  </Flex>
+                ) : (
+                  <>
+                    <Select
+                      name="session"
+                      defaultValue={sessions.length ? selectedSession : 0}
+                      onChange={(e) => {
+                        // ls.set('session', e.target.value);
+                        console.log(e.target.value);
+                        setSession(e.target.value);
+                      }}
+                      sx={{
+                        width: '300px'
+                      }}
+                    >
+                      {sessions.map((session) => (
+                        <option value={session.sid}>Session {session.sid}</option>
+                      ))}
+                      {!sessions.length && (
+                        <option value={0}>No sessions available</option>
+                      )}
+                    </Select>
+                    <Button
+                      variant="default"
+                      sx={{
+                        mt: 2,
+                        width: '300px',
+                      }}
+                      loading={joinState === 'LOADING'}
+                      disabled={!sessions.length || !selectedSession}
+                      onClick={joinState === 'LOADING' ? () => {} : () => joinedSession(selectedDevice, selectedSession)}
+                    >
+                      Join session
+                    </Button>
+                  </>
+                )}
               </STabPanel>
             </Flex>
           </STabPanels>

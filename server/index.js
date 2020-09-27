@@ -69,6 +69,9 @@ io.on('connection', (socket) => {
     console.log("SESSION STOPPED", msg);
     io.emit('session_stopped', msg);
   })
+  socket.on('created_session', (msg) => {
+    io.emit('new_sessions', msg);
+  })
 })
 connectRabbitMQ(io, 'correct_position');
 connectRabbitMQ(io, 'position');

@@ -18,7 +18,7 @@ const AccuracyGraph = observer(({ accuracy, correctPositions }) => {
         '#501800',
         '#4B5000'
         ],
-        data: [correctPositions.length, accuracy]
+        data: [correctPositions.length - accuracy, accuracy]
       }
     ]
   });
@@ -37,7 +37,7 @@ const AccuracyGraph = observer(({ accuracy, correctPositions }) => {
           '#501800',
           '#4B5000'
           ],
-          data: [correctPositions.length, accuracy]
+          data: [correctPositions.length - accuracy, accuracy]
         }
       ]
     })
@@ -45,6 +45,17 @@ const AccuracyGraph = observer(({ accuracy, correctPositions }) => {
   
   return (
     <Box sx={{ position: 'relative', mt: 3}}>
+      <Flex
+        sx={{
+          position: 'absolute',
+          width: '100%',
+          height: '100%',
+          justifyContent: 'center',
+          alignItems: 'center'
+        }}
+      >
+        <Text variant="hd.md">{accuracy}%</Text>
+      </Flex>
       <Doughnut
         data={state}
         options={{
@@ -54,17 +65,6 @@ const AccuracyGraph = observer(({ accuracy, correctPositions }) => {
           }
         }}
       />
-      <Flex
-        sx={{
-          // position: 'absolute',
-          // width: '100%',
-          // height: '100%',
-          justifyContent: 'center',
-          alignItems: 'center'
-        }}
-      >
-        <Text variant="hd.md">{accuracy}%</Text>
-      </Flex>
     </Box>
   )
 })

@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { observer } from 'mobx-react';
 // import socketStore from '../store/store';
-import { Grid, Box, Text } from 'theme-ui';
+import { Grid, Box, Text, Flex } from 'theme-ui';
+import { Profile } from './index';
+import dashboardStore from '../store/dashboardStore';
 
 const DancePosition = observer(({ socketStore }) => {
   const {
@@ -22,21 +24,48 @@ const DancePosition = observer(({ socketStore }) => {
         gridTemplateColumns: '1fr 1fr 1fr'
       }}
     >
-      <Box>
+      <Flex
+        sx={{
+          flexDirection: 'column',
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}
+      >
         {first.map((user) => (
-          <Text variant="lb.sm">{user}</Text>
+          <>
+            <Profile user1= {true} isSelf={user === dashboardStore.account.username} />
+            <Text variant="lb.sm">{user}</Text>
+          </>
         ))}
-      </Box>
-      <Box>
+      </Flex>
+      <Flex
+        sx={{
+          flexDirection: 'column',
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}
+      >
         {second.map((user) => (
-          <Text variant="lb.sm">{user}</Text>
+          <>
+            <Profile user2= {true} isSelf={user === dashboardStore.account.username} />
+            <Text variant="lb.sm">{user}</Text>
+          </>
         ))}
-      </Box>
-      <Box>
+      </Flex>
+      <Flex
+        sx={{
+          flexDirection: 'column',
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}
+      >
         {third.map((user) => (
-          <Text variant="lb.sm">{user}</Text>
+          <>
+            <Profile user3= {true} isSelf={user === dashboardStore.account.username} />
+            <Text variant="lb.sm">{user}</Text>
+          </>
         ))}
-      </Box>
+      </Flex>
     </Grid>
   )
 });

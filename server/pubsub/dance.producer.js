@@ -15,10 +15,12 @@ amqp.connect('amqp://localhost', (connError, connection) => {
       durable: false
     });
 
+    let msgOrder = 1;
     setInterval(() => {
       var date = new Date();
       date.setMilliseconds(Math.random() * 999);
       let msg1 = JSON.stringify({
+        index: msgOrder,
         time: date,
         move: danceMove[Math.ceil(Math.random() * 10) - 1],
         id: 1, //device id
@@ -29,6 +31,7 @@ amqp.connect('amqp://localhost', (connError, connection) => {
       var date1 = new Date();
       date1.setMilliseconds(Math.random() * 999);
       let msg2 = JSON.stringify({
+        index: msgOrder,
         time: date1,
         move: danceMove[Math.ceil(Math.random() * 10) - 1],
         id: 2, //device id
@@ -39,6 +42,7 @@ amqp.connect('amqp://localhost', (connError, connection) => {
       var date2 = new Date();
       date2.setMilliseconds(Math.random() * 999);
       let msg3 = JSON.stringify({
+        index: msgOrder,
         time: date2,
         move: danceMove[Math.ceil(Math.random() * 10) - 1],
         id: 3, //device id
@@ -46,6 +50,7 @@ amqp.connect('amqp://localhost', (connError, connection) => {
       channel.publish(EXCHANGE, 'dance', Buffer.from(msg3), {
         persistent: true
       });
+      msgOrder += 1;
     }, 3000);
   });
   // setTimeout(function() {
