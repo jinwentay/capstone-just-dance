@@ -34,8 +34,12 @@ function connectRabbitMQ(io, data_type) {
 
           //save in redis
           console.log('redis msg', data);
-          data['time'] = DateTime.fromJSDate(new Date(data.time)).toFormat('yyyy-MM-dd hh:mm:ss');
-
+          if (data_type === 'dance') {
+            data['time'] = DateTime.fromJSDate(new Date(data.time)).toFormat('yyyy-MM-dd hh:mm:ss.SSS');
+          } else {
+            data['time'] = DateTime.fromJSDate(new Date(data.time)).toFormat('yyyy-MM-dd hh:mm:ss');
+          }
+          
           redis.HMGET('session', 'id', `device${data.id}`, 'isStart', function (err, reply) {
             if (err) {
               console.log(err);

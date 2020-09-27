@@ -70,7 +70,7 @@ io.on('connection', (socket) => {
     io.emit('session_stopped', msg);
   })
 })
-connectRabbitMQ(io, 'accelerometer');
+connectRabbitMQ(io, 'correct_position');
 connectRabbitMQ(io, 'position');
 connectRabbitMQ(io, 'dance');
 

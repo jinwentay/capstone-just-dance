@@ -103,6 +103,8 @@ router.post('/stop/session', (req, res) => {
       });
       await client.query("COMMIT").then(() => {
         redis.HSET('session', 'isStart', 'false');
+        redis.DEL('position');
+        redis.DEL('dance');
         res.status(200).send({ success: 'Success' });
       });
       redis.DEL('position');

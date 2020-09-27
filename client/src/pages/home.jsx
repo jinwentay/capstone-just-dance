@@ -1,6 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import { Navbar, Card, DancePosition, STabs, STabList, STab, STabPanels, STabPanel, Button, DanceMove } from '../components';
+import { 
+  Navbar, 
+  Card, 
+  DancePosition, 
+  STabs, STabList, STab, STabPanels, STabPanel, 
+  Button, 
+  DanceMove,
+  AccuracyGraph,
+  TimeGraph,
+} from '../components';
 import { observer } from 'mobx-react';
 import dashboardStore from '../store/dashboardStore';
 import socketStore from '../store/store';
@@ -32,6 +41,8 @@ const Home = observer(() => {
     getSession,
     joinedSession,
     joinState,
+    accuracy,
+    correctPositions,
   } = socketStore;
   useEffect(() => {
     console.log(account);
@@ -65,14 +76,14 @@ const Home = observer(() => {
           sx={{
             m: 3,
             height: 'calc(100vh - 100px)',
-            gridTemplateColumns: ['1fr','1fr 300px'],
-            gridTemplateRows: ['repeat(4, 320px)','1fr 320px']
+            gridTemplateColumns: ['1fr','auto 320px'],
+            gridTemplateRows: ['repeat(4, auto)','auto auto']
           }}
         >
           <Card title='DANCE POSITIONS' children={<DancePosition socketStore={socketStore}/>}/>
           <Card title='MOVE PREDICTION' children={<DanceMove socketStore={socketStore}/>}/>
-          <Card title='DANCE POSITIONS' children={<div/>}/>
-          <Card title='DANCE POSITIONS' children={<div/>}/>
+          <Card title='TIME DELAY' children={<TimeGraph />}/>
+          <Card title='ACCURACY' children={<AccuracyGraph accuracy={accuracy} correctPositions={correctPositions}/>}/>
         </Grid>
       ) : (
         <STabs>

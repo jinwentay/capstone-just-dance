@@ -97,6 +97,30 @@ class SocketStore {
   @observable
   currDanceMove = '';
 
+  @observable
+  correctPositions = [];
+  
+  @computed get accuracy() {
+    let userPositions = this.dancers.get(dashboardStore.account.username);
+    let correct = 0;
+    if (userPositions) {
+      userPositions.forEach((position) => {
+        const currIndex = Number(position.index) - 1;
+        // console.log('Curr index', currIndex);
+        if (currIndex < this.correctPositions.length) {
+          // console.log(Number(position.value) === this.correctPositions[currIndex]);
+          if (Number(position.value) === this.correctPositions[currIndex]) {
+            correct += 1;
+          }
+        }
+      })
+    }
+    console.log('Correct positions', this.correctPositions.length, this.correctPositions)
+    let corrRatio = correct/this.correctPositions.length * 100;
+    // return corrRatio ? Math.ceil(corrRatio) : 0;
+    return correct;
+  }
+
   @action
   connect = () => {
     if (this.socket || this.isConnected) return;
@@ -121,8 +145,21 @@ class SocketStore {
       console.log(this.deviceUsers);
       this.currentPositions[username] = data.value;
       let positions = this.dancers.get(username) || [];
-      positions.push(data.value);
+      positions.push({ value: data.value, index: data.index });
       this.dancers.set(username, positions);
+    })
+
+    this.socket.on('correct_position', (data) => {
+      console.log('correct position received', data);
+      Object.entries(this.deviceUsers).forEach(([device, username]) => {
+        console.log(device, username);
+        if (username === dashboardStore.account.username) {
+          const index = data.value.findIndex(Number(device));
+          console.log("Correct position", index + 1);
+          if (index > -1)
+            this.correctPositions.push(index + 1);
+        }
+      })
     })
 
     this.socket.on('dance', (data) => {

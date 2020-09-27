@@ -50,24 +50,32 @@ amqp.connect('amqp://localhost', (connError, connection) => {
       channel.publish(EXCHANGE, 'position', Buffer.from(msg3), {
         persistent: true
       });
+      let msg4 = JSON.stringify({
+        time: new Date(),
+        value: positions[Math.ceil(Math.random() * 3) - 1],
+        index: msgOrder, //device id
+      });
+      channel.publish(EXCHANGE, 'correct_position', Buffer.from(msg4), {
+        persistent: true
+      });
       msgOrder += 1;
     }, 6000);
 
-    let order = 1;
-    setInterval(() => {
-      let msg = JSON.stringify({
-        time: new Date(),
-        value: positions[Math.ceil(Math.random() * 3) - 1],
-        index: order, //device id
-      });
-      channel.publish(EXCHANGE, 'correct_position', Buffer.from(msg), {
-        persistent: true
-      });
-      order += 1;
-    }, 6500);
+    // let order = 1;
+    // setInterval(() => {
+    //   let msg = JSON.stringify({
+    //     time: new Date(),
+    //     value: positions[Math.ceil(Math.random() * 3) - 1],
+    //     index: order, //device id
+    //   });
+    //   channel.publish(EXCHANGE, 'correct_position', Buffer.from(msg), {
+    //     persistent: true
+    //   });
+    //   order += 1;
+    // }, 6500);
   });
-  setTimeout(function() {
-    connection.close();
-    process.exit(0)
-  }, 30000);
+  // setTimeout(function() {
+  //   connection.close();
+  //   process.exit(0)
+  // }, 30000);
 })

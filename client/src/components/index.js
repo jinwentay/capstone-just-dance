@@ -3,6 +3,8 @@ import Input from './input';
 import Card from './card';
 import DancePosition from './dancePosition';
 import DanceMove from './danceMoves';
+import AccuracyGraph from './accuracy';
+import TimeGraph from './timeGraph';
 import { STab, STabList, STabPanel, STabPanels, STabs } from './tabs';
 import Button from './button';
 
@@ -17,5 +19,7 @@ export {
   STabList,
   STabPanel,
   STabPanels,
-  Button
+  Button,
+  AccuracyGraph,
+  TimeGraph,
 };
