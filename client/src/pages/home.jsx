@@ -77,14 +77,16 @@ const Home = observer(() => {
           sx={{
             m: 3,
             height: 'calc(100vh - 100px)',
-            gridTemplateColumns: ['1fr','auto 320px'],
+            gridTemplateColumns: ['1fr','auto auto'],
             gridTemplateRows: ['repeat(4, auto)','auto auto']
+            // gridTemplateColumns: ['1fr','auto 320px'],
+            // gridTemplateRows: ['repeat(4, auto)','auto auto']
           }}
         >
           <Card title='DANCE POSITIONS' children={<DancePosition socketStore={socketStore}/>}/>
-          <Card title='MOVE PREDICTION' children={<DanceMove socketStore={socketStore}/>}/>
           <Card title='TIME DELAY' children={<TimeGraph />}/>
           <Card title='ACCURACY' children={<AccuracyGraph accuracy={accuracy} correctPositions={correctPositions}/>}/>
+          <Card title='MOVE PREDICTION' children={<DanceMove socketStore={socketStore}/>}/>
         </Grid>
       ) : (
         <STabs>

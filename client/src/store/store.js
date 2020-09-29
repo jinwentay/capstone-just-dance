@@ -143,7 +143,9 @@ class SocketStore {
     this.socket.on('position', (data) => {
       const username = this.deviceUsers[`${data.id}`];
       console.log(this.deviceUsers);
-      this.currentPositions[username] = data.value;
+      if (username !== "") {
+        this.currentPositions[username] = data.value;
+      }
       let positions = this.dancers.get(username) || [];
       positions.push({ value: data.value, index: data.index });
       this.dancers.set(username, positions);
@@ -163,7 +165,9 @@ class SocketStore {
     })
 
     this.socket.on('dance', (data) => {
+      console.log("ID comparison for dance: ", dashboardStore.account.id, data.id);
       if (data.id === dashboardStore.account.id) {
+        console.log("Store receive dance data: ", data);
         this.currDanceMove = data.move;
       }
     })

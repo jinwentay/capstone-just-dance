@@ -22,7 +22,7 @@ const TimeGraph = observer(() => {
 
   useEffect(() => {
     function insertData(danceData) {
-      console.log("Dance data", danceData.move);
+      console.log("Dance data", danceData);
       const danceValue = danceMove.findIndex((move) => {
         return move === danceData.move
       });

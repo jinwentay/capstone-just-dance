@@ -10,6 +10,7 @@ const DancePosition = observer(({ socketStore }) => {
     first,
     second,
     third,
+    deviceUsers,
     // isUpdated
   } = socketStore;
 
@@ -21,22 +22,61 @@ const DancePosition = observer(({ socketStore }) => {
   return (
     <Grid
       sx={{
-        gridTemplateColumns: '1fr 1fr 1fr'
+        gridTemplateColumns: '1fr 1fr 1fr',
+        minHeight: '300px',
       }}
     >
       <Flex
         sx={{
+          borderRight: '1px solid',
           flexDirection: 'column',
           justifyContent: 'center',
           alignItems: 'center',
         }}
       >
-        {first.map((user) => (
-          <>
-            <Profile user1= {true} isSelf={user === dashboardStore.account.username} />
-            <Text variant="lb.sm">{user}</Text>
-          </>
-        ))}
+        {first.map((user) => {
+          const device = Object.keys(deviceUsers).find(key => deviceUsers[key] === user);
+          return (
+            <Flex
+              sx={{
+                flexDirection: 'column',
+                justifyContent: 'center',
+                alignItems: 'center',
+                my: 2,
+              }}
+            >
+              <Profile user= {device} isSelf={user === dashboardStore.account.username} />
+              <Text variant="lb.sm">{user}</Text>
+            </Flex>
+          )
+        })}
+        <Text variant="lb.sm" mt="auto">One</Text>
+      </Flex>
+      <Flex
+        sx={{
+          borderRight: '1px solid',
+          flexDirection: 'column',
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}
+      >
+        {second.map((user) => {
+          const device = Object.keys(deviceUsers).find(key => deviceUsers[key] === user);
+          return (
+            <Flex
+              sx={{
+                flexDirection: 'column',
+                justifyContent: 'center',
+                alignItems: 'center',
+                my: 2,
+              }}
+            >
+              <Profile user= {device} isSelf={user === dashboardStore.account.username} />
+              <Text variant="lb.sm">{user}</Text>
+            </Flex>
+          )
+        })}
+        <Text variant="lb.sm" mt="auto">Two</Text>
       </Flex>
       <Flex
         sx={{
@@ -45,26 +85,23 @@ const DancePosition = observer(({ socketStore }) => {
           alignItems: 'center',
         }}
       >
-        {second.map((user) => (
-          <>
-            <Profile user2= {true} isSelf={user === dashboardStore.account.username} />
-            <Text variant="lb.sm">{user}</Text>
-          </>
-        ))}
-      </Flex>
-      <Flex
-        sx={{
-          flexDirection: 'column',
-          justifyContent: 'center',
-          alignItems: 'center',
-        }}
-      >
-        {third.map((user) => (
-          <>
-            <Profile user3= {true} isSelf={user === dashboardStore.account.username} />
-            <Text variant="lb.sm">{user}</Text>
-          </>
-        ))}
+        {third.map((user) => {
+          const device = Object.keys(deviceUsers).find(key => deviceUsers[key] === user);
+          return (
+            <Flex
+              sx={{
+                flexDirection: 'column',
+                justifyContent: 'center',
+                alignItems: 'center',
+                my: 2,
+              }}
+            >
+              <Profile user= {device} isSelf={user === dashboardStore.account.username} />
+              <Text variant="lb.sm">{user}</Text>
+            </Flex>
+          )
+        })}
+        <Text variant="lb.sm" mt="auto">Three</Text>
       </Flex>
     </Grid>
   )

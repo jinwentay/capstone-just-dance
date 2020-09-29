@@ -21,21 +21,21 @@ const Profile = (props) => {
         ml: 2,
       }}
     >
-      {props.user1 && (
+      {props.user === '1' && (
         <User1
           title="user"
           width={'45px'}
           height={'45px'}
         />
       )}
-      {props.user2 && (
+      {props.user === '2' && (
         <User2
           title="user"
           width={'45px'}
           height={'45px'}
         />
       )}
-      {props.user3 && (
+      {props.user === '3' && (
         <User3
           title="user"
           width={'45px'}
