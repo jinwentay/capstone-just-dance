@@ -165,8 +165,9 @@ class SocketStore {
     })
 
     this.socket.on('dance', (data) => {
+      const username = this.deviceUsers[`${data.id}`];
       console.log("ID comparison for dance: ", dashboardStore.account.id, data.id);
-      if (data.id === dashboardStore.account.id) {
+      if (username === dashboardStore.account.username) {
         console.log("Store receive dance data: ", data);
         this.currDanceMove = data.move;
       }
