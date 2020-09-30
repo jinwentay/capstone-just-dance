@@ -3,25 +3,6 @@ import { observer } from 'mobx-react';
 import { Bar } from 'react-chartjs-2';
 import 'chartjs-plugin-streaming';
 import socketStore from '../store/store';
-// {
-//   label: deviceUsers['1'],
-//   backgroundColor: '#FE223C',
-//   borderColor: '#FE223C',
-//   borderWidth: 1,
-//   data: []
-// }, {
-//   label: deviceUsers['2'],
-//   backgroundColor: '#FDC83D',
-//   borderColor: '#FDC83D',
-//   borderWidth: 1,
-//   data: []
-// }, {
-//   label: deviceUsers['3'],
-//   backgroundColor: '#4280F4',
-//   borderColor: '#4280F4',
-//   borderWidth: 1,
-//   data: []
-// }
 const danceMove = [
   'rest',
   'zigzag', 
@@ -46,8 +27,8 @@ const TimeGraph = observer(() => {
       const numDatasets = chartRef.current.props.data.datasets.length;
       let newDataset = {
         label: deviceUsers[`${danceData.id}`],
-        backgroundColor: barColors[numDatasets],
-        borderColor: barColors[numDatasets],
+        backgroundColor: numDatasets < 3 ? barColors[numDatasets] : '#FAFAFA',
+        borderColor: numDatasets < 3 ? barColors[numDatasets] : '#FAFAFA',
         borderWidth: 1,
         data: [{
           x: danceData.time,
@@ -76,10 +57,6 @@ const TimeGraph = observer(() => {
             })
           }
         })
-        // chartRef.current.props.data.datasets[danceData.id - 1].data.push({
-        //   x: danceData.time,
-        //   y: (danceValue > -1) ? danceValue : 0
-        // })
       }
 
       chartRef.current.chartInstance.update({

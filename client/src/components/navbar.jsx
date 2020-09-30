@@ -93,8 +93,12 @@ const Navbar = observer(() => {
               Stop session
             </Button>
           )}
-          <Link to="/">Live</Link>
-          {/* <Link to="/">Offline</Link> */}
+          {account.id !== -1 && (
+            <>
+              <Link to="/">Live</Link>
+              <Link to="/overall">Overall</Link>
+            </>
+          )}
           <Menu>
             <SButton>
               <Flex

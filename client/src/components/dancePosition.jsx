@@ -46,7 +46,7 @@ const DancePosition = observer(({ socketStore }) => {
               }}
             >
               <Profile user= {device} isSelf={user === dashboardStore.account.username} />
-              <Text variant="lb.sm">{user}</Text>
+              <Text variant="lb.sm" sx={{ textAlign: 'center' }}>{user}</Text>
             </Flex>
           )
         })}
@@ -72,7 +72,7 @@ const DancePosition = observer(({ socketStore }) => {
               }}
             >
               <Profile user= {device} isSelf={user === dashboardStore.account.username} />
-              <Text variant="lb.sm">{user}</Text>
+              <Text variant="lb.sm" sx={{ textAlign: 'center' }}>{user}</Text>
             </Flex>
           )
         })}
@@ -97,7 +97,7 @@ const DancePosition = observer(({ socketStore }) => {
               }}
             >
               <Profile user= {device} isSelf={user === dashboardStore.account.username} />
-              <Text variant="lb.sm">{user}</Text>
+              <Text variant="lb.sm" sx={{ textAlign: 'center' }}>{user}</Text>
             </Flex>
           )
         })}

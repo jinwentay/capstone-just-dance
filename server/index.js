@@ -52,6 +52,9 @@ app.use('/', usersRouter);
 const danceRouter = require('./routes/danceSession');
 app.use('/', danceRouter);
 
+const offlineRouter = require('./routes/offline');
+app.use('/', offlineRouter);
+
 server.listen(port, () => {
   console.log(`Server is running on port: ${port}`);
 });

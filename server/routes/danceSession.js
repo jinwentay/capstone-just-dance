@@ -96,6 +96,11 @@ router.post('/stop/session', (req, res) => {
         if (query)
           await client.query(query)
       });
+      helper.storeCorrectPositions(async function(query) {
+        console.log(query);
+        if (query)
+          await client.query(query)
+      });
       helper.storeMoves(async function(query) {
         console.log(query);
         if (query)
@@ -105,6 +110,7 @@ router.post('/stop/session', (req, res) => {
         redis.HSET('session', 'isStart', 'false');
         redis.DEL('position');
         redis.DEL('dance');
+        redis.DEL('correct_position');
         res.status(200).send({ success: 'Success' });
       });
     } catch (err) {

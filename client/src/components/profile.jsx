@@ -18,28 +18,27 @@ const Profile = (props) => {
         alignItems: 'center',
         justifyContent: 'center',
         backgroundColor: 'white',
-        ml: 2,
       }}
     >
       {props.user === '1' && (
         <User1
           title="user"
-          width={'45px'}
-          height={'45px'}
+          width={'40px'}
+          height={'40px'}
         />
       )}
       {props.user === '2' && (
         <User2
           title="user"
-          width={'45px'}
-          height={'45px'}
+          width={'40px'}
+          height={'40px'}
         />
       )}
       {props.user === '3' && (
         <User3
           title="user"
-          width={'45px'}
-          height={'45px'}
+          width={'40px'}
+          height={'40px'}
         />
       )}
     </Flex>

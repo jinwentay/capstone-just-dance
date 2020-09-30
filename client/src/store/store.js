@@ -105,18 +105,19 @@ class SocketStore {
     let correct = 0;
     if (userPositions) {
       userPositions.forEach((position) => {
-        const currIndex = Number(position.index) - 1;
-        // console.log('Curr index', currIndex);
-        if (currIndex < this.correctPositions.length) {
-          // console.log(Number(position.value) === this.correctPositions[currIndex]);
-          if (Number(position.value) === this.correctPositions[currIndex]) {
+        const currIndex = Number(position.index);
+        console.log('Curr index', currIndex, position);
+        if (this.correctPositions.length > 0 && this.correctPositions.some((data) => Number(data.index) === currIndex)) {
+          const currentPosition = this.correctPositions.find((data) => Number(data.index) === currIndex);
+          console.log("Current correct position: ", currentPosition);
+          if (Number(position.value) === Number(currentPosition.position)) {
             correct += 1;
           }
         }
       })
     }
-    console.log('Correct positions', this.correctPositions.length, this.correctPositions)
-    let corrRatio = correct/this.correctPositions.length * 100;
+    console.log('Correct positions', this.correctPositions.length, correct)
+    // let corrRatio = correct/this.correctPositions.length * 100;
     // return corrRatio ? Math.ceil(corrRatio) : 0;
     return correct;
   }
@@ -159,7 +160,8 @@ class SocketStore {
           const index = data.value.findIndex((id) => id === Number(device));
           console.log("Correct position", index + 1);
           if (index > -1)
-            this.correctPositions.push(index + 1);
+            this.correctPositions.push({ index: data.index, position: index + 1});
+            // this.correctPositions.push(index + 1);
         }
       })
     })

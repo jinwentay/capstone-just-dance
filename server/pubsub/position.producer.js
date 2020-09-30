@@ -53,7 +53,7 @@ amqp.connect('amqp://localhost', (connError, connection) => {
       let msg4 = JSON.stringify({
         time: new Date(),
         value: positions[Math.ceil(Math.random() * 3) - 1],
-        index: msgOrder, //device id
+        index: msgOrder, 
       });
       channel.publish(EXCHANGE, 'correct_position', Buffer.from(msg4), {
         persistent: true

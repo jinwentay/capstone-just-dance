@@ -84,9 +84,9 @@ const Home = observer(() => {
           }}
         >
           <Card title='DANCE POSITIONS' children={<DancePosition socketStore={socketStore}/>}/>
+          <Card title='MOVE PREDICTION' children={<DanceMove socketStore={socketStore}/>}/>
           <Card title='TIME DELAY' children={<TimeGraph />}/>
           <Card title='ACCURACY' children={<AccuracyGraph accuracy={accuracy} correctPositions={correctPositions}/>}/>
-          <Card title='MOVE PREDICTION' children={<DanceMove socketStore={socketStore}/>}/>
         </Grid>
       ) : (
         <STabs>
