@@ -106,10 +106,10 @@ class SocketStore {
     if (userPositions) {
       userPositions.forEach((position) => {
         const currIndex = Number(position.index);
-        console.log('Curr index', currIndex, position);
+        console.log('Curr index', currIndex, position.value);
         if (this.correctPositions.length > 0 && this.correctPositions.some((data) => Number(data.index) === currIndex)) {
           const currentPosition = this.correctPositions.find((data) => Number(data.index) === currIndex);
-          console.log("Current correct position: ", currentPosition);
+          console.log("Current correct position: ", currentPosition.position);
           if (Number(position.value) === Number(currentPosition.position)) {
             correct += 1;
           }

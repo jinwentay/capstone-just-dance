@@ -41,8 +41,6 @@ const Home = observer(() => {
     getSession,
     joinedSession,
     joinState,
-    accuracy,
-    correctPositions,
     sessionState,
   } = socketStore;
   useEffect(() => {
@@ -85,8 +83,9 @@ const Home = observer(() => {
         >
           <Card title='DANCE POSITIONS' children={<DancePosition socketStore={socketStore}/>}/>
           <Card title='MOVE PREDICTION' children={<DanceMove socketStore={socketStore}/>}/>
+          <Card title='ACCURACY' children={<AccuracyGraph /*accuracy={accuracy} correctPositions={correctPositions}*//>}/>
           <Card title='TIME DELAY' children={<TimeGraph />}/>
-          <Card title='ACCURACY' children={<AccuracyGraph accuracy={accuracy} correctPositions={correctPositions}/>}/>
+          
         </Grid>
       ) : (
         <STabs>

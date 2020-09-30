@@ -42,7 +42,7 @@ const Offline = observer(() => {
             gridTemplateColumns: ['1fr', '800px']
           }}
         >
-          <Card title='ACCURACY ANALYTICS' children={<OverallAccuracyGraph totalPositions={totalPositions} accuracyData={accuracyData}/>}/>
+          <Card title='ACCURACY ANALYTICS' children={<OverallAccuracyGraph/>}/>
         </Grid>
       </Flex>
     </Box>

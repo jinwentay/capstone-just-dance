@@ -1,13 +1,10 @@
-import React, { useRef, useEffect, useState } from 'react';
+import React from 'react';
 import { observer } from 'mobx-react';
 import { Bar } from 'react-chartjs-2';
 import 'chartjs-plugin-streaming';
-import { autorun } from 'mobx';
 import offlineStore from '../store/offlineStore';
-import { Text } from 'theme-ui';
 
-const OverallAccuracyGraph = observer(({ totalPositions, accuracyData }) => {
-  const chartRef = useRef(null);
+const OverallAccuracyGraph = observer(() => {
   const { numWrong, numCorrect } = offlineStore;
   return (
     <>

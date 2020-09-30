@@ -22,6 +22,7 @@ const DancePosition = observer(({ socketStore }) => {
   return (
     <Grid
       sx={{
+        my: 'auto',
         gridTemplateColumns: '1fr 1fr 1fr',
         minHeight: '300px',
       }}
