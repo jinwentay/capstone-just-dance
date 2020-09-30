@@ -4,6 +4,7 @@ import { ThemeProvider } from 'theme-ui';
 import theme from './theme';
 import Login from "./pages/login";
 import Home from "./pages/home";
+import Offline from "./pages/offline";
 import socketStore from "./store/store";
 function App() {
   const { connect, disconnect } = socketStore;
@@ -22,6 +23,9 @@ function App() {
             <Home/>
           </Route>
           <Route path="/login" exact component={Login} />
+          <Route path="/overall" exact>
+            <Offline/>
+          </Route>
         </Switch>
       </Router>
     </ThemeProvider>

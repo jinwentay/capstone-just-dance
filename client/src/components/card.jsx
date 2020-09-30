@@ -8,7 +8,7 @@ const Card = ({ title, children }) => {
         flexDirection: 'column',
         p: '16px',
         borderRadius: '10px',
-        border: '1px solid #DADADA'
+        border: '1px solid #DADADA',
       }}
     >
       <Text variant="lb.md">{title}</Text>

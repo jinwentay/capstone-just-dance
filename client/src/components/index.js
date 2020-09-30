@@ -6,6 +6,7 @@ import DanceMove from './danceMoves';
 import AccuracyGraph from './accuracy';
 import TimeGraph from './timeGraph';
 import Profile from './profile';
+import OverallAccuracyGraph from './accuracy.overall';
 import { STab, STabList, STabPanel, STabPanels, STabs } from './tabs';
 import Button from './button';
 
@@ -24,4 +25,5 @@ export {
   AccuracyGraph,
   TimeGraph,
   Profile,
+  OverallAccuracyGraph,
 };

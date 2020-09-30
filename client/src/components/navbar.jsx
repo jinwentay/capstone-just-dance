@@ -42,9 +42,8 @@ const Link = styled(NavLink)`
   color: initial;
   &:focus, &:hover, &:visited, &:link, &:active {
       text-decoration: none;
-      color: #7151C9;
   };
-  &:link, &:active, &:focus {
+  &:active, &:focus {
     border-bottom: 2px solid;
     border-color: #7151C9;
     color: #7151C9;
@@ -95,8 +94,20 @@ const Navbar = observer(() => {
           )}
           {account.id !== -1 && (
             <>
-              <Link to="/">Live</Link>
-              <Link to="/overall">Overall</Link>
+              <Link to="/" exact activeStyle={{ 
+                borderBottom: '2px solid',
+                borderColor: '#7151C9',
+                color: '#7151C9'
+              }}>
+                Live
+              </Link>
+              <Link to="/overall" activeStyle={{ 
+                borderBottom: '2px solid',
+                borderColor: '#7151C9',
+                color: '#7151C9'
+              }}>
+                Overall
+              </Link>
             </>
           )}
           <Menu>
