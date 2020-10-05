@@ -3,6 +3,7 @@ import { observer } from 'mobx-react';
 import { Doughnut } from 'react-chartjs-2';
 import { Box, Flex, Text } from 'theme-ui';
 import socketStore from '../store/store';
+import 'chartjs-plugin-datalabels';
 
 const AccuracyGraph = observer(() => {
   const { accuracy, correctPositions } = socketStore;
@@ -64,6 +65,19 @@ const AccuracyGraph = observer(() => {
       <Doughnut
         data={state}
         options={{
+          plugins: {
+            datalabels: {
+              color: 'white',
+              labels: {
+                value: {
+                    font: {
+                        weight: 'bold',
+                        family: 'Quicksand',
+                    }
+                }
+              }
+            }
+          },
           legend: {
             display: true,
             position: 'bottom'
