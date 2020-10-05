@@ -1,6 +1,5 @@
 var router = require('express').Router();//create route
 var pool = require('../pool');
-var app = require('../index');
 
 router.get('/get/session/all/accuracy', (req, res) => {
   console.log("Querying accuracy");

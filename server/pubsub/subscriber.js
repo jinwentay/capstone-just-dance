@@ -70,9 +70,8 @@ function connectRabbitMQ(io, data_type) {
               }
             }
           });
-          // }
+          //acknowledge that message has been processed
           channel.ack(msg);
-          // console.log(" [x] %s:'%s'", msg.fields.routingKey, msg.content.toString());
         }, {
           noAck: false
         });

@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { observer } from 'mobx-react';
-import { autorun } from 'mobx';
 import { Doughnut } from 'react-chartjs-2';
 import { Box, Flex, Text } from 'theme-ui';
 import socketStore from '../store/store';

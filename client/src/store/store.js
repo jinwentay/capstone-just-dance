@@ -6,12 +6,6 @@ import ls from 'local-storage';
 import { states } from './types';
 
 class SocketStore {
-  // constructor() {
-  //   const currentUser = LocalStorageHelper.get('currentUser');
-  //   if (currentUser?.session) {
-  //     this.session = currentUser.session;
-  //   }
-  // }
   @observable 
   startSession = false;
 
@@ -26,28 +20,6 @@ class SocketStore {
   @observable
   socket = null;
 
-  // @observable
-  // session = '';
-
-  // isDebug = false;
-
-  // @observable
-  // joinedParty = false;
-
-  // onProfileChange = reaction(
-  //   () => this.session,
-  //   (session) => {
-  //     if (session) {
-  //       this.socket = null;
-  //       this.isConnected = false;
-  //       this.connect();
-  //     } else {
-  //       if (!session && this.isConnected) {
-  //         this.disconnect();
-  //       }
-  //     }
-  //   }
-  // );
   @computed
   get first() {
     let first = [];
@@ -117,8 +89,6 @@ class SocketStore {
       })
     }
     console.log('Correct positions', this.correctPositions.length, correct)
-    // let corrRatio = correct/this.correctPositions.length * 100;
-    // return corrRatio ? Math.ceil(corrRatio) : 0;
     return correct;
   }
 
@@ -135,10 +105,6 @@ class SocketStore {
 
     this.socket.on('disconnect', () => {
       this.isConnected = false;
-      // this.connect();
-      // if (this.isDebug) {
-      //   console.log('Disconnected');
-      // }
     });
 
     this.socket.on('position', (data) => {
@@ -161,7 +127,6 @@ class SocketStore {
           console.log("Correct position", index + 1);
           if (index > -1)
             this.correctPositions.push({ index: data.index, position: index + 1});
-            // this.correctPositions.push(index + 1);
         }
       })
     })
@@ -183,7 +148,6 @@ class SocketStore {
     })
 
     this.socket.on('session_stopped', (data) => {
-      //get new data from db
       this.deviceUsers[`${data.deviceId}`] = '';
       console.log('USER LEFT', data);
       this.startSession = false;
@@ -192,7 +156,6 @@ class SocketStore {
 
     this.socket.on('new_sessions', (data) => {
       console.log('New session');
-      // this.sessions.push(data.sid);
       this.getSession();
     })
   };
@@ -262,11 +225,6 @@ class SocketStore {
               this.dancers.set(user.username, [Number(user.device)]);
             })
           }
-          // res.data.map((user) => {
-          //   console.log('USER', user);
-          //   this.deviceUsers[`${user.device}`] = user.username;
-          //   this.dancers.set(user.username, [Number(user.device)]);
-          // })
         });
         this.socket.emit('user_joined', { deviceId: deviceId, username: dashboardStore.account.username, id: dashboardStore.account.id })
         console.log('YOU JOINED: ', dashboardStore.account.username, sessionId);

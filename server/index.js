@@ -15,25 +15,8 @@ const port_redis = 6379;
 
 //connect redis
 const redis_client = redis.createClient(port_redis);
-function checkCache(req, res, next) {
-  const { id } = req.params;
-
-  redis_client.get(id, (err, data) => {
-    if (err) {
-      console.log(err);
-      res.status(500).send(err);
-    }
-    //if no match found
-    if (data != null) {
-      res.send(data);
-    } else {
-      //proceed to next middleware function
-      next();
-    }
-  });
-};
 exports.redis_client = redis_client;
-exports.checkCache = this.checkCache;
+
 
 app.use(cors());
 app.use(express.json());

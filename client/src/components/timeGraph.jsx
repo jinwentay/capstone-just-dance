@@ -67,7 +67,8 @@ const TimeGraph = observer(() => {
       socket.on('dance', (danceData) => insertData(danceData));
     }
     return () => {
-      socket.off('dance');
+      if (socket)
+        socket.off('dance');
     }
   }, [socket, chartRef])
   return (

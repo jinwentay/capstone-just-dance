@@ -72,7 +72,7 @@ router.post('/join/session', (req, res) => {
       });
       console.log("USERS", users.rows);
     } catch (err) {
-      await client.query("ROLLBACK");//.then(res.status(500).send(JSON.stringify({ error: 'Unable to join session' })));
+      await client.query("ROLLBACK");
       throw err;
     } finally {
       client.release();
@@ -114,27 +114,12 @@ router.post('/stop/session', (req, res) => {
         res.status(200).send({ success: 'Success' });
       });
     } catch (err) {
-      await client.query("ROLLBACK")//.then(res.status(500).send({ error: 'An unexpected error occurred. Session could not be stopped.' }));
+      await client.query("ROLLBACK")
       throw err;
     } finally {
       client.release();
     }
   })().catch(e => console.error(e.stack));
-  // pool.query(`UPDATE Session
-  //   SET endTime = date_trunc('second', NOW())
-  //   WHERE sid = $1`, [sessionId],
-  //   (q_err, q_res) => {
-  //     if (q_err) {
-  //       q_err.
-  //       console.log(q_err);
-  //       res.status(500).send({ error: 'An unexpected error occurred. Session could not be stopped.' })
-  //     } else {
-  //       console.log('Stop session success', q_res);
-  //       res.status(200).send({ success: 'Success' });
-  //       redis.HSET('session', 'isStart', 'false');
-  //     }
-  //   }
-  // );
 })
 
 router.get('/get/session', (req, res) => {
