@@ -18,7 +18,7 @@ const danceMove = [
   'waving'
 ];
 
-const barColors = ['#FE223C', '#FDC83D', '#4280F4'];
+const barColors = ['#FD6579', '#FEDC6F', '#7AA7FC'];
 
 const BubbleGraph = observer(() => {
   const chartRef = useRef(null);
@@ -34,7 +34,7 @@ const BubbleGraph = observer(() => {
         borderWidth: 1,
         data: [{
           x: danceData.time,
-          y: (danceValue > -1) ? danceValue : 0,
+          y: danceData.move,
           r: 20
         }]
       }
@@ -56,7 +56,7 @@ const BubbleGraph = observer(() => {
           if (dataset.label === username) {
             dataset.data.push({
               x: danceData.time,
-              y: (danceValue > -1) ? danceValue : 0,
+              y: danceData.move,
               r: 20
             })
           }
@@ -91,8 +91,18 @@ const BubbleGraph = observer(() => {
             },
             formatter: function(value, context) {
                 console.log("CHART LABEL: ", value);
-                return danceMove[value.y];
-            }
+                return value.y;
+            },
+            clip: true,
+            clamp: true,
+          }
+        },
+        layout: {
+          padding: {
+            left: 0,
+            right: 0,
+            top: 20,
+            bottom: 20
           }
         },
         scales: {
@@ -120,9 +130,6 @@ const BubbleGraph = observer(() => {
             ],
             ticks: {
               min: 'rest',
-              callback: function(value) {
-                return danceMove[value];
-              }
             },
             scaleLabel: {
               display: true,

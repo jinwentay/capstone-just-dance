@@ -1,6 +1,7 @@
 import React, { useRef, useEffect } from 'react';
 import { observer } from 'mobx-react';
 import { Bar } from 'react-chartjs-2';
+import 'chartjs-plugin-datalabels';
 import 'chartjs-plugin-streaming';
 import socketStore from '../store/store';
 const danceMove = [
@@ -78,6 +79,21 @@ const TimeGraph = observer(() => {
         datasets: []
       }}
       options={{
+        plugins: {
+          datalabels: {
+            display: 'auto',
+            font: {
+              weight: 'bold',
+              family: 'Quicksand',
+            },
+            formatter: function(value, context) {
+              console.log("CHART LABEL: ", value);
+              return danceMove[value.y];
+            },
+            clip: true,
+            clamp: true,
+          }
+        },
         scales: {
           xAxes: [{
             type: 'realtime',
