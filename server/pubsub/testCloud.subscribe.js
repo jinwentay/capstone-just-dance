@@ -22,6 +22,7 @@ function connectRabbitMQ() {
   })
 }
 
+const rkey = ['position', 'correct_position', 'dance'];
 function startWorker() {
   amqpConn.createChannel((err, ch) => {
     if (closeOnErr(err)) return;
@@ -34,9 +35,20 @@ function startWorker() {
     });
 
     ch.prefetch(10);
-    ch.assertQueue("hello", { durable: false }, function(err, _ok) {
+    
+    const exchange = 'direct_logs';
+    ch.assertExchange(exchange, 'direct', { durable: false });
+    ch.assertQueue("", { exclusive: true }, function(err, q) {
       if (closeOnErr(err)) return;
-      ch.consume("hello", processMsg, { noAck: false });
+      rkey.forEach((key) => {
+        ch.bindQueue(q.queue, exchange, key);
+      });
+      ch.consume(q.queue, function(msg) {
+        console.log(" [x] %s: '%s'", msg.fields.routingKey, msg.content.toString());
+      }, {
+        noAck: true
+      });
+      // ch.consume(q.queue, processMsg, { noAck: false });
       console.log("Worker is started");
     });
 
