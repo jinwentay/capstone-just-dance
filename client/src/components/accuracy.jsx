@@ -49,19 +49,7 @@ const AccuracyGraph = observer(() => {
   }, [accuracy, correctPositions]);
   
   return (
-    <Box sx={{ position: 'relative', my: 'auto'}}>
-      <Flex
-        sx={{
-          position: 'absolute',
-          width: '100%',
-          height: 'calc(100% - 10px)',
-          justifyContent: 'center',
-          alignItems: 'center',
-          zIndex: -1,
-        }}
-      >
-        <Text variant="hd.md">{accuracy}%</Text>
-      </Flex>
+    <Box sx={{ my: 'auto'}}>
       <Pie
         data={state}
         options={{
@@ -79,8 +67,8 @@ const AccuracyGraph = observer(() => {
               },
               clamp: true,
               formatter: function(value, context) {
-                const totalPositions = correctPositions.length > 0 ? correctPositions[correctPositions.length - 1].index : 0;
-                console.log(context.chart.data.labels[context.dataIndex], value, totalPositions, Math.round((value/totalPositions)* 100));
+                const totalPositions = context.chart.data.datasets[0].data[0] + context.chart.data.datasets[0].data[1]//correctPositions.length > 0 ? correctPositions[correctPositions.length - 1].index : 0;
+                console.log("Accuracy graph label: ",context.chart.data);
                 return value === 0 ? '' : (`${totalPositions ? Math.round((value/totalPositions)* 100) : 0}%\n` + `${context.chart.data.labels[context.dataIndex]}: ${value}`);
               },
             }
