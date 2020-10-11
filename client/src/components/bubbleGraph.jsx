@@ -90,7 +90,7 @@ const BubbleGraph = observer(() => {
               family: 'Quicksand',
             },
             formatter: function(value, context) {
-                console.log("CHART LABEL: ", value);
+                // console.log("CHART LABEL: ", value);
                 return value.y;
             },
             clip: true,
@@ -109,7 +109,7 @@ const BubbleGraph = observer(() => {
           xAxes: [{
             type: 'realtime',
             realtime: {
-              duration: 10000,
+              duration: 5000,
               delay: 1000,
               unit: 'millisecond'
             }
@@ -117,7 +117,6 @@ const BubbleGraph = observer(() => {
           yAxes: [{
             type: 'category',
             labels: [
-              'rest',
               'zigzag', 
               'elbow', 
               'hair', 
@@ -126,10 +125,11 @@ const BubbleGraph = observer(() => {
               'scarecrow', 
               'shrug', 
               'windows', 
-              'waving'
+              'waving',
+              'rest'
             ],
             ticks: {
-              min: 'rest',
+              min: 'zigzag',
             },
             scaleLabel: {
               display: true,

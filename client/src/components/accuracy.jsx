@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { observer } from 'mobx-react';
-import { Doughnut } from 'react-chartjs-2';
+import { Doughnut, Pie } from 'react-chartjs-2';
 import { Box, Flex, Text } from 'theme-ui';
 import socketStore from '../store/store';
 import 'chartjs-plugin-datalabels';
@@ -62,7 +62,7 @@ const AccuracyGraph = observer(() => {
       >
         <Text variant="hd.md">{accuracy}%</Text>
       </Flex>
-      <Doughnut
+      <Pie
         data={state}
         options={{
           plugins: {
@@ -73,9 +73,16 @@ const AccuracyGraph = observer(() => {
                     font: {
                         weight: 'bold',
                         family: 'Quicksand',
-                    }
+                    },
+                    textAlign: 'center',
                 }
-              }
+              },
+              clamp: true,
+              formatter: function(value, context) {
+                const totalPositions = correctPositions.length > 0 ? correctPositions[correctPositions.length - 1].index : 0;
+                console.log(context.chart.data.labels[context.dataIndex], value, totalPositions, Math.round((value/totalPositions)* 100));
+                return value === 0 ? '' : (`${totalPositions ? Math.round((value/totalPositions)* 100) : 0}%\n` + `${context.chart.data.labels[context.dataIndex]}: ${value}`);
+              },
             }
           },
           legend: {

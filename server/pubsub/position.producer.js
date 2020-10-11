@@ -59,7 +59,7 @@ amqp.connect('amqp://localhost', (connError, connection) => {
         persistent: true
       });
       msgOrder += 1;
-    }, 6000);
+    }, 3000);
 
     // let order = 1;
     // setInterval(() => {
