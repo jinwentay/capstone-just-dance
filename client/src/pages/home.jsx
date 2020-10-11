@@ -9,6 +9,7 @@ import {
   DanceMove,
   AccuracyGraph,
   TimeGraph,
+  BubbleGraph,
 } from '../components';
 import { observer } from 'mobx-react';
 import dashboardStore from '../store/dashboardStore';
@@ -84,8 +85,8 @@ const Home = observer(() => {
           <Card title='DANCE POSITIONS' children={<DancePosition socketStore={socketStore}/>}/>
           <Card title='MOVE PREDICTION' children={<DanceMove socketStore={socketStore}/>}/>
           <Card title='ACCURACY' children={<AccuracyGraph /*accuracy={accuracy} correctPositions={correctPositions}*//>}/>
-          <Card title='TIME DELAY' children={<TimeGraph />}/>
-          
+          {/* <Card title='TIME DELAY' children={<TimeGraph />}/> */}
+          <Card title='TIME DELAY' children={<BubbleGraph />}/>
         </Grid>
       ) : (
         <STabs>

@@ -1,9 +1,10 @@
 import React, { useRef, useEffect } from 'react';
 import { observer } from 'mobx-react';
-import { Bar } from 'react-chartjs-2';
+import { Bubble } from 'react-chartjs-2';
 import 'chartjs-plugin-datalabels';
 import 'chartjs-plugin-streaming';
 import socketStore from '../store/store';
+
 const danceMove = [
   'rest',
   'zigzag', 
@@ -17,9 +18,9 @@ const danceMove = [
   'waving'
 ];
 
-const barColors = ['#FE223C', '#FDC83D', '#4280F4'];
+const barColors = ['#FD6579', '#FEDC6F', '#7AA7FC'];
 
-const TimeGraph = observer(() => {
+const BubbleGraph = observer(() => {
   const chartRef = useRef(null);
   const { socket, deviceUsers } = socketStore;
 
@@ -33,7 +34,8 @@ const TimeGraph = observer(() => {
         borderWidth: 1,
         data: [{
           x: danceData.time,
-          y: (danceValue > -1) ? danceValue : 0
+          y: danceData.move,
+          r: 20
         }]
       }
       console.log("NEW DATA SET: ", newDataset);
@@ -54,7 +56,8 @@ const TimeGraph = observer(() => {
           if (dataset.label === username) {
             dataset.data.push({
               x: danceData.time,
-              y: (danceValue > -1) ? danceValue : 0
+              y: danceData.move,
+              r: 20
             })
           }
         })
@@ -73,7 +76,7 @@ const TimeGraph = observer(() => {
     }
   }, [socket, chartRef])
   return (
-    <Bar
+    <Bubble
       ref={chartRef}
       data={{
         datasets: []
@@ -87,27 +90,46 @@ const TimeGraph = observer(() => {
               family: 'Quicksand',
             },
             formatter: function(value, context) {
-              console.log("CHART LABEL: ", value);
-              return danceMove[value.y];
+                // console.log("CHART LABEL: ", value);
+                return value.y;
             },
             clip: true,
             clamp: true,
+          }
+        },
+        layout: {
+          padding: {
+            left: 0,
+            right: 0,
+            top: 20,
+            bottom: 20
           }
         },
         scales: {
           xAxes: [{
             type: 'realtime',
             realtime: {
-              duration: 10000,
+              duration: 5000,
               delay: 1000,
               unit: 'millisecond'
             }
           }],
           yAxes: [{
+            type: 'category',
+            labels: [
+              'zigzag', 
+              'elbow', 
+              'hair', 
+              'pushback', 
+              'rocket', 
+              'scarecrow', 
+              'shrug', 
+              'windows', 
+              'waving',
+              'rest'
+            ],
             ticks: {
-              callback: function(value) {
-                return danceMove[value];
-              }
+              min: 'zigzag',
             },
             scaleLabel: {
               display: true,
@@ -128,4 +150,4 @@ const TimeGraph = observer(() => {
   )
 })
 
-export default TimeGraph;
+export default BubbleGraph;

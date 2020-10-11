@@ -7,6 +7,7 @@ import AccuracyGraph from './accuracy';
 import TimeGraph from './timeGraph';
 import Profile from './profile';
 import OverallAccuracyGraph from './accuracy.overall';
+import BubbleGraph from './bubbleGraph';
 import { STab, STabList, STabPanel, STabPanels, STabs } from './tabs';
 import Button from './button';
 
@@ -26,4 +27,5 @@ export {
   TimeGraph,
   Profile,
   OverallAccuracyGraph,
+  BubbleGraph,
 };

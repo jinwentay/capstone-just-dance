@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { observer } from 'mobx-react';
-import { Doughnut } from 'react-chartjs-2';
+import { Doughnut, Pie } from 'react-chartjs-2';
 import { Box, Flex, Text } from 'theme-ui';
 import socketStore from '../store/store';
+import 'chartjs-plugin-datalabels';
 
 const AccuracyGraph = observer(() => {
   const { accuracy, correctPositions } = socketStore;
@@ -48,22 +49,30 @@ const AccuracyGraph = observer(() => {
   }, [accuracy, correctPositions]);
   
   return (
-    <Box sx={{ position: 'relative', my: 'auto'}}>
-      <Flex
-        sx={{
-          position: 'absolute',
-          width: '100%',
-          height: 'calc(100% - 10px)',
-          justifyContent: 'center',
-          alignItems: 'center',
-          zIndex: -1,
-        }}
-      >
-        <Text variant="hd.md">{accuracy}%</Text>
-      </Flex>
-      <Doughnut
+    <Box sx={{ my: 'auto'}}>
+      <Pie
         data={state}
         options={{
+          plugins: {
+            datalabels: {
+              color: 'white',
+              labels: {
+                value: {
+                    font: {
+                        weight: 'bold',
+                        family: 'Quicksand',
+                    },
+                    textAlign: 'center',
+                }
+              },
+              clamp: true,
+              formatter: function(value, context) {
+                const totalPositions = context.chart.data.datasets[0].data[0] + context.chart.data.datasets[0].data[1]//correctPositions.length > 0 ? correctPositions[correctPositions.length - 1].index : 0;
+                console.log("Accuracy graph label: ",context.chart.data);
+                return value === 0 ? '' : (`${totalPositions ? Math.round((value/totalPositions)* 100) : 0}%\n` + `${context.chart.data.labels[context.dataIndex]}: ${value}`);
+              },
+            }
+          },
           legend: {
             display: true,
             position: 'bottom'

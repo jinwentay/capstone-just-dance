@@ -58,7 +58,8 @@ router.post('/join/session', (req, res) => {
     const insertQuery = `INSERT INTO Participants(id, sid, device)
     VALUES($1, $2, $3)
     ON CONFLICT (id, sid)
-    DO NOTHING
+    DO UPDATE
+    SET device = $3
     RETURNING sid`
     try {
       await client.query("BEGIN");
@@ -114,7 +115,11 @@ router.post('/stop/session', (req, res) => {
         res.status(200).send({ success: 'Success' });
       });
     } catch (err) {
-      await client.query("ROLLBACK")
+      await client.query("ROLLBACK");
+      redis.HSET('session', 'isStart', 'false');
+      redis.DEL('position');
+      redis.DEL('dance');
+      redis.DEL('correct_position');
       throw err;
     } finally {
       client.release();
