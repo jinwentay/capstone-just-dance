@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { observer } from 'mobx-react';
 import { Doughnut, Pie } from 'react-chartjs-2';
-import { Box, Flex, Text } from 'theme-ui';
+import { Box, Grid, Flex, Text } from 'theme-ui';
 import socketStore from '../store/store';
 import 'chartjs-plugin-datalabels';
 
@@ -69,7 +69,11 @@ const AccuracyGraph = observer(() => {
   },[accuracy, totalPositions]);
   
   return (
-    <Box sx={{ my: 'auto'}}>
+    <Box 
+      sx={{ 
+        my: 'auto'
+      }}
+    >
       <Pie
         data={state}
         options={{
@@ -79,6 +83,7 @@ const AccuracyGraph = observer(() => {
               labels: {
                 value: {
                     font: {
+                        size: 20,
                         weight: 'bold',
                         family: 'Quicksand',
                     },
@@ -87,9 +92,9 @@ const AccuracyGraph = observer(() => {
               },
               clamp: true,
               formatter: function(value, context) {
-                const totalPositions = context.chart.data.datasets[0].data[0] + context.chart.data.datasets[0].data[1]//correctPositions.length > 0 ? correctPositions[correctPositions.length - 1].index : 0;
+                //const totalPositions = context.chart.data.datasets[0].data[0] + context.chart.data.datasets[0].data[1]//correctPositions.length > 0 ? correctPositions[correctPositions.length - 1].index : 0;
                 console.log("Accuracy graph label: ",context.chart.data);
-                return value === 0 ? '' : (`${totalPositions ? Math.round((value/totalPositions)* 100) : 0}%\n` + `${context.chart.data.labels[context.dataIndex]}: ${value}`);
+                return value//value === 0 ? '' : (`${totalPositions ? Math.round((value/totalPositions)* 100) : 0}%\n` + `${context.chart.data.labels[context.dataIndex]}: ${value}`);
               },
             }
           },

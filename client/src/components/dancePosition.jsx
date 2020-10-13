@@ -51,7 +51,8 @@ const DancePosition = observer(({ socketStore }) => {
             </Flex>
           )
         })}
-        <Text variant="lb.sm" mt="auto">One</Text>
+        <Text variant="lb.sm" mt="auto">(1)</Text>
+        <Text variant="lb.sm">Left</Text>
       </Flex>
       <Flex
         sx={{
@@ -77,7 +78,8 @@ const DancePosition = observer(({ socketStore }) => {
             </Flex>
           )
         })}
-        <Text variant="lb.sm" mt="auto">Two</Text>
+        <Text variant="lb.sm" mt="auto">(2)</Text>
+        <Text variant="lb.sm">Middle</Text>
       </Flex>
       <Flex
         sx={{
@@ -102,7 +104,8 @@ const DancePosition = observer(({ socketStore }) => {
             </Flex>
           )
         })}
-        <Text variant="lb.sm" mt="auto">Three</Text>
+        <Text variant="lb.sm" mt="auto">(3)</Text>
+        <Text variant="lb.sm">Right</Text>
       </Flex>
     </Grid>
   )
