@@ -109,7 +109,7 @@ const BubbleGraph = observer(() => {
           xAxes: [{
             type: 'realtime',
             realtime: {
-              duration: 5000,
+              duration: 3000,
               delay: 1000,
               unit: 'millisecond'
             }

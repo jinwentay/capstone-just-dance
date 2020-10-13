@@ -75,6 +75,9 @@ class SocketStore {
   @observable
   correctPositions = [];
   
+  @observable
+  totalPositions = 0;
+
   @computed get accuracy() {
     let userPositions = this.dancers.get(dashboardStore.account.username);
     let correct = 0;
@@ -129,6 +132,7 @@ class SocketStore {
           if (index > -1)
             this.correctPositions.push({ index: data.index, position: index + 1});
         }
+        this.totalPositions = data.index;
       })
     })
 

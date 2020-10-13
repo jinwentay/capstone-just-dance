@@ -6,7 +6,7 @@ import socketStore from '../store/store';
 import 'chartjs-plugin-datalabels';
 
 const AccuracyGraph = observer(() => {
-  const { accuracy, correctPositions } = socketStore;
+  const { accuracy, totalPositions } = socketStore;
   const [state, setState] = useState({
     labels: ['Wrong Positions', 'Correct Positions'],
     datasets: [
@@ -20,33 +20,53 @@ const AccuracyGraph = observer(() => {
         '#501800',
         '#4B5000'
         ],
-        data: [correctPositions.length ? (correctPositions[correctPositions.length - 1].index - accuracy) : 0, accuracy]
+        data: [totalPositions - accuracy, accuracy]//[correctPositions.length ? (correctPositions[correctPositions.length - 1].index - accuracy) : 0, accuracy]
       }
     ]
   });
 
+  // useEffect(() => {
+  //   if (correctPositions.length) {
+  //     console.log('GRAPH', state.datasets[0].data, accuracy, correctPositions[correctPositions.length - 1].index);
+  //     setState({
+  //       labels: ['Wrong Positions', 'Correct Positions'],
+  //       datasets: [
+  //         {
+  //           label: 'Accuracy',
+  //           backgroundColor: [
+  //             '#B21F00',
+  //             '#C9DE00'
+  //           ],
+  //           hoverBackgroundColor: [
+  //           '#501800',
+  //           '#4B5000'
+  //           ],
+  //           data: [correctPositions[correctPositions.length - 1].index - accuracy, accuracy]
+  //         }
+  //       ]
+  //     })
+  //   }
+  // }, [accuracy, correctPositions]);
   useEffect(() => {
-    if (correctPositions.length) {
-      console.log('GRAPH', state.datasets[0].data, accuracy, correctPositions[correctPositions.length - 1].index);
-      setState({
-        labels: ['Wrong Positions', 'Correct Positions'],
-        datasets: [
-          {
-            label: 'Accuracy',
-            backgroundColor: [
-              '#B21F00',
-              '#C9DE00'
-            ],
-            hoverBackgroundColor: [
-            '#501800',
-            '#4B5000'
-            ],
-            data: [correctPositions[correctPositions.length - 1].index - accuracy, accuracy]
-          }
-        ]
-      })
-    }
-  }, [accuracy, correctPositions]);
+    console.log(totalPositions, accuracy);
+    setState({
+      labels: ['Wrong Positions', 'Correct Positions'],
+      datasets: [
+        {
+          label: 'Accuracy',
+          backgroundColor: [
+            '#B21F00',
+            '#C9DE00'
+          ],
+          hoverBackgroundColor: [
+          '#501800',
+          '#4B5000'
+          ],
+          data: [totalPositions - accuracy, accuracy]
+        }
+      ]
+    })
+  },[accuracy, totalPositions]);
   
   return (
     <Box sx={{ my: 'auto'}}>

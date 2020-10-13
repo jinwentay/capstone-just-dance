@@ -17,17 +17,17 @@ amqp.connect('amqp://localhost', (connError, connection) => {
 
     let msgOrder = 1;
     setInterval(() => {
-      var date = new Date();
-      date.setMilliseconds(Math.random() * 999);
-      let msg1 = JSON.stringify({
-        index: msgOrder,
-        time: date,
-        move: danceMove[Math.ceil(Math.random() * 10) - 1],
-        id: 1, //device id
-      });
-      channel.publish(EXCHANGE, 'dance', Buffer.from(msg1), {
-        persistent: true
-      });
+      // var date = new Date();
+      // date.setMilliseconds(Math.random() * 999);
+      // let msg1 = JSON.stringify({
+      //   index: msgOrder,
+      //   time: date,
+      //   move: danceMove[Math.ceil(Math.random() * 10) - 1],
+      //   id: 1, //device id
+      // });
+      // channel.publish(EXCHANGE, 'dance', Buffer.from(msg1), {
+      //   persistent: true
+      // });
       var date1 = new Date();
       date1.setMilliseconds(Math.random() * 999);
       let msg2 = JSON.stringify({
@@ -51,7 +51,7 @@ amqp.connect('amqp://localhost', (connError, connection) => {
         persistent: true
       });
       msgOrder += 1;
-    }, 1200);
+    }, 1500);
   });
   // setTimeout(function() {
   //   connection.close();
