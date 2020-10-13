@@ -1,7 +1,11 @@
 #!/usr/bin/env node
+var app = require('../index');
+var redis = app.redis_client;
+var { DateTime } = require('luxon');
+
 const amqp = require('amqplib/callback_api');
 var amqpConn = null;
-function connectRabbitMQ() {
+function connectRabbitMQ(io) {
   amqp.connect('amqps://dwefosfy:tG0-C5PgWUQPfIEYySgBP1se9ISS0P5T@peacock.rmq.cloudamqp.com/dwefosfy', (err, conn) => {
     if (err) {
       console.error("[AMQP]", err.message);
@@ -18,12 +22,12 @@ function connectRabbitMQ() {
     });
     console.log("[AMQP] connected");
     amqpConn = conn;
-    startWorker();
+    startWorker(io);
   })
 }
 
 const rkey = ['position', 'correct_position', 'dance'];
-function startWorker() {
+function startWorker(io) {
   amqpConn.createChannel((err, ch) => {
     if (closeOnErr(err)) return;
     ch.on("error", function(err) {
@@ -43,10 +47,58 @@ function startWorker() {
       rkey.forEach((key) => {
         ch.bindQueue(q.queue, exchange, key);
       });
-      ch.consume(q.queue, function(msg) {
-        console.log(" [x] %s: '%s'", msg.fields.routingKey, msg.content.toString());
+      // ch.consume(q.queue, function(msg) {
+      //   console.log(" [x] %s: '%s'", msg.fields.routingKey, msg.content.toString());
+      // }, {
+      //   noAck: true
+      // });
+      channel.consume(q.queue, function(msg) {
+        let data = JSON.parse(msg.content);
+        let data_type = msg.fields.routingKey;
+        io.emit(data_type, data);
+
+        //save in redis
+        console.log('redis msg', data);
+        if (data_type === 'dance') {
+          data['time'] = DateTime.fromJSDate(new Date(data.time)).toFormat('yyyy-MM-dd hh:mm:ss.SSS');
+        } else {
+          data['time'] = DateTime.fromJSDate(new Date(data.time)).toFormat('yyyy-MM-dd hh:mm:ss');
+        }
+        
+        redis.HMGET('session', 'id', `device${data.id}`, 'isStart', function (err, reply) {
+          if (err) {
+            console.log(err);
+            return;
+          }
+          // console.log('Start session: ', reply[2]);
+          if (reply[2] === 'true') {
+            console.log('Redis session', reply);
+            data['sid'] = Number(reply[0]);
+            if (data_type !== 'correct_position') {
+              data['id'] = reply[1];
+              console.log('Redis modified data', data);
+              if (data['sid'] && data['id'])
+                redis.RPUSH(data_type, JSON.stringify(data));
+            } else {
+              data['value'].forEach((id, index) => {
+                redis.HGET('session', `device${id}`, function (err, res) {
+                  let correctPosition = {
+                    id: res,
+                    sid: data['sid'],
+                    index: data['index'],
+                    value: index + 1,
+                  }
+                  console.log('Storing correct position: ', correctPosition);
+                  redis.RPUSH(data_type, JSON.stringify(correctPosition));
+                })
+              })
+            }
+          }
+        });
+        //acknowledge that message has been processed
+        channel.ack(msg);
       }, {
-        noAck: true
+        noAck: false
       });
       // ch.consume(q.queue, processMsg, { noAck: false });
       console.log("Worker is started");
@@ -79,4 +131,4 @@ function closeOnErr(err) {
   return true;
 }
 
-connectRabbitMQ();
+module.exports = connectRabbitMQ;
