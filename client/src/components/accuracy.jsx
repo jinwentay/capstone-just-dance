@@ -94,7 +94,7 @@ const AccuracyGraph = observer(() => {
               formatter: function(value, context) {
                 //const totalPositions = context.chart.data.datasets[0].data[0] + context.chart.data.datasets[0].data[1]//correctPositions.length > 0 ? correctPositions[correctPositions.length - 1].index : 0;
                 console.log("Accuracy graph label: ",context.chart.data);
-                return value//value === 0 ? '' : (`${totalPositions ? Math.round((value/totalPositions)* 100) : 0}%\n` + `${context.chart.data.labels[context.dataIndex]}: ${value}`);
+                return value === 0 ? '' : value//value === 0 ? '' : (`${totalPositions ? Math.round((value/totalPositions)* 100) : 0}%\n` + `${context.chart.data.labels[context.dataIndex]}: ${value}`);
               },
             }
           },

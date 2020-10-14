@@ -2,12 +2,12 @@
 const amqp = require('amqplib/callback_api');
 
 const positions = [
-  [1,2,3],
-  [1,3,2],
-  [2,1,3],
-  [2,3,1],
-  [3,2,1],
-  [3,1,2]
+  "1 2 3",
+  "1 3 2",
+  "2 1 3",
+  "2 3 1",
+  "3 2 1",
+  "3 1 2"
 ];
 amqp.connect('amqp://localhost', (connError, connection) => {
   if (connError) {

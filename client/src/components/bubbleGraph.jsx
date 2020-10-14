@@ -13,7 +13,7 @@ const danceMove = [
   'pushback', 
   'rocket', 
   'scarecrow', 
-  'shrug', 
+  'shouldershrug', 
   'windows', 
   'waving'
 ];
@@ -54,11 +54,22 @@ const BubbleGraph = observer(() => {
       } else {
         chartRef.current.props.data.datasets.forEach((dataset) => {
           if (dataset.label === username) {
-            dataset.data.push({
-              x: danceData.time,
-              y: danceData.move,
-              r: 20
-            })
+            //check if the move for the same time has been recorded previously
+            //possible issues: maybe don't show the dance prediction here because it is weird
+            const isRepeatedRest = dataset.data.length > 0 && dataset.data[dataset.data.length - 1].y === 'rest' && danceData.move === 'rest';
+            if (!isRepeatedRest && dataset.data.length > 0 && dataset.data[dataset.data.length - 1].x !== danceData.time) {
+              dataset.data.push({
+                x: danceData.time,
+                y: danceData.move,
+                r: 20
+              })
+            } else if (dataset.data.length === 0) {
+              dataset.data.push({
+                x: danceData.time,
+                y: danceData.move,
+                r: 20
+              })
+            }
           }
         })
       }
@@ -109,7 +120,7 @@ const BubbleGraph = observer(() => {
           xAxes: [{
             type: 'realtime',
             realtime: {
-              duration: 3000,
+              duration: 6000,
               delay: 1000,
               unit: 'millisecond'
             }
@@ -123,7 +134,7 @@ const BubbleGraph = observer(() => {
               'pushback', 
               'rocket', 
               'scarecrow', 
-              'shrug', 
+              'shouldershrug', 
               'windows', 
               'waving',
               'rest'

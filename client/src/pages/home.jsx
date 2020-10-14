@@ -100,7 +100,8 @@ const Home = observer(() => {
           <Grid
             // mr="10px"
             sx={{
-              gridTemplateColumns: isSmall ? '100%' : '1fr 200px'
+              gridTemplateColumns: isSmall ? '100%' : '1fr 200px',
+              gap: '0px'
             }}
           >
             <Card title='ACCURACY' children={<AccuracyGraph /*accuracy={accuracy} correctPositions={correctPositions}*//>}/>

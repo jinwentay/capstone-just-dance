@@ -127,8 +127,12 @@ class SocketStore {
       console.log('correct position received', data);
       Object.entries(this.deviceUsers).forEach(([device, username]) => {
         console.log(device, username);
+        const arr = data.value.split(' ');
+        const index = arr.findIndex((id) => Number(id) === Number(device));
+        if (data.index === 1) {
+          this.currentPositions[username] = index + 1;
+        }
         if (username === dashboardStore.account.username) {
-          const index = data.value.findIndex((id) => id === Number(device));
           if (index > -1)
             this.correctPositions.push({ index: data.index, position: index + 1});
         }

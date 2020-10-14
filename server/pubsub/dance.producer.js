@@ -51,7 +51,7 @@ amqp.connect('amqp://localhost', (connError, connection) => {
         persistent: true
       });
       msgOrder += 1;
-    }, 1500);
+    }, 6000);
   });
   // setTimeout(function() {
   //   connection.close();
