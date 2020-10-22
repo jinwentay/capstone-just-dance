@@ -7,7 +7,6 @@ import offlineStore from '../store/offlineStore';
 const OverallAccuracyGraph = observer(() => {
   const { numWrong, numCorrect } = offlineStore;
   return (
-    <>
     <Bar
     data={{
         labels: numCorrect.map(i => Number(i.x) === i.x && i.x % 1 === 0 ? i.x: ""),
@@ -36,7 +35,6 @@ const OverallAccuracyGraph = observer(() => {
       }
     }}
     />
-    </>
   )
 })
 

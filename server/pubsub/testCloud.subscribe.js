@@ -62,9 +62,9 @@ function startWorker(io) {
             data['time'] = new Date(Number(data.time));
             console.log("raw time: ", data['time']);
           }
-          if (data.id !== 1) {
-            data['time'].setMilliseconds(Math.random() * 999);
-          }
+          // if (data.id !== 1) {
+          //   data['time'].setMilliseconds(Math.random() * 999);
+          // }
         }
         io.emit(data_type, data);
 
