@@ -55,7 +55,7 @@ function connectRabbitMQ(io, data_type) {
                 if (data['sid'] && data['id'])
                   redis.RPUSH(data_type, JSON.stringify(data));
               } else {
-                data['value'].forEach((id, index) => {
+                data['value'].split(' ').forEach((id, index) => {
                   redis.HGET('session', `device${id}`, function (err, res) {
                     let correctPosition = {
                       id: res,

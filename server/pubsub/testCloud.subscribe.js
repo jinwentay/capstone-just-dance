@@ -52,18 +52,30 @@ function startWorker(io) {
       // }, {
       //   noAck: true
       // });
-      channel.consume(q.queue, function(msg) {
+      ch.consume(q.queue, function(msg) {
         let data = JSON.parse(msg.content);
         let data_type = msg.fields.routingKey;
+        if (data_type === 'dance') {
+          if (data['move'] === 'rest') {
+            data['time'] = new Date(); 
+          } else {
+            data['time'] = new Date(Number(data.time));
+            console.log("raw time: ", data['time']);
+          }
+          // if (data.id !== 1) {
+          //   data['time'].setMilliseconds(Math.random() * 999);
+          // }
+        }
         io.emit(data_type, data);
 
         //save in redis
-        console.log('redis msg', data);
+        console.log('redis msg', data_type, data);
         if (data_type === 'dance') {
-          data['time'] = DateTime.fromJSDate(new Date(data.time)).toFormat('yyyy-MM-dd hh:mm:ss.SSS');
+          data['time'] = DateTime.fromJSDate(data.time).toFormat('yyyy-MM-dd hh:mm:ss.SSS');
         } else {
-          data['time'] = DateTime.fromJSDate(new Date(data.time)).toFormat('yyyy-MM-dd hh:mm:ss');
+          data['time'] = DateTime.fromJSDate(data.time).toFormat('yyyy-MM-dd hh:mm:ss');
         }
+        // console.log('datatime', data['time']);
         
         redis.HMGET('session', 'id', `device${data.id}`, 'isStart', function (err, reply) {
           if (err) {
@@ -96,7 +108,7 @@ function startWorker(io) {
           }
         });
         //acknowledge that message has been processed
-        channel.ack(msg);
+        ch.ack(msg);
       }, {
         noAck: false
       });
@@ -130,5 +142,5 @@ function closeOnErr(err) {
   amqpConn.close();
   return true;
 }
-
+// connectRabbitMQ();
 module.exports = connectRabbitMQ;

@@ -55,7 +55,7 @@ const text = {
     xxl: {
       fontFamily: "body",
       fontWeight: "medium",
-      fontSize: "40px",
+      fontSize: "60px",
       lineHeight: "52px",
     },
   },

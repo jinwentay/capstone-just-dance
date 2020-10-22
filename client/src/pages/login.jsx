@@ -27,7 +27,7 @@ const Login = observer(() => {
   }, [account]);
 
   useEffect(() => {
-    if (dashboardStore.account.id !== -1) {
+    if (dashboardStore.account?.id !== -1) {
       history.push('/');
     }
   }, [account, history])

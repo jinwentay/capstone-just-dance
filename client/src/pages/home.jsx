@@ -16,6 +16,7 @@ import dashboardStore from '../store/dashboardStore';
 import socketStore from '../store/store';
 import { Grid, Box, Flex, Text, Select, Spinner } from 'theme-ui';
 import ls from 'local-storage';
+import PercentageCard from '../components/percentageCard';
 
 const deviceOptions = [
   {
@@ -63,7 +64,16 @@ const Home = observer(() => {
   }, [sessions]);
 
   const [selectedDevice, setDevice] = useState('1');
-  
+  const [isSmall, setSmall] = useState((window.innerWidth < 800 && window.innerWidth > 600) ? true : false);
+  useEffect(() => {
+    window.addEventListener("resize", (evt) => {
+      if (window.innerWidth < 800 && window.innerWidth > 600) {
+        setSmall(true)
+      } else {
+        setSmall(false);
+      }
+    })
+  }, [])
 
   return (
     <Box sx={{ 
@@ -74,19 +84,31 @@ const Home = observer(() => {
       {startSession ? (
         <Grid
           sx={{
-            m: 3,
+            my: 3,
+            mx: 'auto',
+            px: 3,
             height: 'calc(100vh - 100px)',
-            gridTemplateColumns: ['1fr','auto auto'],
-            gridTemplateRows: ['repeat(4, auto)','auto auto']
+            gridTemplateColumns: ['1fr','50% 50%'],
+            gridTemplateRows: ['repeat(4, auto)','auto auto'],
+            maxWidth: '1500px'
             // gridTemplateColumns: ['1fr','auto 320px'],
             // gridTemplateRows: ['repeat(4, auto)','auto auto']
           }}
         >
           <Card title='DANCE POSITIONS' children={<DancePosition socketStore={socketStore}/>}/>
           <Card title='MOVE PREDICTION' children={<DanceMove socketStore={socketStore}/>}/>
-          <Card title='ACCURACY' children={<AccuracyGraph /*accuracy={accuracy} correctPositions={correctPositions}*//>}/>
-          {/* <Card title='TIME DELAY' children={<TimeGraph />}/> */}
+          <Grid
+            // mr="10px"
+            sx={{
+              gridTemplateColumns: isSmall ? '100%' : '1fr 200px',
+              gap: '0px'
+            }}
+          >
+            <Card title='ACCURACY' children={<AccuracyGraph /*accuracy={accuracy} correctPositions={correctPositions}*//>}/>
+            {!isSmall && (<Card title='' children={<PercentageCard/>}/>)}
+          </Grid>
           <Card title='TIME DELAY' children={<BubbleGraph />}/>
+          {/* <Card title='TIME DELAY' children={<TimeGraph />}/> */}
         </Grid>
       ) : (
         <STabs>

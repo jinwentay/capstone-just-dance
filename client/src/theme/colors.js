@@ -126,6 +126,8 @@ export const businessBlack = grayScale[9];
 export const passionateRed = red[5];
 export const playfulPurple = purple[5];
 export const impactMagenta = magenta[5];
+export const correctGreen = green[5];
+export const brightYellow = yellow[5];
 
 export const primary = playfulPurple;
 export const primaryHover = purple[4];
@@ -177,6 +179,9 @@ const colors = {
   gray700: grayScale[7],
   gray800: grayScale[8],
   red700: red[6],
+
+  correctGreen,
+  brightYellow
 };
 
 export default colors;
