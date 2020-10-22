@@ -1,40 +1,110 @@
-import React from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import { observer } from 'mobx-react';
 import { Bar } from 'react-chartjs-2';
 import 'chartjs-plugin-streaming';
 import offlineStore from '../store/offlineStore';
+import { Box } from 'theme-ui';
 
 const OverallAccuracyGraph = observer(() => {
+  // const chartRef = useRef(null);
   const { numWrong, numCorrect } = offlineStore;
+  // const [chart, setChart] = useState(null);
+  // useEffect(() => {
+  //   if (chartRef && !chart) {
+  //     const newChart = new Chart(chartRef.current, {
+  //       type: 'bar',
+  //       data: {
+  //         labels: numCorrect.map(i => Number(i.x) === i.x && i.x % 1 === 0 ? i.x: ""),
+  //         datasets: [{
+  //             label: 'Correct positions',
+  //             data: numCorrect.map(i => i.y),
+  //             backgroundColor: '#BB80F6',
+  //             borderColor: '#BB80F6',
+  //             borderWidth: 1
+  //         }, {
+  //           label: 'Wrong positions',
+  //           data: numWrong.map(i => i.y),
+  //           backgroundColor: '#C4C4C4',
+  //           borderColor: '#C4C4C4',
+  //           borderWidth: 1
+  //         }]
+  //       },
+  //       options: {
+  //         scales: {
+  //           xAxes: [{
+  //             scaleLabel: {
+  //               display: true,
+  //               labelString: 'Session'
+  //             }
+  //           }]
+  //         }
+  //       }
+  //     })
+  //     setChart(newChart);
+  //   } else if (chartRef && chart) {
+  //     chart.data.labels = numCorrect.map(i => Number(i.x) === i.x && i.x % 1 === 0 ? i.x: "");
+  //     chart.data.datasets[0].data = numCorrect.map(i => i.y);
+  //     chart.data.datasets[1].data = numWrong.map(i => i.y);
+  //     chart.update();
+  //   }
+  // }, [chartRef, numWrong, numCorrect]);
   return (
-    <Bar
-    data={{
-        labels: numCorrect.map(i => Number(i.x) === i.x && i.x % 1 === 0 ? i.x: ""),
-        datasets: [{
-            label: 'Correct positions',
-            data: numCorrect.map(i => i.y),
-            backgroundColor: '#BB80F6',
-            borderColor: '#BB80F6',
-            borderWidth: 1
-        }, {
-          label: 'Wrong positions',
-          data: numWrong.map(i => i.y),
-          backgroundColor: '#C4C4C4',
-          borderColor: '#C4C4C4',
-          borderWidth: 1
-      }]
-    }}
-    options={{
-      scales: {
-        xAxes: [{
-          scaleLabel: {
-            display: true,
-            labelString: 'Session'
-          }
-        }]
-      }
-    }}
-    />
+    <Box
+      sx={{
+        position: 'relative',
+        maxWidth: '1000px',
+        overflowX: 'scroll'
+      }}
+    >
+      <Box
+        sx={{
+          width: '10000px',
+          height: '400px'
+        }}
+      >
+        <Bar
+          width='10000'
+          height='400'
+          data={{
+              labels: numCorrect.map(i => Number(i.x) === i.x && i.x % 1 === 0 ? i.x: ""),
+              datasets: [{
+                  label: 'Correct positions',
+                  data: numCorrect.map(i => i.y),
+                  backgroundColor: '#BB80F6',
+                  borderColor: '#BB80F6',
+                  borderWidth: 1
+              }, {
+                label: 'Wrong positions',
+                data: numWrong.map(i => i.y),
+                backgroundColor: '#C4C4C4',
+                borderColor: '#C4C4C4',
+                borderWidth: 1
+            }]
+          }}
+          options={{
+            scales: {
+              xAxes: [{
+                scaleLabel: {
+                  display: true,
+                  labelString: 'Session'
+                }
+              }]
+            }
+          }}
+          />
+        {/* <canvas 
+          ref={chartRef} 
+          height="400" 
+          width="10000" 
+          style={{ 
+            position: 'absolute',
+            left: 0,
+            top: 0,
+            pointerEvents: 'none'
+          }}
+        /> */}
+      </Box>
+    </Box>
   )
 })
 
