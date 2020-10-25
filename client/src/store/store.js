@@ -114,13 +114,23 @@ class SocketStore {
     });
 
     this.socket.on('position', (data) => {
-      const username = this.deviceUsers[`${data.id}`];
-      if (username !== "") {
-        this.currentPositions[username] = data.value;
-      }
-      let positions = this.dancers.get(username) || [];
-      positions.push({ value: data.value, index: data.index });
-      this.dancers.set(username, positions);
+      // const username = this.deviceUsers[`${data.id}`];
+      // if (username !== "") {
+      //   this.currentPositions[username] = data.value;
+      // }
+      // let positions = this.dancers.get(username) || [];
+      // positions.push({ value: data.value, index: data.index });
+      // this.dancers.set(username, positions);
+      const arr = data.value.split(' ');
+      Object.entries(this.deviceUsers).forEach(([device, username]) => {
+        const index = arr.findIndex((id) => Number(id) === Number(device)) + 1;
+        if (username !== "") {
+          this.currentPositions[username] = index;
+        }
+        let positions = this.dancers.get(username) || [];
+        positions.push({ value: index, index: data.index });
+        this.dancers.set(username, positions);
+      })
     })
 
     this.socket.on('correct_position', (data) => {
