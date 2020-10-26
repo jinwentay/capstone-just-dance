@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { observer } from 'mobx-react';
 // import socketStore from '../store/store';
-import { Grid, Box, Text, Flex } from 'theme-ui';
+import { Grid, Text, Flex } from 'theme-ui';
 import { Profile } from './index';
 import dashboardStore from '../store/dashboardStore';
 

@@ -17,13 +17,13 @@ const OverallAccuracyGraph = observer(() => {
     >
       <Box
         sx={{
-          width: '10000px',
+          width: '3000px',
           height: '400px'
         }}
       >
         <Bar
-          width='10000'
-          height='400'
+          width='3000px'
+          height='400px'
           data={{
               labels: numCorrect.map(i => Number(i.x) === i.x && i.x % 1 === 0 ? i.x: ""),
               datasets: [{

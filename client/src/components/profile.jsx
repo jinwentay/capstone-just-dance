@@ -8,10 +8,10 @@ const Profile = (props) => {
   return (
     <Flex
       sx={{
-        maxHeight: '50px',
-        maxWidth: '50px',
-        minWidth: '50px',
-        minHeight: '50px',
+        maxHeight: props.isSelf ? '60px' : '50px',
+        maxWidth: props.isSelf ? '60px' : '50px',
+        minWidth: props.isSelf ? '60px' : '50px',
+        minHeight: props.isSelf ? '60px' : '50px',
         border: '2px solid',
         borderColor: props.isSelf ? 'primary' : 'border',
         borderRadius: '9999px',
@@ -23,22 +23,22 @@ const Profile = (props) => {
       {props.user === '1' && (
         <User1
           title="user"
-          width={'40px'}
-          height={'40px'}
+          width={props.isSelf ? '50px' : '40px'}
+          height={props.isSelf ? '50px' : '40px'}
         />
       )}
       {props.user === '2' && (
         <User2
           title="user"
-          width={'40px'}
-          height={'40px'}
+          width={props.isSelf ? '50px' : '40px'}
+          height={props.isSelf ? '50px' : '40px'}
         />
       )}
       {props.user === '3' && (
         <User3
           title="user"
-          width={'40px'}
-          height={'40px'}
+          width={props.isSelf ? '50px' : '40px'}
+          height={props.isSelf ? '50px' : '40px'}
         />
       )}
     </Flex>
