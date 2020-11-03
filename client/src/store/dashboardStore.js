@@ -40,6 +40,7 @@ class DashboardStore {
 
   @action
   signup = (data) => {
+    this.state = "pending";
     axios
       .post('/post/user', data)
       .then((res) => {

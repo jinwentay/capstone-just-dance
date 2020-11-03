@@ -1,7 +1,6 @@
 import { observable, action, runInAction, computed } from 'mobx';
 import axios from 'axios';
-import ls from 'local-storage';
-import socketStore from './store';
+import { DateTime } from 'luxon';
 import dashboardStore from './dashboardStore';
 
 class OfflineStore {
@@ -12,7 +11,7 @@ class OfflineStore {
     this.accuracyStatus = 'LOADING';
     console.log("get session accuracy");
     axios.get("/get/session/all/accuracy").then((res) => {
-      // console.log(res.data);
+      console.log(res.data);
       let userAccuracy = [];
       res.data.forEach((data) => {
         if (data.id === dashboardStore.account.id) {
@@ -38,7 +37,7 @@ class OfflineStore {
     this.status = 'LOADING';
     console.log("get session positions");
     axios.get("/get/session/all/numPositions").then((res) => {
-      // console.log(res.data);
+      console.log(res.data);
       let userTotal = [];
       res.data.forEach((data) => {
         if (data.id === dashboardStore.account.id) {
@@ -54,6 +53,83 @@ class OfflineStore {
       runInAction(() => {
         this.status = 'DONE';
       })
+      console.log(err);
+    })
+  }
+
+  @observable
+  sessionMoves = [];
+
+  @action
+  getSessionMoves = (sid) => {
+    const session = sid;
+    const uid = dashboardStore.account.id;
+    axios.get("/get/session/danceMoves", { params: { sid: session, uid: uid } })
+    .then((res) => {
+      console.log(res.data);
+      runInAction(() => {
+        this.sessionMoves = res.data;
+      })
+    })
+    .catch((err) => {
+      console.log(err);
+    })
+  }
+
+  @observable
+  sessionPositions = [];
+
+  @action
+  getSessionPositions = (sid) => {
+    const session = sid;
+    const uid = dashboardStore.account.id;
+    axios.get(`/get/session/${session}/numPositions`, { params: { id: uid }})
+    .then((res) => {
+      console.log(res.data);
+      runInAction(() => {
+        this.sessionPositions = res.data;
+      })
+    })
+    .catch((err) => {
+      console.log(err);
+    })
+  }
+
+  @observable
+  sessions = [];
+
+  @action
+  getUserSessions = () => {
+    const uid = dashboardStore.account.id;
+    axios.get(`/get/session/${uid}`)
+    .then((res) => {
+      console.log(res.data);
+      runInAction(() => {
+        let newSessions = [];
+        res.data.forEach((session) => {
+          const date = new Date(session.date);
+          const startTime = new Date(session.starttime);
+          const endTime = new Date(session.endtime);
+          const duration = DateTime.fromJSDate(endTime).diff(DateTime.fromJSDate(startTime), ['hours', 'minutes', 'seconds']).toObject();
+          console.log(duration);
+          newSessions.push({
+            sid: session.sid,
+            date: DateTime.fromJSDate(date).toFormat('dd/MM/yyyy'),
+            duration: duration
+          });
+        })
+        this.sessions = newSessions;
+      })
+    })
+    .then(() => {
+      if (this.sessions.length > 0) {
+        const latestSid = this.sessions[this.sessions.length - 1].sid;
+        console.log(latestSid);
+        this.getSessionMoves(latestSid);
+        this.getSessionPositions(latestSid);
+      }
+    })
+    .catch((err) => {
       console.log(err);
     })
   }
@@ -86,6 +162,25 @@ class OfflineStore {
     })
     console.log("CORRECT: ", correct);
     return correct;
+  }
+
+  @computed
+  get accuracy() {
+    let count = 0;
+    this.sessionPositions.forEach((position) => {
+      if (position.value === position.correct) {
+        count++;
+      }
+    })
+    return count;
+  }
+
+  @computed
+  get numPositions() {
+    if (this.sessionPositions.length > 0) {
+      return this.sessionPositions[this.sessionPositions.length - 1].index;
+    }
+    return 0;
   }
 }
 

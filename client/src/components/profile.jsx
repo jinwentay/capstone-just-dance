@@ -1,5 +1,5 @@
 import React from 'react';
-import { Flex } from 'theme-ui';
+import { Flex, Text } from 'theme-ui';
 import { ReactComponent as User1 } from '../icons/user1.svg';
 import { ReactComponent as User2 } from '../icons/user2.svg';
 import { ReactComponent as User3 } from '../icons/user3.svg';
@@ -20,7 +20,8 @@ const Profile = (props) => {
         backgroundColor: 'white',
       }}
     >
-      {props.user === '1' && (
+      <Text variant="hd.lg">{props.user}</Text>
+      {/* {props.user === '1' && (
         <User1
           title="user"
           width={props.isSelf ? '50px' : '40px'}
@@ -40,7 +41,7 @@ const Profile = (props) => {
           width={props.isSelf ? '50px' : '40px'}
           height={props.isSelf ? '50px' : '40px'}
         />
-      )}
+      )} */}
     </Flex>
   )
 }

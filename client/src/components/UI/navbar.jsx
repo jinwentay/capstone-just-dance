@@ -3,10 +3,10 @@ import { NavLink } from 'react-router-dom';
 import { Box, Flex, Text, Card, Button } from 'theme-ui';
 import { Menu, MenuButton, MenuItem, MenuList } from '@reach/menu-button';
 import styled from "@emotion/styled";
-import { ReactComponent as Profile } from '../icons/profile.svg';
+import { ReactComponent as Profile } from '../../icons/profile.svg';
 import { observer } from 'mobx-react';
-import dashboardStore from '../store/dashboardStore';
-import store from '../store/store';
+import dashboardStore from '../../store/dashboardStore';
+import store from '../../store/store';
 import ls from 'local-storage';
 
 const SList = styled(MenuList)`

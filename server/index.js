@@ -26,7 +26,7 @@ const server = require('http').createServer(app);
 const io = require('socket.io')(server);
 
 //connect rabbitMQ subscriber
-var connectFakeRabbitMQ = require('./pubsub/subscriber');
+// var connectFakeRabbitMQ = require('./pubsub/subscriber');
 var connectRabbitMQ = require('./pubsub/testCloud.subscribe');
 
 //connect routes
@@ -60,8 +60,8 @@ io.on('connection', (socket) => {
     io.emit('new_sessions', msg);
   })
 })
-connectFakeRabbitMQ(io, 'correct_position');
-connectFakeRabbitMQ(io, 'position');
+// connectFakeRabbitMQ(io, 'correct_position');
+// connectFakeRabbitMQ(io, 'position');
 // connectFakeRabbitMQ(io, 'dance');
 connectRabbitMQ(io);
 

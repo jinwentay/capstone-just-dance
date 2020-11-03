@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@babel/plugin-proposal-decorators": "^7.10.5",
+    "@reach/dialog": "^0.11.2",
     "@reach/menu-button": "^0.11.2",
     "@reach/tabs": "^0.11.2",
     "@testing-library/jest-dom": "^4.2.4",
@@ -15,6 +16,7 @@
     "chartjs-plugin-streaming": "^1.8.0",
     "customize-cra": "^1.0.0",
     "local-storage": "^2.0.0",
+    "luxon": "^1.25.0",
     "mobx": "^5.15.6",
     "mobx-react": "^6.3.0",
     "react": "^16.13.1",
