@@ -4,7 +4,7 @@ import {
   Navbar, 
   Card, 
   OverallAccuracyGraph,
-  Table, Column, Row, Header
+  DataTable,
 } from '../components';
 import { observer } from 'mobx-react';
 import dashboardStore from '../store/dashboardStore';
@@ -15,8 +15,9 @@ import Report from '../components/report';
 const Offline = observer(() => {
   const history = useHistory();
   const { account } = dashboardStore;
-  const { getAllSessionAccuracy, getAllSessionTotalPositions, totalPositions, accuracyData, getUserSessions, sessions } = offlineStore;
+  const { getAllSessionAccuracy, getAllSessionTotalPositions, totalPositions, accuracyData, getUserSessions, sessions, getSessionMoves, getSessionPositions } = offlineStore;
   const [isOpen, setOpen] = useState(false);
+  const [sid, setSid] = useState(null);
   useEffect(() => {
     console.log(account);
     if (account.id === -1) {
@@ -61,31 +62,25 @@ const Offline = observer(() => {
             }}
           >
             <Card title='ACCURACY ANALYTICS' children={<OverallAccuracyGraph/>}/>
-            <Text variant="pg.md" onClick={() => setOpen(true)}>View session report</Text>
-            <Table>
-              <tbody>
-                <Row>
-                  <Header>Session</Header>
-                  <Header>Date</Header>
-                  {/* <Header>Participants</Header> */}
-                  <Header>Duration</Header>
-                </Row>
-                {sessions.map((session) => (
-                    <Row>
-                      <Column>{session.sid}</Column>
-                      <Column>{session.date}</Column>
-                      <Column>
-                        {session.duration.hours ? `${session.duration.hours} hr ` : ''}
-                        {session.duration.minutes} min {session.duration.seconds} s
-                      </Column>
-                    </Row>
-                ))}
-              </tbody>
-            </Table>
+            <Text variant="hd.md" sx={{ textAlign: 'center' }}>Select a session to view your dance analytics!</Text>
+            <DataTable 
+              headers={['Session', 'Date', 'Duration']} 
+              rowItems={sessions} 
+              rowFunc={(session) => { 
+                setSid(session.sid);
+                setOpen(true); 
+              }}
+            />
           </Grid>
         </Flex>
         {isOpen && (
-          <Report close={() => setOpen(false)}/>
+          <Report  
+            close={() => { 
+              setOpen(false);
+              setSid(null);
+            }} 
+            sid={sid}
+          />
         )}
       </Box>
     </Box>

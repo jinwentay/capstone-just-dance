@@ -64,9 +64,9 @@ router.get('/get/session/:sid/numPositions', (req,res) => {
   })
 })
 
-router.get('/get/session/danceMoves', (req,res) => {
-  const sid = req.query.sid;
-  const uid = req.query.uid;
+router.get('/get/session/:sid/danceMoves', (req,res) => {
+  const sid = req.params.sid;
+  const uid = req.query.id;
   console.log(sid, uid);
   const query = `SELECT index, move 
   FROM dance
@@ -84,7 +84,10 @@ router.get('/get/session/danceMoves', (req,res) => {
 
 router.get('/get/session/:uid', (req,res) => {
   const uid = req.params.uid;
-  const query = `SELECT P.sid, date, starttime, endtime FROM participants P JOIN session S using(sid) WHERE id=$1`;
+  const query = `SELECT P.sid, date, starttime, endtime 
+  FROM participants P JOIN session S USING(sid) 
+  WHERE id=$1
+  ORDER BY P.sid DESC`;
   pool.query(query, [uid], (q_err, q_res) => {
     if (q_err) {
       res.status(404).send({ error: 'Sessions participated not found' });

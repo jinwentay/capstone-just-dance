@@ -12,7 +12,7 @@ import { STab, STabList, STabPanel, STabPanels, STabs } from './UI/tabs';
 import Button from './UI/button';
 import Report from './report';
 import PositionReport from './positionReport';
-import { Table, Header, Column, Row } from './UI/table';
+import DataTable, { Table, Header, Column, Row, ColSelect } from './UI/table';
 
 export {
   Navbar,
@@ -36,5 +36,7 @@ export {
   Table,
   Column,
   Header,
-  Row
+  Row,
+  ColSelect,
+  DataTable,
 };

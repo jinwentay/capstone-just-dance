@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { Flex, Text, Box, Grid } from 'theme-ui';
+import React, { useEffect } from 'react';
+import { Flex, Text, Grid } from 'theme-ui';
 import { Button } from '.';
 import offlineStore from '../store/offlineStore';
 import { observer } from 'mobx-react';
@@ -9,16 +9,19 @@ const Report = observer((props) => {
     sessionMoves,
     getUserSessions, 
     accuracy,
-    numPositions
+    numPositions,
+    getSessionMoves,
+    getSessionPositions
   } = offlineStore;
   
   useEffect(() => {
-    getUserSessions();
-  }, [])
+    getSessionMoves(props.sid);
+    getSessionPositions(props.sid);
+  }, [props.sid])
 
   useEffect(() => {
-    console.log("SESSION MOVES: ", sessionMoves);
-  }, [sessionMoves]);
+    console.log("SESSION: ", props.sid);
+  }, [props.sid]);
 
   return (
     <Flex
@@ -55,6 +58,7 @@ const Report = observer((props) => {
           width: '100%',
           height: 'calc(100vh - 200px)',
           alignItems: 'center',
+          overflow: 'scroll'
         }}
       >
         <Text variant="hd.lg" color="primary">Congratulations on completing the session!</Text>
@@ -68,6 +72,8 @@ const Report = observer((props) => {
         >
           <Flex
             sx={{
+              flexDirection: 'column',
+              alignItems: 'center',
               justifyContent: 'center'
             }}
           >

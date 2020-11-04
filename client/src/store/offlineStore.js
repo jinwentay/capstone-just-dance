@@ -64,7 +64,7 @@ class OfflineStore {
   getSessionMoves = (sid) => {
     const session = sid;
     const uid = dashboardStore.account.id;
-    axios.get("/get/session/danceMoves", { params: { sid: session, uid: uid } })
+    axios.get(`/get/session/${sid}/danceMoves`, { params: { id: uid } })
     .then((res) => {
       console.log(res.data);
       runInAction(() => {
@@ -81,9 +81,8 @@ class OfflineStore {
 
   @action
   getSessionPositions = (sid) => {
-    const session = sid;
     const uid = dashboardStore.account.id;
-    axios.get(`/get/session/${session}/numPositions`, { params: { id: uid }})
+    axios.get(`/get/session/${sid}/numPositions`, { params: { id: uid }})
     .then((res) => {
       console.log(res.data);
       runInAction(() => {
@@ -115,7 +114,8 @@ class OfflineStore {
           newSessions.push({
             sid: session.sid,
             date: DateTime.fromJSDate(date).toFormat('dd/MM/yyyy'),
-            duration: duration
+            duration: `${duration.hours ? `${duration.hours} hr ` : ''}
+            ${duration.minutes} min ${duration.seconds} s`
           });
         })
         this.sessions = newSessions;
@@ -123,7 +123,7 @@ class OfflineStore {
     })
     .then(() => {
       if (this.sessions.length > 0) {
-        const latestSid = this.sessions[this.sessions.length - 1].sid;
+        const latestSid = this.sessions[0].sid;
         console.log(latestSid);
         this.getSessionMoves(latestSid);
         this.getSessionPositions(latestSid);
