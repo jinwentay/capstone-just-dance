@@ -47,7 +47,7 @@ const DataTable = observer((props) => {
           ))}
         </Row>
         {rowItems.map((item) => (
-          <Row onClick={() => rowFunc(item)}>
+          <Row onClick={rowFunc ? () => rowFunc(item) : () => {}}>
             {Object.values(item).map((value) => (
               <>
                 {rowFunc ? <ColSelect>{value}</ColSelect> : <Column>{value}</Column>}

@@ -15,7 +15,7 @@ const danceMove = [
   'scarecrow', 
   'shouldershrug', 
   'windows', 
-  'waving'
+  'logout'
 ];
 
 const barColors = ['#FD6579', '#FEDC6F', '#7AA7FC'];
@@ -136,8 +136,8 @@ const BubbleGraph = observer(() => {
               'scarecrow', 
               'shouldershrug', 
               'windows', 
-              'waving',
-              'rest'
+              'rest',
+              'logout',
             ],
             ticks: {
               min: 'zigzag',

@@ -3,7 +3,7 @@ import { Flex, Text, Grid } from 'theme-ui';
 import { Button } from '.';
 import offlineStore from '../store/offlineStore';
 import { observer } from 'mobx-react';
-import { AccuracyGraph, PositionReport } from './';
+import { AccuracyGraph, PositionReport, DanceReport } from './';
 const Report = observer((props) => {
   const {
     sessionMoves,
@@ -65,7 +65,7 @@ const Report = observer((props) => {
         <Grid
           mt="3"
           sx={{
-            gridTemplateColumns: ['1fr', 'auto 1fr auto'],
+            gridTemplateColumns: ['1fr', '20% 60% 20%'],
             gridTemplateRows: '1fr',
             width: '100%',
           }}
@@ -74,10 +74,12 @@ const Report = observer((props) => {
             sx={{
               flexDirection: 'column',
               alignItems: 'center',
-              justifyContent: 'center'
+              justifyContent: 'center',
+              // width: '100%'
             }}
           >
             <Text variant="lb.lg" mb="3">Dance Moves Predicted</Text>
+            <DanceReport/>
           </Flex>
           <Flex
             sx={{

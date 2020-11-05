@@ -13,6 +13,7 @@ import Button from './UI/button';
 import Report from './report';
 import PositionReport from './positionReport';
 import DataTable, { Table, Header, Column, Row, ColSelect } from './UI/table';
+import DanceReport from './danceReport';
 
 export {
   Navbar,
@@ -39,4 +40,5 @@ export {
   Row,
   ColSelect,
   DataTable,
+  DanceReport
 };

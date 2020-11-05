@@ -1,5 +1,5 @@
 import io from 'socket.io-client';
-import { observable, action, runInAction, computed } from 'mobx';
+import { observable, action, runInAction, computed, reaction } from 'mobx';
 import axios from 'axios';
 import dashboardStore from './dashboardStore';
 import ls from 'local-storage';
@@ -111,25 +111,16 @@ class SocketStore {
 
     this.socket.on('disconnect', () => {
       this.isConnected = false;
+      //reconnect dropped socket here?
     });
 
     this.socket.on('position', (data) => {
-      // const username = this.deviceUsers[`${data.id}`];
-      // if (username !== "") {
-      //   this.currentPositions[username] = data.value;
-      // }
-      // let positions = this.dancers.get(username) || [];
-      // positions.push({ value: data.value, index: data.index });
-      // this.dancers.set(username, positions);
       const arr = data.value.split(' ');
       Object.entries(this.deviceUsers).forEach(([device, username]) => {
         const index = arr.findIndex((id) => Number(id) === Number(device)) + 1;
         if (username !== "") {
           this.currentPositions[username] = index;
         }
-        // let positions = this.dancers.get(username) || [];
-        // positions.push({ value: index, index: data.index });
-        // this.dancers.set(username, positions);
       })
     })
     this.socket.on('predict_position', (data) => {
@@ -150,9 +141,6 @@ class SocketStore {
         console.log(device, username);
         const arr = data.value.split(' ');
         const index = arr.findIndex((id) => Number(id) === Number(device));
-        // if (data.index === 1) {
-          // this.currentPositions[username] = index + 1;
-        // }
         if (username === dashboardStore.account.username) {
           if (index > -1)
             this.correctPositions.push({ index: data.index, position: index + 1});
@@ -163,11 +151,15 @@ class SocketStore {
 
     this.socket.on('dance', (data) => {
       const username = this.deviceUsers[`${data.id}`];
-      if (username === dashboardStore.account.username) {
-        this.currDanceMove = data.move;
+      if (data.move === 'logout') {
+        // this.leaveSession(data.id);
       } else {
-        this.currMoveOthers[username] = data.move;
-        console.log(this.currMoveOthers);
+        if (username === dashboardStore.account.username) {
+          this.currDanceMove = data.move;
+        } else {
+          this.currMoveOthers[username] = data.move;
+          console.log(this.currMoveOthers);
+        }
       }
     })
 
@@ -190,6 +182,20 @@ class SocketStore {
       this.getSession();
     })
   };
+
+  logoutReaction = reaction(
+    () => [this.currDanceMove, this.currMoveOthers, this.deviceUsers],
+    (data) => {
+      if (data[0] === 'logout' && data[1].every((move) => move === 'logout') && dashboardStore.account.username === data[2][1]) {
+        this.leaveSession(1);
+      }
+    }
+  )
+  // @computed get logout() {
+  //   if (this.currDanceMove === 'logout' && this.currMoveOthers.every((move) => move === 'logout') && dashboardStore.account.username === this.deviceUsers[1]) {
+  //     this.leaveSession(1);
+  //   }
+  // }
 
   @action
   disconnect = () => {

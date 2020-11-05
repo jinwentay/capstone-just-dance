@@ -112,6 +112,9 @@ router.post('/stop/session', (req, res) => {
         redis.DEL('position');
         redis.DEL('dance');
         redis.DEL('correct_position');
+        redis.DEL('device1');
+        redis.DEL('device2');
+        redis.DEL('device3');
         res.status(200).send({ success: 'Success' });
       });
     } catch (err) {

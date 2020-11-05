@@ -104,7 +104,7 @@ function worker(ch, exchange, io) {
           if (data_type === 'dance') {
             data['id'] = reply[1];
             console.log('Redis modified data', data);
-            if (data['sid'] && data['id'])
+            if (data['sid'] && data['id'] && data['move'] !== 'logout')
               redis.RPUSH(data_type, JSON.stringify(data));
           } else if (data_type !== 'position') {
             data['value'] = data['value'].split(' '); //split '1 2 3' into [1,2,3];
