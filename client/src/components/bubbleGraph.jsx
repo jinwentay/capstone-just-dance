@@ -15,7 +15,7 @@ const danceMove = [
   'scarecrow', 
   'shouldershrug', 
   'windows', 
-  'waving'
+  'logout'
 ];
 
 const barColors = ['#FD6579', '#FEDC6F', '#7AA7FC'];
@@ -120,7 +120,7 @@ const BubbleGraph = observer(() => {
           xAxes: [{
             type: 'realtime',
             realtime: {
-              duration: 6000,
+              duration: 10000,
               delay: 1000,
               unit: 'millisecond'
             }
@@ -136,8 +136,8 @@ const BubbleGraph = observer(() => {
               'scarecrow', 
               'shouldershrug', 
               'windows', 
-              'waving',
-              'rest'
+              'rest',
+              'logout',
             ],
             ticks: {
               min: 'zigzag',

@@ -24,7 +24,8 @@ const DancePosition = observer(({ socketStore }) => {
       sx={{
         my: 'auto',
         gridTemplateColumns: '1fr 1fr 1fr',
-        minHeight: '300px',
+        minHeight: '200px',
+        gap: '0px',
       }}
     >
       <Flex

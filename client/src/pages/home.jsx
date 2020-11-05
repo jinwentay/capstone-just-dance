@@ -44,6 +44,8 @@ const Home = observer(() => {
     joinedSession,
     joinState,
     sessionState,
+    accuracy,
+    totalPositions,
   } = socketStore;
   useEffect(() => {
     console.log(account);
@@ -89,8 +91,8 @@ const Home = observer(() => {
             px: 3,
             height: 'calc(100vh - 100px)',
             gridTemplateColumns: ['1fr','50% 50%'],
-            gridTemplateRows: ['repeat(4, auto)','auto auto'],
-            maxWidth: '1500px'
+            gridTemplateRows: ['repeat(4, auto)','250px 1fr'],
+            maxWidth: '1500px',
             // gridTemplateColumns: ['1fr','auto 320px'],
             // gridTemplateRows: ['repeat(4, auto)','auto auto']
           }}
@@ -104,11 +106,10 @@ const Home = observer(() => {
               gap: '0px'
             }}
           >
-            <Card title='ACCURACY' children={<AccuracyGraph /*accuracy={accuracy} correctPositions={correctPositions}*//>}/>
+            <Card title='ACCURACY' children={<AccuracyGraph accuracy={accuracy} totalPositions={totalPositions}/>}/>
             {!isSmall && (<Card title='' children={<PercentageCard/>}/>)}
           </Grid>
           <Card title='TIME DELAY' children={<BubbleGraph />}/>
-          {/* <Card title='TIME DELAY' children={<TimeGraph />}/> */}
         </Grid>
       ) : (
         <STabs>
