@@ -46,6 +46,7 @@ const Home = observer(() => {
     sessionState,
     accuracy,
     totalPositions,
+    isLoggingOut
   } = socketStore;
   useEffect(() => {
     console.log(account);
@@ -84,33 +85,61 @@ const Home = observer(() => {
     }}>
       <Navbar/>
       {startSession ? (
-        <Grid
-          sx={{
-            my: 3,
-            mx: 'auto',
-            px: 3,
-            height: 'calc(100vh - 100px)',
-            gridTemplateColumns: ['1fr','50% 50%'],
-            gridTemplateRows: ['repeat(4, auto)','250px 1fr'],
-            maxWidth: '1500px',
-            // gridTemplateColumns: ['1fr','auto 320px'],
-            // gridTemplateRows: ['repeat(4, auto)','auto auto']
-          }}
-        >
-          <Card title='DANCE POSITIONS' children={<DancePosition socketStore={socketStore}/>}/>
-          <Card title='MOVE PREDICTION' children={<DanceMove socketStore={socketStore}/>}/>
+        <>
           <Grid
-            // mr="10px"
             sx={{
-              gridTemplateColumns: isSmall ? '100%' : '1fr 200px',
-              gap: '0px'
+              my: 3,
+              mx: 'auto',
+              px: 3,
+              height: 'calc(100vh - 100px)',
+              gridTemplateColumns: ['1fr','50% 50%'],
+              gridTemplateRows: ['repeat(4, auto)','250px 1fr'],
+              maxWidth: '1500px',
+              // gridTemplateColumns: ['1fr','auto 320px'],
+              // gridTemplateRows: ['repeat(4, auto)','auto auto']
             }}
           >
-            <Card title='ACCURACY' children={<AccuracyGraph accuracy={accuracy} totalPositions={totalPositions}/>}/>
-            {!isSmall && (<Card title='' children={<PercentageCard/>}/>)}
+            <Card title='DANCE POSITIONS' children={<DancePosition socketStore={socketStore}/>}/>
+            <Card title='MOVE PREDICTION' children={<DanceMove socketStore={socketStore}/>}/>
+            <Grid
+              // mr="10px"
+              sx={{
+                gridTemplateColumns: isSmall ? '100%' : '1fr 200px',
+                gap: '0px'
+              }}
+            >
+              <Card title='ACCURACY' children={<AccuracyGraph accuracy={accuracy} totalPositions={totalPositions}/>}/>
+              {!isSmall && (<Card title='' children={<PercentageCard/>}/>)}
+            </Grid>
+            <Card title='TIME DELAY' children={<BubbleGraph />}/>
           </Grid>
-          <Card title='TIME DELAY' children={<BubbleGraph />}/>
-        </Grid>
+          {isLoggingOut && (
+            <Flex
+              sx={{
+                minWidth: '100vw',
+                minHeight: '100vh',
+                background: 'rgba(0,0,0,0.4)',
+                justifyContent: 'center',
+                alignItems: 'center',
+                position: 'absolute',
+                left: '0px',
+                top: '0px',
+                zIndex: 3,
+              }}
+            >
+              <Flex 
+                sx={{ 
+                  flexDirection: 'column', 
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}
+              >
+                <Spinner/>
+                <Text variant="hd.xl" mt="3" color="white">Good bye!</Text>
+              </Flex>
+            </Flex>
+          )}
+        </>
       ) : (
         <STabs>
           <Flex sx={{ alignItems: 'center', flexDirection: 'column', mb: 3 }}>

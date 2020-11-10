@@ -81,7 +81,10 @@ const AccuracyGraph = observer((props) => {
           },
           legend: {
             display: true,
-            position: 'bottom'
+            position: 'bottom',
+            labels: {
+              fontSize: 20
+            }
           }
         }}
       />

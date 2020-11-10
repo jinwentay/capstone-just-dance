@@ -4,6 +4,7 @@ import { Box, Flex, Text, Card, Button } from 'theme-ui';
 import { Menu, MenuButton, MenuItem, MenuList } from '@reach/menu-button';
 import styled from "@emotion/styled";
 import { ReactComponent as Profile } from '../../icons/profile.svg';
+import { ReactComponent as Refresh } from '../../icons/refresh.svg';
 import { observer } from 'mobx-react';
 import dashboardStore from '../../store/dashboardStore';
 import store from '../../store/store';
@@ -76,11 +77,35 @@ const Navbar = observer(() => {
         <Text variant="hd.md" color="primary">JustDance!</Text>
         <Flex sx={{ alignItems: 'center' }}>
           {startSession && (
+            <Flex
+              sx={{
+                maxHeight: '40px',
+                maxWidth: '40px',
+                minWidth: '40px',
+                minHeight: '40px',
+                border: '2px solid',
+                borderColor: 'border',
+                borderRadius: '10px',
+                alignItems: 'center',
+                justifyContent: 'center',
+                backgroundColor: 'white',
+                mr: 2,
+                cursor: 'pointer',
+              }}
+            >
+              <Refresh
+                title="restart"
+                width={'30px'}
+                height={'30px'}
+              />
+            </Flex>
+          )}
+          {startSession && (
             <Button
               variant="default"
               sx={{
                 backgroundColor: 'danger',
-                width: '130px',
+                width: '70px',
                 mr: 1
               }}
               onClick={() => {
@@ -89,7 +114,7 @@ const Navbar = observer(() => {
                 leaveSession(deviceId);
               }}
             >
-              Stop session
+              Stop
             </Button>
           )}
           {account.id !== -1 && (

@@ -151,16 +151,16 @@ class SocketStore {
 
     this.socket.on('dance', (data) => {
       const username = this.deviceUsers[`${data.id}`];
-      if (data.move === 'logout') {
+      // if (data.move === 'logout') {
         // this.leaveSession(data.id);
-      } else {
+      // } else {
         if (username === dashboardStore.account.username) {
           this.currDanceMove = data.move;
         } else {
           this.currMoveOthers[username] = data.move;
           console.log(this.currMoveOthers);
         }
-      }
+      // }
     })
 
     this.socket.on('update_joined', (data) => {
@@ -182,12 +182,17 @@ class SocketStore {
       this.getSession();
     })
   };
-
+  
+  @observable isLoggingOut = false;
   logoutReaction = reaction(
     () => [this.currDanceMove, this.currMoveOthers, this.deviceUsers],
     (data) => {
       if (data[0] === 'logout' && data[1].every((move) => move === 'logout') && dashboardStore.account.username === data[2][1]) {
-        this.leaveSession(1);
+        this.isLoggingOut = true;
+        setTimeout(() => {
+          this.leaveSession(1);
+          this.isLoggingOut = false;
+        }, 2000); 
       }
     }
   )

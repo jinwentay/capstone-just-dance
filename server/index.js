@@ -56,6 +56,10 @@ io.on('connection', (socket) => {
     console.log("SESSION STOPPED", msg);
     io.emit('session_stopped', msg);
   })
+  socket.on('restart_session', (msg) => {
+    console.log("SESSION STOPPED", msg);
+    io.emit('session_restarted', msg);
+  })
   socket.on('created_session', (msg) => {
     io.emit('new_sessions', msg);
   })

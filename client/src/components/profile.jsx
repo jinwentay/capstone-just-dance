@@ -1,17 +1,27 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Flex, Text } from 'theme-ui';
-import { ReactComponent as User1 } from '../icons/user1.svg';
-import { ReactComponent as User2 } from '../icons/user2.svg';
-import { ReactComponent as User3 } from '../icons/user3.svg';
 
 const Profile = (props) => {
+  const [width, setWidth] = useState(Math.ceil(window.innerWidth > 768 ? window.innerWidth/10 : window.innerWidth/6) - 20);
+  useEffect(() => {
+    window.addEventListener('resize', () => {
+      const size = Math.ceil(window.innerWidth > 768 ? window.innerWidth/10 : window.innerWidth/6) - 20;
+      setWidth(size > 20 ? size : 20);
+    });
+    return () => {
+      window.removeEventListener('resize', () => {
+        const size = Math.ceil(window.innerWidth > 768 ? window.innerWidth/10 : window.innerWidth/6) - 20;
+        setWidth(size > 20 ? size : 20);
+      });
+    }
+  }, [])
   return (
     <Flex
       sx={{
-        maxHeight: props.isSelf ? '60px' : '50px',
-        maxWidth: props.isSelf ? '60px' : '50px',
-        minWidth: props.isSelf ? '60px' : '50px',
-        minHeight: props.isSelf ? '60px' : '50px',
+        maxHeight: width + 'px',
+        maxWidth: width + 'px',
+        minWidth: width + 'px',
+        minHeight: width + 'px',
         border: '2px solid',
         borderColor: props.isSelf ? 'primary' : 'border',
         borderRadius: '9999px',
@@ -20,28 +30,14 @@ const Profile = (props) => {
         backgroundColor: 'white',
       }}
     >
-      <Text variant="hd.lg">{props.user}</Text>
-      {/* {props.user === '1' && (
-        <User1
-          title="user"
-          width={props.isSelf ? '50px' : '40px'}
-          height={props.isSelf ? '50px' : '40px'}
-        />
-      )}
-      {props.user === '2' && (
-        <User2
-          title="user"
-          width={props.isSelf ? '50px' : '40px'}
-          height={props.isSelf ? '50px' : '40px'}
-        />
-      )}
-      {props.user === '3' && (
-        <User3
-          title="user"
-          width={props.isSelf ? '50px' : '40px'}
-          height={props.isSelf ? '50px' : '40px'}
-        />
-      )} */}
+      <Text 
+        variant="hd.lg"
+        sx={{
+          fontSize: [30,40]
+        }}
+      >
+        {props.user}
+      </Text>
     </Flex>
   )
 }

@@ -6,16 +6,16 @@ import 'chartjs-plugin-streaming';
 import socketStore from '../store/store';
 
 const danceMove = [
-  'rest',
   'zigzag', 
-  'elbow', 
+  'elbowlock', 
   'hair', 
   'pushback', 
   'rocket', 
   'scarecrow', 
   'shouldershrug', 
-  'windows', 
-  'logout'
+  'windowwipe', 
+  'rest',
+  'logout',
 ];
 
 const barColors = ['#FD6579', '#FEDC6F', '#7AA7FC'];
@@ -108,6 +108,11 @@ const BubbleGraph = observer(() => {
             clamp: true,
           }
         },
+        legend: {
+          labels: {
+            fontSize: 20
+          }
+        },
         layout: {
           padding: {
             left: 0,
@@ -129,13 +134,13 @@ const BubbleGraph = observer(() => {
             type: 'category',
             labels: [
               'zigzag', 
-              'elbow', 
+              'elbowlock', 
               'hair', 
               'pushback', 
               'rocket', 
               'scarecrow', 
               'shouldershrug', 
-              'windows', 
+              'windowwipe', 
               'rest',
               'logout',
             ],
