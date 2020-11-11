@@ -16,7 +16,7 @@ import socketStore from '../store/store';
 import { Grid, Box, Flex, Text, Select, Spinner } from 'theme-ui';
 import PercentageCard from '../components/percentageCard';
 import useSound from 'use-sound';
-import applause from './sounds/Applause.mp3';
+import login from './sounds/login.wav';
 
 const deviceOptions = [
   {
@@ -77,19 +77,7 @@ const Home = observer(() => {
       }
     })
   }, [])
-  // const [play] = useSound(applause);
-  const soundRef = useRef();
-  useEffect(() => {
-    if (!isLoggingOut) {
-      const play = () => {
-         return (
-          <audio ref={soundRef} src={applause} autoPlay/>
-         )
-      }
-      console.log("PLAYING SOUND");
-      play();
-    }
-  }, [isLoggingOut]);
+  const [play] = useSound(login);
   return (
     <Box sx={{ 
       backgroundColor: 'white',
@@ -123,45 +111,39 @@ const Home = observer(() => {
             <Card title='TIME DELAY' children={<BubbleGraph />}/>
           </Grid>
           {isLoggingOut && (
-            <>
-              {/* <iframe src="./sounds/Applause.mp3" allow="autoplay" id="audio" style={{display: 'none'}}></iframe>
-              <audio id="player" autoplay loop>
-                  <source src="./sounds/Applause.mp3" type="audio/mp3"/>
-              </audio> */}
-              <Flex
-                sx={{
-                  minWidth: '100vw',
-                  minHeight: '100vh',
-                  background: 'rgba(0,0,0,0.6)',
+            <Flex
+              sx={{
+                minWidth: '100vw',
+                minHeight: '100vh',
+                background: 'rgba(0,0,0,0.6)',
+                justifyContent: 'center',
+                alignItems: 'center',
+                position: 'absolute',
+                left: '0px',
+                top: '0px',
+                zIndex: 3,
+              }}
+            >
+              <Flex 
+                sx={{ 
+                  flexDirection: 'column', 
                   justifyContent: 'center',
                   alignItems: 'center',
-                  position: 'absolute',
-                  left: '0px',
-                  top: '0px',
-                  zIndex: 3,
                 }}
               >
-                <Flex 
-                  sx={{ 
-                    flexDirection: 'column', 
-                    justifyContent: 'center',
-                    alignItems: 'center',
+                <div 
+                  style={{ 
+                    width:'100%',
+                    height: 0,
+                    paddingBottom: '100%',
+                    position: 'relative'
                   }}
                 >
-                  <div 
-                    style={{ 
-                      width:'100%',
-                      height: 0,
-                      paddingBottom: '100%',
-                      position: 'relative'
-                    }}
-                  >
-                    <iframe src="https://giphy.com/embed/5xtDarIHieSzSJdmn0A" width="100%" height="100%" style={{ position: 'absolute'}} frameBorder="0" className="giphy-embed" allowFullScreen></iframe>
-                  </div>
-                  <Text variant="dp.lg" mt="3" color="white">Good bye!</Text>
-                </Flex>
+                  <iframe src="https://giphy.com/embed/5xtDarIHieSzSJdmn0A" width="100%" height="100%" style={{ position: 'absolute'}} frameBorder="0" className="giphy-embed" allowFullScreen></iframe>
+                </div>
+                <Text variant="dp.lg" mt="3" color="white">Good bye!</Text>
+              </Flex>
             </Flex>
-            </>
           )}
         </>
       ) : (
@@ -206,7 +188,7 @@ const Home = observer(() => {
                     width: '300px',
                   }}
                   loading={joinState === 'LOADING'}
-                  onClick={joinState === 'LOADING' ? () => {} : () => createSession(selectedDevice)}
+                  onClick={joinState === 'LOADING' ? () => {} : () => { play(); createSession(selectedDevice)}}
                 >
                   Create session
                 </Button>
@@ -253,7 +235,7 @@ const Home = observer(() => {
                       }}
                       loading={joinState === 'LOADING'}
                       disabled={!sessions.length || !selectedSession}
-                      onClick={joinState === 'LOADING' ? () => {} : () => joinedSession(selectedDevice, selectedSession)}
+                      onClick={joinState === 'LOADING' ? () => {} : () => { play(); joinedSession(selectedDevice, selectedSession)}}
                     >
                       Join session
                     </Button>
