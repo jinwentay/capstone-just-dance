@@ -6,8 +6,6 @@ import { observer } from 'mobx-react';
 import { AccuracyGraph, PositionReport, DanceReport, PercentageCard } from './';
 const Report = observer((props) => {
   const {
-    sessionMoves,
-    getUserSessions, 
     accuracy,
     numPositions,
     getSessionMoves,
@@ -61,7 +59,7 @@ const Report = observer((props) => {
           overflow: 'scroll'
         }}
       >
-        <Text variant="hd.lg" color="primary">Congratulations on completing the session!</Text>
+        <Text variant="hd.lg" color="primary">Congratulations on completing session {props.sid}!</Text>
         <Grid
           mt="3"
           sx={{
@@ -76,7 +74,7 @@ const Report = observer((props) => {
               minHeight: 'calc(100vh - 250px)'
             }}
           >
-            <Text variant="hd.sm" mb="3">Dance Moves Predicted</Text>
+            <Text variant="hd.sm" mb="3" sx={{ textAlign: 'center' }}>Dance Moves Predicted</Text>
             <DanceReport/>
           </Flex>
           <Flex
@@ -96,7 +94,7 @@ const Report = observer((props) => {
               minHeight: 'calc(100vh - 250px)'
             }}
           >
-            <Text variant="hd.sm" mb="3">Position Changes</Text>
+            <Text variant="hd.sm" mb="3" sx={{ textAlign: 'center' }}>Position Changes</Text>
             <PositionReport/>
           </Flex>
         </Grid>

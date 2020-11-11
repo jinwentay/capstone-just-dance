@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useHistory } from 'react-router-dom';
 import { 
   Navbar, 
@@ -8,15 +8,15 @@ import {
   Button, 
   DanceMove,
   AccuracyGraph,
-  TimeGraph,
   BubbleGraph,
 } from '../components';
 import { observer } from 'mobx-react';
 import dashboardStore from '../store/dashboardStore';
 import socketStore from '../store/store';
 import { Grid, Box, Flex, Text, Select, Spinner } from 'theme-ui';
-import ls from 'local-storage';
 import PercentageCard from '../components/percentageCard';
+import useSound from 'use-sound';
+import applause from './sounds/Applause.mp3';
 
 const deviceOptions = [
   {
@@ -70,15 +70,26 @@ const Home = observer(() => {
   const [isSmall, setSmall] = useState((window.innerWidth < 800 && window.innerWidth > 600) ? true : false);
   useEffect(() => {
     window.addEventListener("resize", (evt) => {
-      // if (window.innerWidth < 800 && window.innerWidth > 600) {
-        if (window.innerWidth < 500) {
+      if (window.innerWidth < 500) {
         setSmall(true)
       } else {
         setSmall(false);
       }
     })
   }, [])
-
+  // const [play] = useSound(applause);
+  const soundRef = useRef();
+  useEffect(() => {
+    if (!isLoggingOut) {
+      const play = () => {
+         return (
+          <audio ref={soundRef} src={applause} autoPlay/>
+         )
+      }
+      console.log("PLAYING SOUND");
+      play();
+    }
+  }, [isLoggingOut]);
   return (
     <Box sx={{ 
       backgroundColor: 'white',
@@ -96,51 +107,61 @@ const Home = observer(() => {
               gridTemplateColumns: ['1fr','50% 50%'],
               gridTemplateRows: ['repeat(4, minmax(250px,auto))','250px 1fr'],
               maxWidth: '1500px',
-              // gridTemplateColumns: ['1fr','auto 320px'],
-              // gridTemplateRows: ['repeat(4, auto)','auto auto']
             }}
           >
             <Card title='DANCE POSITIONS' children={<DancePosition socketStore={socketStore}/>}/>
             <Card title='MOVE PREDICTION' children={<DanceMove socketStore={socketStore}/>}/>
             <Grid
-              // mr="10px"
               sx={{
                 gridTemplateColumns: isSmall ? '1fr' : '1fr 200px',
-                // gridTemplateRows: isSmall ? '1fr 1fr' : undefined,
                 gap: '0px',
               }}
             >
               <Card title='ACCURACY' children={<AccuracyGraph accuracy={accuracy} totalPositions={totalPositions}/>} isSmall={isSmall}/>
-              {/* <Card title='' children={<PercentageCard accuracy={accuracy} totalPositions={totalPositions}/>}/> */}
               {!isSmall && (<Card title='' children={<PercentageCard accuracy={accuracy} totalPositions={totalPositions}/>}/>)}
             </Grid>
             <Card title='TIME DELAY' children={<BubbleGraph />}/>
           </Grid>
           {isLoggingOut && (
-            <Flex
-              sx={{
-                minWidth: '100vw',
-                minHeight: '100vh',
-                background: 'rgba(0,0,0,0.4)',
-                justifyContent: 'center',
-                alignItems: 'center',
-                position: 'absolute',
-                left: '0px',
-                top: '0px',
-                zIndex: 3,
-              }}
-            >
-              <Flex 
-                sx={{ 
-                  flexDirection: 'column', 
+            <>
+              {/* <iframe src="./sounds/Applause.mp3" allow="autoplay" id="audio" style={{display: 'none'}}></iframe>
+              <audio id="player" autoplay loop>
+                  <source src="./sounds/Applause.mp3" type="audio/mp3"/>
+              </audio> */}
+              <Flex
+                sx={{
+                  minWidth: '100vw',
+                  minHeight: '100vh',
+                  background: 'rgba(0,0,0,0.6)',
                   justifyContent: 'center',
                   alignItems: 'center',
+                  position: 'absolute',
+                  left: '0px',
+                  top: '0px',
+                  zIndex: 3,
                 }}
               >
-                <Spinner/>
-                <Text variant="hd.xl" mt="3" color="white">Good bye!</Text>
-              </Flex>
+                <Flex 
+                  sx={{ 
+                    flexDirection: 'column', 
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                  }}
+                >
+                  <div 
+                    style={{ 
+                      width:'100%',
+                      height: 0,
+                      paddingBottom: '100%',
+                      position: 'relative'
+                    }}
+                  >
+                    <iframe src="https://giphy.com/embed/5xtDarIHieSzSJdmn0A" width="100%" height="100%" style={{ position: 'absolute'}} frameBorder="0" className="giphy-embed" allowFullScreen></iframe>
+                  </div>
+                  <Text variant="dp.lg" mt="3" color="white">Good bye!</Text>
+                </Flex>
             </Flex>
+            </>
           )}
         </>
       ) : (
@@ -236,6 +257,7 @@ const Home = observer(() => {
                     >
                       Join session
                     </Button>
+                    {/* <Button onClick={play}>PLAY</Button> */}
                   </>
                 )}
               </STabPanel>
