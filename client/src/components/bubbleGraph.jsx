@@ -38,7 +38,7 @@ const BubbleGraph = observer(() => {
           r: 20
         }]
       }
-      console.log("NEW DATA SET: ", newDataset);
+      // console.log("NEW DATA SET: ", newDataset);
       chartRef.current.props.data.datasets.push(newDataset);
     }
 

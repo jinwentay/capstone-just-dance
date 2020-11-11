@@ -4,9 +4,10 @@ import { Doughnut, Pie } from 'react-chartjs-2';
 import { Box, Grid, Flex, Text } from 'theme-ui';
 import socketStore from '../store/store';
 import 'chartjs-plugin-datalabels';
+import PropTypes from 'prop-types';
 
-const PercentageCard = observer(() => {
-  const { accuracy, totalPositions } = socketStore;  
+const PercentageCard = observer((props) => {
+  const { accuracy, totalPositions } = props;  
   const percentage = totalPositions ? Math.round((accuracy/totalPositions)* 100) : 0;
   return (
     <Box 
@@ -22,8 +23,9 @@ const PercentageCard = observer(() => {
         }}
       >
         <Text 
-          variant="hd.xxl" 
+          variant="dp.lg" 
           sx={{  
+
             color: percentage >= 70 
             ? 'correctGreen' 
             : percentage >= 50
@@ -45,5 +47,10 @@ const PercentageCard = observer(() => {
     </Box>
   )
 })
+
+PercentageCard.propTypes = {
+  accuracy: PropTypes.number,
+  totalPositions: PropTypes.number
+};
 
 export default PercentageCard;

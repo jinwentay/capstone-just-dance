@@ -1,8 +1,8 @@
 import React from 'react';
 import { Flex, Text } from "theme-ui";
 
-const Card = ({ title, children }) => {
-  const isAccuracy = title === 'ACCURACY';
+const Card = ({ title, children, isSmall }) => {
+  const isAccuracy = title === 'ACCURACY' && !isSmall;
   const isPercentage = title === '';
   return (
     <Flex

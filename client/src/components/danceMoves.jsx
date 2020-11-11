@@ -23,7 +23,7 @@ const DanceMove = observer(({ socketStore }) => {
   } = socketStore;
 
   useEffect(() => {
-    console.log(currDanceMove);
+    // console.log(currDanceMove);
   }, [currDanceMove])
   return (
     <Grid
@@ -32,6 +32,7 @@ const DanceMove = observer(({ socketStore }) => {
         gridTemplateRows: '[row-start] 50% [row-second] 50% [row-end]',
         height: '100%',
         gap: '0px',
+        minHeight: '200px'
         // borderColor: '#DADADA',
         // ':first-child': {
         //   borderBottom: '1px solid',
@@ -78,7 +79,7 @@ const DanceMove = observer(({ socketStore }) => {
           >
             {dashboardStore.account.username}
           </Box>
-          <Text variant="hd.xl" color="primary" sx={{ textOverflow: 'ellipsis' }}>{currDanceMove ? currDanceMove.toUpperCase() : "Generating prediction..."}</Text>
+          <Text variant="hd.xl" color="primary" sx={{ textOverflow: 'ellipsis' }}>{currDanceMove ? danceMove[currDanceMove] : "Generating prediction..."}</Text>
         </Flex>
         {Object.entries(currMoveOthers).map(([key, value], index) => (
           <>

@@ -2,8 +2,10 @@ import io from 'socket.io-client';
 import { observable, action, runInAction, computed, reaction } from 'mobx';
 import axios from 'axios';
 import dashboardStore from './dashboardStore';
+import offlineStore from './offlineStore';
 import ls from 'local-storage';
 import { states } from './types';
+import cogoToast from 'cogo-toast';
 
 class SocketStore {
   @observable 
@@ -116,6 +118,7 @@ class SocketStore {
 
     this.socket.on('position', (data) => {
       const arr = data.value.split(' ');
+      console.log("POSITION: ", data);
       Object.entries(this.deviceUsers).forEach(([device, username]) => {
         const index = arr.findIndex((id) => Number(id) === Number(device)) + 1;
         if (username !== "") {
@@ -127,26 +130,30 @@ class SocketStore {
       console.log('predicted position received', data);
       const arr = data.value.split(' ');
       Object.entries(this.deviceUsers).forEach(([device, username]) => {
-        const index = arr.findIndex((id) => Number(id) === Number(device)) + 1;
+        const index = arr.findIndex((id) => Number(id) === Number(device));
         if (username !== "") {
           let positions = this.dancers.get(username) || [];
-          positions.push({ value: index, index: data.index });
+          positions.push({ value: index + 1, index: data.index });
           this.dancers.set(username, positions);
         }
       })
     })
     this.socket.on('correct_position', (data) => {
       console.log('correct position received', data);
-      Object.entries(this.deviceUsers).forEach(([device, username]) => {
-        console.log(device, username);
-        const arr = data.value.split(' ');
-        const index = arr.findIndex((id) => Number(id) === Number(device));
-        if (username === dashboardStore.account.username) {
-          if (index > -1)
-            this.correctPositions.push({ index: data.index, position: index + 1});
-        }
-        this.totalPositions = data.index + 1;
-      })
+      if (data.value === 'logout') {
+        this.isLoggingOut = true;
+      } else {
+        Object.entries(this.deviceUsers).forEach(([device, username]) => {
+          console.log(device, username);
+          const arr = data.value.split(' ');
+          const index = arr.findIndex((id) => Number(id) === Number(device));
+          if (username === dashboardStore.account.username) {
+            if (index > -1)
+              this.correctPositions.push({ index: data.index, position: index + 1});
+          }
+          this.totalPositions = data.index;
+        })
+      }
     })
 
     this.socket.on('dance', (data) => {
@@ -156,7 +163,7 @@ class SocketStore {
       // } else {
         if (username === dashboardStore.account.username) {
           this.currDanceMove = data.move;
-        } else {
+        } else if (username != '') {
           this.currMoveOthers[username] = data.move;
           console.log(this.currMoveOthers);
         }
@@ -175,6 +182,17 @@ class SocketStore {
       console.log('USER LEFT', data);
       this.startSession = false;
       this.getSession();
+      window.location.href = 'http://localhost:3000/overall';
+      const sid = ls.get('session');
+      offlineStore.setSid(sid);
+      offlineStore.setOpen(true);
+    })
+
+    this.socket.on('session_restarted', () => {
+      this.reset();
+      cogoToast.success('Session restarted!', {
+        hideAfter: 5
+      });
     })
 
     this.socket.on('new_sessions', (data) => {
@@ -182,25 +200,21 @@ class SocketStore {
       this.getSession();
     })
   };
-  
+
   @observable isLoggingOut = false;
   logoutReaction = reaction(
-    () => [this.currDanceMove, this.currMoveOthers, this.deviceUsers],
+    () => [this.isLoggingOut, this.startSession],
     (data) => {
-      if (data[0] === 'logout' && data[1].every((move) => move === 'logout') && dashboardStore.account.username === data[2][1]) {
-        this.isLoggingOut = true;
+      console.log("LOGOUT DATA: ", data);
+      if (data[0] && data[1]) {
+        console.log("LOGGING OUT!");
         setTimeout(() => {
           this.leaveSession(1);
           this.isLoggingOut = false;
-        }, 2000); 
+        }, 2000);
       }
     }
   )
-  // @computed get logout() {
-  //   if (this.currDanceMove === 'logout' && this.currMoveOthers.every((move) => move === 'logout') && dashboardStore.account.username === this.deviceUsers[1]) {
-  //     this.leaveSession(1);
-  //   }
-  // }
 
   @action
   disconnect = () => {
@@ -315,6 +329,21 @@ class SocketStore {
           alert(res.data.error);
         }
       }).catch((err) => console.log(err));
+  }
+
+  @action reset = () => {
+    this.totalPositions = 0;
+    this.correctPositions = [];
+    this.dancers = new Map();
+  }
+
+  @action
+  restartSession = () => {
+    if (!this.socket) return;
+    const sid = ls.get('session');
+    this.socket.emit('restart_session', { sid: sid });
+    this.reset();
+
   }
 }
 

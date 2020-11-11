@@ -25,6 +25,12 @@ ct-toast-info {
   border-radius: 8px;
 }
 
+ct-toast-success {
+  color: #FFFFFF;
+  background: #6EC05F;
+  font-family: 'Quicksands', sans-serif;
+}
+
 * :focus {
   outline: none;
 }

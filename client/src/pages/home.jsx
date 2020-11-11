@@ -46,7 +46,7 @@ const Home = observer(() => {
     sessionState,
     accuracy,
     totalPositions,
-    isLoggingOut
+    isLoggingOut,
   } = socketStore;
   useEffect(() => {
     console.log(account);
@@ -70,7 +70,8 @@ const Home = observer(() => {
   const [isSmall, setSmall] = useState((window.innerWidth < 800 && window.innerWidth > 600) ? true : false);
   useEffect(() => {
     window.addEventListener("resize", (evt) => {
-      if (window.innerWidth < 800 && window.innerWidth > 600) {
+      // if (window.innerWidth < 800 && window.innerWidth > 600) {
+        if (window.innerWidth < 500) {
         setSmall(true)
       } else {
         setSmall(false);
@@ -93,7 +94,7 @@ const Home = observer(() => {
               px: 3,
               height: 'calc(100vh - 100px)',
               gridTemplateColumns: ['1fr','50% 50%'],
-              gridTemplateRows: ['repeat(4, auto)','250px 1fr'],
+              gridTemplateRows: ['repeat(4, minmax(250px,auto))','250px 1fr'],
               maxWidth: '1500px',
               // gridTemplateColumns: ['1fr','auto 320px'],
               // gridTemplateRows: ['repeat(4, auto)','auto auto']
@@ -104,12 +105,14 @@ const Home = observer(() => {
             <Grid
               // mr="10px"
               sx={{
-                gridTemplateColumns: isSmall ? '100%' : '1fr 200px',
-                gap: '0px'
+                gridTemplateColumns: isSmall ? '1fr' : '1fr 200px',
+                // gridTemplateRows: isSmall ? '1fr 1fr' : undefined,
+                gap: '0px',
               }}
             >
-              <Card title='ACCURACY' children={<AccuracyGraph accuracy={accuracy} totalPositions={totalPositions}/>}/>
-              {!isSmall && (<Card title='' children={<PercentageCard/>}/>)}
+              <Card title='ACCURACY' children={<AccuracyGraph accuracy={accuracy} totalPositions={totalPositions}/>} isSmall={isSmall}/>
+              {/* <Card title='' children={<PercentageCard accuracy={accuracy} totalPositions={totalPositions}/>}/> */}
+              {!isSmall && (<Card title='' children={<PercentageCard accuracy={accuracy} totalPositions={totalPositions}/>}/>)}
             </Grid>
             <Card title='TIME DELAY' children={<BubbleGraph />}/>
           </Grid>

@@ -1,21 +1,25 @@
 const text = {
   dp: {
     xs: {
+      fontFamily: "body",
       fontWeight: "medium",
       fontSize: "36px",
       lineHeight: "44px",
     },
     sm: {
+      fontFamily: "body",
       fontWeight: "medium",
       fontSize: "44px",
       lineHeight: "52px",
     },
     md: {
+      fontFamily: "body",
       fontWeight: "medium",
       fontSize: "52px",
       lineHeight: "64px",
     },
     lg: {
+      fontFamily: "body",
       fontWeight: "medium",
       fontSize: "96px",
       lineHeight: "112px",

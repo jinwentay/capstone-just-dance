@@ -107,23 +107,25 @@ function worker(ch, exchange, io) {
             if (data['sid'] && data['id'] && data['move'] !== 'logout')
               redis.RPUSH(data_type, JSON.stringify(data));
           } else if (data_type !== 'position') {
-            data['value'] = data['value'].split(' '); //split '1 2 3' into [1,2,3];
-            console.log(data['value']);
-            data['value'].forEach((id, index) => {
-              redis.HGET('session', `device${id}`, function (err, res) {
-                let position = {
-                  id: res,
-                  sid: data['sid'],
-                  index: data['index'],
-                  value: index + 1,
-                }
-                if (data_type === 'predict_position') {
-                  data_type = 'position';
-                }
-                console.log(`Storing ${data_type}: `, position);
-                redis.RPUSH(data_type, JSON.stringify(position));
+            if (data['value'] !== 'logout') {
+              data['value'] = data['value'].split(' '); //split '1 2 3' into [1,2,3];
+              console.log(data['value']);
+              data['value'].forEach((id, index) => {
+                redis.HGET('session', `device${id}`, function (err, res) {
+                  let position = {
+                    id: res,
+                    sid: data['sid'],
+                    index: data['index'],
+                    value: index + 1,
+                  }
+                  if (data_type === 'predict_position') {
+                    data_type = 'position';
+                  }
+                  console.log(`Storing ${data_type}: `, position);
+                  redis.RPUSH(data_type, JSON.stringify(position));
+                })
               })
-            })
+            }
           }
         }
       });

@@ -53,7 +53,7 @@ const Link = styled(NavLink)`
 `
 const Navbar = observer(() => {
   const { account, logout } = dashboardStore;
-  const { leaveSession, startSession } = store;
+  const { leaveSession, startSession, restartSession } = store;
   return (
     <Box
       sx={{
@@ -92,6 +92,7 @@ const Navbar = observer(() => {
                 mr: 2,
                 cursor: 'pointer',
               }}
+              onClick={restartSession}
             >
               <Refresh
                 title="restart"

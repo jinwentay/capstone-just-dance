@@ -14,11 +14,11 @@ const DancePosition = observer(({ socketStore }) => {
     // isUpdated
   } = socketStore;
 
-  useEffect(() => {
-    console.log("FIRST", first);
-    console.log("SECOND", second);
-    console.log("THIRD", third);
-  }, [first, second, third])
+  // useEffect(() => {
+  //   console.log("FIRST", first);
+  //   console.log("SECOND", second);
+  //   console.log("THIRD", third);
+  // }, [first, second, third])
   return (
     <Grid
       sx={{
