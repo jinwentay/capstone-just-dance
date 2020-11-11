@@ -14,6 +14,7 @@ import Report from './report';
 import PositionReport from './positionReport';
 import DataTable, { Table, Header, Column, Row, ColSelect } from './UI/table';
 import DanceReport from './danceReport';
+import PercentageCard from './percentageCard';
 
 export {
   Navbar,
@@ -40,5 +41,6 @@ export {
   Row,
   ColSelect,
   DataTable,
-  DanceReport
+  DanceReport,
+  PercentageCard
 };

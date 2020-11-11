@@ -14,11 +14,11 @@ const DancePosition = observer(({ socketStore }) => {
     // isUpdated
   } = socketStore;
 
-  useEffect(() => {
-    console.log("FIRST", first);
-    console.log("SECOND", second);
-    console.log("THIRD", third);
-  }, [first, second, third])
+  // useEffect(() => {
+  //   console.log("FIRST", first);
+  //   console.log("SECOND", second);
+  //   console.log("THIRD", third);
+  // }, [first, second, third])
   return (
     <Grid
       sx={{
@@ -47,8 +47,8 @@ const DancePosition = observer(({ socketStore }) => {
                 my: 2,
               }}
             >
-              <Profile user= {device} isSelf={user === dashboardStore.account.username} />
-              <Text variant="lb.sm" sx={{ textAlign: 'center' }}>{user}</Text>
+              <Profile user= {device} />
+              <Text variant="lb.lg" sx={{ textAlign: 'center' }}>{user}</Text>
             </Flex>
           )
         })}
@@ -74,8 +74,8 @@ const DancePosition = observer(({ socketStore }) => {
                 my: 2,
               }}
             >
-              <Profile user= {device} isSelf={user === dashboardStore.account.username} />
-              <Text variant="lb.sm" sx={{ textAlign: 'center' }}>{user}</Text>
+              <Profile user= {device} />
+              <Text variant="lb.lg" sx={{ textAlign: 'center' }}>{user}</Text>
             </Flex>
           )
         })}
@@ -100,8 +100,8 @@ const DancePosition = observer(({ socketStore }) => {
                 my: 2,
               }}
             >
-              <Profile user= {device} isSelf={user === dashboardStore.account.username} />
-              <Text variant="lb.sm" sx={{ textAlign: 'center' }}>{user}</Text>
+              <Profile user= {device} /*isSelf={user === dashboardStore.account.username} *//>
+              <Text variant="lb.lg" sx={{ textAlign: 'center' }}>{user}</Text>
             </Flex>
           )
         })}

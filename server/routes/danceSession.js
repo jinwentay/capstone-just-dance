@@ -81,6 +81,12 @@ router.post('/join/session', (req, res) => {
   })().catch(e => console.error(e.stack));
 })
 
+router.post('/restart/session', (req, res) => {
+  redis.DEL('position');
+  redis.DEL('dance');
+  redis.DEL('correct_position');
+})
+
 router.post('/stop/session', (req, res) => {
   const sessionId = req.body.id;
   console.log('Session id', sessionId);

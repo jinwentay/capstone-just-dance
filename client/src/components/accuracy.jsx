@@ -9,7 +9,6 @@ import PropTypes from 'prop-types';
 //get all sessions and display accuracy chart for one session only
 //or make request to get accuracy for one session
 const AccuracyGraph = observer((props) => {
-  // const { accuracy, totalPositions } = socketStore;
   const { accuracy, totalPositions } = props;
   console.log(accuracy, totalPositions);
   const [state, setState] = useState({
@@ -81,7 +80,10 @@ const AccuracyGraph = observer((props) => {
           },
           legend: {
             display: true,
-            position: 'bottom'
+            position: 'bottom',
+            labels: {
+              fontSize: 20
+            }
           }
         }}
       />

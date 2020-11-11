@@ -15,9 +15,20 @@ import Report from '../components/report';
 const Offline = observer(() => {
   const history = useHistory();
   const { account } = dashboardStore;
-  const { getAllSessionAccuracy, getAllSessionTotalPositions, totalPositions, accuracyData, getUserSessions, sessions, getSessionMoves, getSessionPositions } = offlineStore;
-  const [isOpen, setOpen] = useState(false);
-  const [sid, setSid] = useState(null);
+  const { 
+    getAllSessionAccuracy, 
+    getAllSessionTotalPositions, 
+    totalPositions, 
+    accuracyData, 
+    getUserSessions, 
+    sessions, 
+    isOpen,
+    sid,
+    setOpen,
+    setSid
+  } = offlineStore;
+  // const [isOpen, setOpen] = useState(false);
+  // const [sid, setSid] = useState(null);
   useEffect(() => {
     console.log(account);
     if (account.id === -1) {
@@ -29,7 +40,7 @@ const Offline = observer(() => {
     getAllSessionAccuracy();
     getAllSessionTotalPositions();
     getUserSessions();
-    console.log(totalPositions, accuracyData);
+    console.log(isOpen, sid);
   }, []);
 
   return (

@@ -3,11 +3,9 @@ import { Flex, Text, Grid } from 'theme-ui';
 import { Button } from '.';
 import offlineStore from '../store/offlineStore';
 import { observer } from 'mobx-react';
-import { AccuracyGraph, PositionReport, DanceReport } from './';
+import { AccuracyGraph, PositionReport, DanceReport, PercentageCard } from './';
 const Report = observer((props) => {
   const {
-    sessionMoves,
-    getUserSessions, 
     accuracy,
     numPositions,
     getSessionMoves,
@@ -61,44 +59,42 @@ const Report = observer((props) => {
           overflow: 'scroll'
         }}
       >
-        <Text variant="hd.lg" color="primary">Congratulations on completing the session!</Text>
+        <Text variant="hd.lg" color="primary">Congratulations on completing session {props.sid}!</Text>
         <Grid
           mt="3"
           sx={{
-            gridTemplateColumns: ['1fr', '20% 60% 20%'],
-            gridTemplateRows: '1fr',
-            width: '100%',
+            gridTemplateColumns: ['1fr', '1fr 50% 1fr'],
+            maxWidth: '1500px',
           }}
         >
           <Flex
             sx={{
               flexDirection: 'column',
               alignItems: 'center',
-              justifyContent: 'center',
-              // width: '100%'
+              minHeight: 'calc(100vh - 250px)'
             }}
           >
-            <Text variant="lb.lg" mb="3">Dance Moves Predicted</Text>
+            <Text variant="hd.sm" mb="3" sx={{ textAlign: 'center' }}>Dance Moves Predicted</Text>
             <DanceReport/>
           </Flex>
           <Flex
             sx={{
               flexDirection: 'column',
-              alignItems: 'center',
-              justifyContent: 'center'
             }}
           >
-            <Text variant="lb.lg" mb="3">Position Accuracy</Text>
+            <Text variant="hd.sm" mb="3" sx={{ width: '100%', textAlign: 'center' }}>Position Accuracy</Text>
             <AccuracyGraph accuracy={accuracy} totalPositions={numPositions}/>
+            <Text variant="hd.sm" mb="3" sx={{ width: '100%', textAlign: 'center' }}>Percentage</Text>
+            <PercentageCard accuracy={accuracy} totalPositions={numPositions}/>
           </Flex>
           <Flex
             sx={{
               flexDirection: 'column',
               alignItems: 'center',
-              justifyContent: 'center'
+              minHeight: 'calc(100vh - 250px)'
             }}
           >
-            <Text variant="lb.lg" mb="3">Position Changes</Text>
+            <Text variant="hd.sm" mb="3" sx={{ textAlign: 'center' }}>Position Changes</Text>
             <PositionReport/>
           </Flex>
         </Grid>

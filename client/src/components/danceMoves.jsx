@@ -2,7 +2,19 @@ import React, { useEffect, useState } from 'react';
 import { observer } from 'mobx-react';
 import { Flex, Box, Text, Spinner, Grid } from 'theme-ui';
 import Dancer from '../icons/avatar.png';
-
+import dashboardStore from '../store/dashboardStore';
+const danceMove = {
+  'rest': 'REST',
+  'zigzag': 'ZIGZAG', 
+  'elbowlock': 'ELBOWLOCK', 
+  'hair': 'HAIR', 
+  'pushback': 'PUSHBACK', 
+  'rocket': 'ROCKET', 
+  'scarecrow': 'SCARECROW', 
+  'shouldershrug': 'SHOULDER SHRUG', 
+  'windowwipe': 'WINDOW WIPE', 
+  'logout': 'LOGOUT'
+};
 const DanceMove = observer(({ socketStore }) => {
   const {
     currDanceMove,
@@ -11,7 +23,7 @@ const DanceMove = observer(({ socketStore }) => {
   } = socketStore;
 
   useEffect(() => {
-    console.log(currDanceMove);
+    // console.log(currDanceMove);
   }, [currDanceMove])
   return (
     <Grid
@@ -20,6 +32,7 @@ const DanceMove = observer(({ socketStore }) => {
         gridTemplateRows: '[row-start] 50% [row-second] 50% [row-end]',
         height: '100%',
         gap: '0px',
+        minHeight: '200px'
         // borderColor: '#DADADA',
         // ':first-child': {
         //   borderBottom: '1px solid',
@@ -64,9 +77,9 @@ const DanceMove = observer(({ socketStore }) => {
               fontFamily: 'Quicksand'
             }}
           >
-            You
+            {dashboardStore.account.username}
           </Box>
-          <Text variant="hd.md" color="primary">{currDanceMove ? currDanceMove : "Generating prediction..."}</Text>
+          <Text variant="hd.xl" color="primary" sx={{ textOverflow: 'ellipsis' }}>{currDanceMove ? danceMove[currDanceMove] : "Generating prediction..."}</Text>
         </Flex>
         {Object.entries(currMoveOthers).map(([key, value], index) => (
           <>
@@ -92,7 +105,8 @@ const DanceMove = observer(({ socketStore }) => {
                     position: 'absolute',
                     top: 0,
                     right: 0,
-                    border: '1px solid #3E4C59', 
+                    borderLeft: '1px solid #3E4C59', 
+                    borderBottom: '1px solid #3E4C59', 
                     textAlign: 'center', 
                     color: 'gray700',
                     fontFamily: 'Quicksand'
@@ -100,7 +114,7 @@ const DanceMove = observer(({ socketStore }) => {
                 >
                   {key}
                 </Box>
-                <Text m="auto" variant="hd.sm" color="text">{value}</Text>
+                <Text m="auto" variant="hd.xl" color="text">{danceMove[value]}</Text>
               </Flex>
             ) : (
               <Flex
@@ -123,7 +137,8 @@ const DanceMove = observer(({ socketStore }) => {
                     position: 'absolute',
                     top: 0,
                     right: 0,
-                    border: '1px solid #3E4C59', 
+                    borderLeft: '1px solid #3E4C59', 
+                    borderBottom: '1px solid #3E4C59',  
                     textAlign: 'center', 
                     color: 'gray700',
                     fontFamily: 'Quicksand'
@@ -131,7 +146,7 @@ const DanceMove = observer(({ socketStore }) => {
                 >
                   {key}
                 </Box>
-                <Text m="auto" variant="hd.sm" color="text">{value}</Text>
+                <Text m="auto" variant="hd.xl" color="text">{danceMove[value]}</Text>
               </Flex>
             )}
           </>

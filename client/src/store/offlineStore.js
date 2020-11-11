@@ -2,8 +2,17 @@ import { observable, action, runInAction, computed } from 'mobx';
 import axios from 'axios';
 import { DateTime } from 'luxon';
 import dashboardStore from './dashboardStore';
-
+import ls from 'local-storage';
 class OfflineStore {
+  @observable sid = ls.get('session');
+  @observable isOpen = true;
+  @action setOpen = (value) => {
+    console.log("OPEN: ", value);
+    this.isOpen = value;
+  }
+  @action setSid = (id) => {
+    this.sid = id;
+  }
   @observable accuracyStatus = 'INITIAL';
   @observable accuracyData = [];
   @action
