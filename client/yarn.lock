@@ -9514,11 +9514,6 @@ react-style-singleton@^2.1.0:
     invariant "^2.2.4"
     tslib "^1.0.0"
 
-react-tenor@^2.2.0:
-  version "2.2.0"
-  resolved "https://registry.yarnpkg.com/react-tenor/-/react-tenor-2.2.0.tgz#98326868cc199165bacb911abdbbb48306232b6f"
-  integrity sha512-hs0KomduflTLU05fvKAtrf9f/aAj3wN2kPF2cl5cAOFPkhuaVJuWLNxRSAQN1m+aKHinujEQZ1fXp+gL1KgYhg==
-
 react@^16.13.1:
   version "16.13.1"
   resolved "https://registry.yarnpkg.com/react/-/react-16.13.1.tgz#2e818822f1a9743122c063d6410d85c1e3afe48e"

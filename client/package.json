@@ -28,7 +28,6 @@
     "react-hook-form": "^6.7.0",
     "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.3",
-    "react-tenor": "^2.2.0",
     "socket.io-client": "^2.3.0",
     "theme-ui": "^0.3.1",
     "use-sound": "^1.0.2"
