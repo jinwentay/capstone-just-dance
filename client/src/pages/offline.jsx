@@ -11,6 +11,7 @@ import dashboardStore from '../store/dashboardStore';
 import offlineStore from '../store/offlineStore';
 import { Grid, Box, Flex, Text } from 'theme-ui';
 import Report from '../components/report';
+import ls from 'local-storage';
 
 const Offline = observer(() => {
   const history = useHistory();
@@ -78,6 +79,7 @@ const Offline = observer(() => {
               headers={['Session', 'Date', 'Duration']} 
               rowItems={sessions} 
               rowFunc={(session) => { 
+                // ls.set('session', session.sid);
                 setSid(session.sid);
                 setOpen(true); 
               }}

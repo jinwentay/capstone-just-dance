@@ -22,8 +22,8 @@ const OverallAccuracyGraph = observer(() => {
         }}
       >
         <Bar
-          width='3000px'
-          height='400px'
+          width={3000}
+          height={400}
           data={{
               labels: numCorrect.map(i => Number(i.x) === i.x && i.x % 1 === 0 ? i.x: ""),
               datasets: [{

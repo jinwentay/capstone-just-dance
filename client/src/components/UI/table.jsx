@@ -46,8 +46,8 @@ const DataTable = observer((props) => {
             <Header>{header}</Header>
           ))}
         </Row>
-        {rowItems.map((item) => (
-          <Row onClick={rowFunc ? () => rowFunc(item) : () => {}}>
+        {rowItems.map((item, index) => (
+          <Row key={index} onClick={rowFunc ? () => rowFunc(item) : () => {}}>
             {Object.values(item).map((value) => (
               <>
                 {rowFunc ? <ColSelect>{value}</ColSelect> : <Column>{value}</Column>}
@@ -61,7 +61,7 @@ const DataTable = observer((props) => {
 });
 
 Table.propTypes = {
-  headers: PropTypes.arrayOf(PropTypes.string).isRequired,
+  headers: PropTypes.arrayOf(PropTypes.string),
   rowItems: PropTypes.array,
   rowFunc: PropTypes.func
 };

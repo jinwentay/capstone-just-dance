@@ -71,6 +71,7 @@ class OfflineStore {
 
   @action
   getSessionMoves = (sid) => {
+    console.log("SESSION STORE", sid);
     const uid = dashboardStore.account.id;
     axios.get(`/get/session/${sid}/danceMoves`, { params: { id: uid } })
     .then((res) => {

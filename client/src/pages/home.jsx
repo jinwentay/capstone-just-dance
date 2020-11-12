@@ -70,7 +70,7 @@ const Home = observer(() => {
   const [isSmall, setSmall] = useState((window.innerWidth < 800 && window.innerWidth > 600) ? true : false);
   useEffect(() => {
     window.addEventListener("resize", (evt) => {
-      if (window.innerWidth < 500) {
+      if (window.innerWidth < 600) {
         setSmall(true)
       } else {
         setSmall(false);
@@ -101,7 +101,7 @@ const Home = observer(() => {
             <Card title='MOVE PREDICTION' children={<DanceMove socketStore={socketStore}/>}/>
             <Grid
               sx={{
-                gridTemplateColumns: isSmall ? '1fr' : '1fr 200px',
+                gridTemplateColumns: isSmall ? '1fr' : '1fr 250px',
                 gap: '0px',
               }}
             >

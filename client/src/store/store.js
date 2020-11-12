@@ -80,22 +80,35 @@ class SocketStore {
   @observable
   totalPositions = 0;
 
+  @observable 
+  predictPositions = [];
+
   @computed get accuracy() {
-    let userPositions = this.dancers.get(dashboardStore.account.username);
+    // let userPositions = this.dancers.get(dashboardStore.account.username);
     let correct = 0;
-    if (userPositions) {
-      userPositions.forEach((position) => {
-        const currIndex = Number(position.index);
-        console.log('Curr index', currIndex, position.value);
-        if (this.correctPositions.length > 0 && this.correctPositions.some((data) => Number(data.index) === currIndex)) {
-          const currentPosition = this.correctPositions.find((data) => Number(data.index) === currIndex);
-          console.log("Current correct position: ", currentPosition.position);
-          if (Number(position.value) === Number(currentPosition.position)) {
-            correct += 1;
-          }
+    // if (userPositions) {
+    //   userPositions.forEach((position) => {
+    //     const currIndex = Number(position.index);
+    //     console.log('Curr index', currIndex, position.value);
+    //     if (this.correctPositions.length > 0 && this.correctPositions.some((data) => Number(data.index) === currIndex)) {
+    //       const currentPosition = this.correctPositions.find((data) => Number(data.index) === currIndex);
+    //       console.log("Current correct position: ", currentPosition.position);
+    //       if (Number(position.value) === Number(currentPosition.position)) {
+    //         correct += 1;
+    //       }
+    //     }
+    //   })
+    // }
+    this.predictPositions.forEach((position) => {
+      const currIndex = Number(position.index);
+      if (this.correctPositions.length > 0 && this.correctPositions.some((data) => Number(data.index) === currIndex)) {
+        const currentPosition = this.correctPositions.find((data) => Number(data.index) === currIndex);
+        console.log(`ACCURACY: ${currIndex}`, position.position, currentPosition.position);
+        if (position.position === currentPosition.position) {
+          correct += 1;
         }
-      })
-    }
+      }
+    })
     console.log('Correct positions', this.correctPositions.length, correct)
     return correct;
   }
@@ -137,22 +150,25 @@ class SocketStore {
           this.dancers.set(username, positions);
         }
       })
+      this.predictPositions.push({ index: data.index, position: data.value });
     })
     this.socket.on('correct_position', (data) => {
       console.log('correct position received', data);
       if (data.value === 'logout') {
         this.isLoggingOut = true;
       } else {
-        Object.entries(this.deviceUsers).forEach(([device, username]) => {
-          console.log(device, username);
-          const arr = data.value.split(' ');
-          const index = arr.findIndex((id) => Number(id) === Number(device));
-          if (username === dashboardStore.account.username) {
-            if (index > -1)
-              this.correctPositions.push({ index: data.index, position: index + 1});
-          }
-          this.totalPositions = data.index;
-        })
+        // Object.entries(this.deviceUsers).forEach(([device, username]) => {
+        //   console.log(device, username);
+        //   const arr = data.value.split(' ');
+        //   const index = arr.findIndex((id) => Number(id) === Number(device));
+        //   if (username === dashboardStore.account.username) {
+        //     if (index > -1) this.correctPositions.push({ index: data.index, position: data.value});
+        //       //this.correctPositions.push({ index: data.index, position: index + 1});
+        //   }
+        //   this.totalPositions = data.index;
+        // })
+        this.correctPositions.push({ index: data.index, position: data.value});
+        this.totalPositions = data.index;
       }
     })
 
@@ -211,7 +227,7 @@ class SocketStore {
         setTimeout(() => {
           this.leaveSession(1);
           this.isLoggingOut = false;
-        }, 2000);
+        }, 3000);
       }
     }
   )

@@ -13,12 +13,13 @@ const Report = observer((props) => {
   } = offlineStore;
   
   useEffect(() => {
+    console.log("SESSION", props.sid);
     getSessionMoves(props.sid);
     getSessionPositions(props.sid);
   }, [props.sid])
 
   useEffect(() => {
-    console.log("SESSION: ", props.sid);
+    // console.log("SESSION: ", props.sid);
   }, [props.sid]);
 
   return (
