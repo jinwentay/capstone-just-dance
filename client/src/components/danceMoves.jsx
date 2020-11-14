@@ -19,12 +19,8 @@ const DanceMove = observer(({ socketStore }) => {
   const {
     currDanceMove,
     currMoveOthers
-    // isUpdated
   } = socketStore;
 
-  useEffect(() => {
-    // console.log(currDanceMove);
-  }, [currDanceMove])
   return (
     <Grid
       sx={{
@@ -33,125 +29,109 @@ const DanceMove = observer(({ socketStore }) => {
         height: '100%',
         gap: '0px',
         minHeight: '200px'
-        // borderColor: '#DADADA',
-        // ':first-child': {
-        //   borderBottom: '1px solid',
-        // },
-        // ':nth-child(2)': {
-        //   borderRight: '1px solid',
-        // }
       }}
     >
-      {/* <Flex
+      <Flex
         sx={{
-          my: 'auto',
-          // justifyContent: 'center',
-          alignItems: 'center'
+          gridColumnStart: 1,
+          gridColumnEnd: 'end',
+          gridRowStart: 1,
+          gridRowEnd: 'row-second',
+          alignSelf: 'stretch',
+          justifySelf: 'stretch',
+          alignItems: 'center',
+          justifyContent: 'center',
+          position: 'relative',
+          borderBottom: '1px solid black',
         }}
       >
-        <img src={Dancer} style={{ width: '250px' }}/> */}
-        <Flex
-          sx={{
-            gridColumnStart: 1,
-            gridColumnEnd: 'end',
-            gridRowStart: 1,
-            gridRowEnd: 'row-second',
-            alignSelf: 'stretch',
-            justifySelf: 'stretch',
-            alignItems: 'center',
-            justifyContent: 'center',
-            position: 'relative',
-            borderBottom: '1px solid black',
+        <Box 
+          sx={{ 
+            px: 2,
+            py: 1, 
+            position: 'absolute',
+            top: 0,
+            right: 0,
+            border: '1px solid #3E4C59', 
+            textAlign: 'center', 
+            color: 'gray700',
+            fontFamily: 'Quicksand'
           }}
         >
-          <Box 
-            sx={{ 
-              px: 2,
-              py: 1, 
-              position: 'absolute',
-              top: 0,
-              right: 0,
-              border: '1px solid #3E4C59', 
-              textAlign: 'center', 
-              color: 'gray700',
-              fontFamily: 'Quicksand'
-            }}
-          >
-            {dashboardStore.account.username}
-          </Box>
-          <Text variant="hd.xl" color="primary" sx={{ textOverflow: 'ellipsis' }}>{currDanceMove ? danceMove[currDanceMove] : "Generating prediction..."}</Text>
-        </Flex>
-        {Object.entries(currMoveOthers).map(([key, value], index) => (
-          <>
-            {index === 0 ? (
-              <Flex
-                sx={{
-                  gridColumnStart: 1,
-                  gridColumnEnd: 'second',
-                  gridRowStart: 2,
-                  gridRowEnd: 'row-end',
-                  alignSelf: 'stretch',
-                  justifySelf: 'stretch',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  position: 'relative',
-                  borderRight: '1px solid black',
+          {dashboardStore.account.username}
+        </Box>
+        <Text variant="hd.xl" color="primary" sx={{ textOverflow: 'ellipsis' }}>{currDanceMove ? danceMove[currDanceMove] : "Generating prediction..."}</Text>
+      </Flex>
+      {Object.entries(currMoveOthers).map(([key, value], index) => (
+        <>
+          {index === 0 ? (
+            <Flex
+              sx={{
+                gridColumnStart: 1,
+                gridColumnEnd: 'second',
+                gridRowStart: 2,
+                gridRowEnd: 'row-end',
+                alignSelf: 'stretch',
+                justifySelf: 'stretch',
+                alignItems: 'center',
+                justifyContent: 'center',
+                position: 'relative',
+                borderRight: '1px solid black',
+              }}
+            >
+              <Box 
+                sx={{ 
+                  px: 2,
+                  py: 1, 
+                  position: 'absolute',
+                  top: 0,
+                  right: 0,
+                  borderLeft: '1px solid #3E4C59', 
+                  borderBottom: '1px solid #3E4C59', 
+                  textAlign: 'center', 
+                  color: 'gray700',
+                  fontFamily: 'Quicksand'
                 }}
               >
-                <Box 
-                  sx={{ 
-                    px: 2,
-                    py: 1, 
-                    position: 'absolute',
-                    top: 0,
-                    right: 0,
-                    borderLeft: '1px solid #3E4C59', 
-                    borderBottom: '1px solid #3E4C59', 
-                    textAlign: 'center', 
-                    color: 'gray700',
-                    fontFamily: 'Quicksand'
-                  }}
-                >
-                  {key}
-                </Box>
-                <Text m="auto" variant="hd.xl" color="text">{danceMove[value]}</Text>
-              </Flex>
-            ) : (
-              <Flex
+                {key}
+              </Box>
+              <Text m="auto" variant="hd.lg" color="text">{danceMove[value]}</Text>
+            </Flex>
+          ) : (
+            <Flex
+              sx={{
+                gridColumnStart: 2,
+                gridColumnEnd: 'end',
+                gridRowStart: 2,
+                gridRowEnd: 'row-end',
+                alignSelf: 'stretch',
+                justifySelf: 'stretch',
+                alignItems: 'center',
+                justifyContent: 'center',
+                position: 'relative',
+              }}
+            >
+              <Box 
                 sx={{
-                  gridColumnStart: 2,
-                  gridColumnEnd: 'end',
-                  gridRowStart: 2,
-                  gridRowEnd: 'row-end',
-                  alignSelf: 'stretch',
-                  justifySelf: 'stretch',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  position: 'relative',
+                  px: 2,
+                  py: 1, 
+                  position: 'absolute',
+                  top: 0,
+                  right: 0,
+                  borderLeft: '1px solid #3E4C59', 
+                  borderBottom: '1px solid #3E4C59',  
+                  textAlign: 'center', 
+                  color: 'gray700',
+                  fontFamily: 'Quicksand'
                 }}
               >
-                <Box 
-                  sx={{
-                    px: 2,
-                    py: 1, 
-                    position: 'absolute',
-                    top: 0,
-                    right: 0,
-                    borderLeft: '1px solid #3E4C59', 
-                    borderBottom: '1px solid #3E4C59',  
-                    textAlign: 'center', 
-                    color: 'gray700',
-                    fontFamily: 'Quicksand'
-                  }}
-                >
-                  {key}
-                </Box>
-                <Text m="auto" variant="hd.xl" color="text">{danceMove[value]}</Text>
-              </Flex>
-            )}
-          </>
-        ))}
-      {/* </Flex> */}
+                {key}
+              </Box>
+              <Text m="auto" variant="hd.lg" color="text">{danceMove[value]}</Text>
+            </Flex>
+          )}
+        </>
+      ))}
     </Grid>
   )
 });

@@ -65,11 +65,6 @@ function worker(ch, exchange, io) {
     rkey.forEach((key) => {
       ch.bindQueue(q.queue, exchange, key);
     });
-    // ch.consume(q.queue, function(msg) {
-    //   console.log(" [x] %s: '%s'", msg.fields.routingKey, msg.content.toString());
-    // }, {
-    //   noAck: true
-    // });
     ch.consume(q.queue, function(msg) {
       let data = JSON.parse(msg.content);
       let data_type = msg.fields.routingKey;

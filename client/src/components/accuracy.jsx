@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { observer } from 'mobx-react';
 import { Pie } from 'react-chartjs-2';
 import { Box } from 'theme-ui';
-import socketStore from '../store/store';
 import 'chartjs-plugin-datalabels';
 import PropTypes from 'prop-types';
 
@@ -63,12 +62,12 @@ const AccuracyGraph = observer((props) => {
               color: 'white',
               labels: {
                 value: {
-                    font: {
-                        size: 20,
-                        weight: 'bold',
-                        family: 'Quicksand',
-                    },
-                    textAlign: 'center',
+                  font: {
+                      size: 20,
+                      weight: 'bold',
+                      family: 'Quicksand',
+                  },
+                  textAlign: 'center',
                 }
               },
               clamp: true,

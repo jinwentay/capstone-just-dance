@@ -23,29 +23,29 @@ amqp.connect('amqp://localhost', (connError, connection) => {
     });
     let msgOrder = 1;
     setInterval(() => {
-      let msg1 = JSON.stringify({
-        index: msgOrder,
-        time: new Date(),
-        value: Math.ceil(Math.random() * 3),
-        id: 1, //device id
-      });
-      channel.publish(EXCHANGE, 'position', Buffer.from(msg1), {
-        persistent: true
-      });
-      let msg2 = JSON.stringify({
-        index: msgOrder,
-        time: new Date(),
-        value: Math.ceil(Math.random() * 3),
-        id: 2, //device id
-      });
-      channel.publish(EXCHANGE, 'position', Buffer.from(msg2), {
-        persistent: true
-      });
+      // let msg1 = JSON.stringify({
+      //   index: msgOrder,
+      //   time: new Date(),
+      //   value: Math.ceil(Math.random() * 3),
+      //   id: 1, //device id
+      // });
+      // channel.publish(EXCHANGE, 'position', Buffer.from(msg1), {
+      //   persistent: true
+      // });
+      // let msg2 = JSON.stringify({
+      //   index: msgOrder,
+      //   time: new Date(),
+      //   value: Math.ceil(Math.random() * 3),
+      //   id: 2, //device id
+      // });
+      // channel.publish(EXCHANGE, 'position', Buffer.from(msg2), {
+      //   persistent: true
+      // });
       let msg3 = JSON.stringify({
         index: msgOrder,
         time: new Date(),
-        value: Math.ceil(Math.random() * 3),
-        id: 3, //device id
+        value: positions[Math.ceil(Math.random() * 3)],
+        // id: 3, //device id
       });
       channel.publish(EXCHANGE, 'position', Buffer.from(msg3), {
         persistent: true
@@ -60,22 +60,5 @@ amqp.connect('amqp://localhost', (connError, connection) => {
       });
       msgOrder += 1;
     }, 3000);
-
-    // let order = 1;
-    // setInterval(() => {
-    //   let msg = JSON.stringify({
-    //     time: new Date(),
-    //     value: positions[Math.ceil(Math.random() * 3) - 1],
-    //     index: order, //device id
-    //   });
-    //   channel.publish(EXCHANGE, 'correct_position', Buffer.from(msg), {
-    //     persistent: true
-    //   });
-    //   order += 1;
-    // }, 6500);
   });
-  // setTimeout(function() {
-  //   connection.close();
-  //   process.exit(0)
-  // }, 30000);
 })

@@ -84,21 +84,7 @@ class SocketStore {
   predictPositions = [];
 
   @computed get accuracy() {
-    // let userPositions = this.dancers.get(dashboardStore.account.username);
     let correct = 0;
-    // if (userPositions) {
-    //   userPositions.forEach((position) => {
-    //     const currIndex = Number(position.index);
-    //     console.log('Curr index', currIndex, position.value);
-    //     if (this.correctPositions.length > 0 && this.correctPositions.some((data) => Number(data.index) === currIndex)) {
-    //       const currentPosition = this.correctPositions.find((data) => Number(data.index) === currIndex);
-    //       console.log("Current correct position: ", currentPosition.position);
-    //       if (Number(position.value) === Number(currentPosition.position)) {
-    //         correct += 1;
-    //       }
-    //     }
-    //   })
-    // }
     this.predictPositions.forEach((position) => {
       const currIndex = Number(position.index);
       if (this.correctPositions.length > 0 && this.correctPositions.some((data) => Number(data.index) === currIndex)) {
@@ -157,16 +143,6 @@ class SocketStore {
       if (data.value === 'logout') {
         this.isLoggingOut = true;
       } else {
-        // Object.entries(this.deviceUsers).forEach(([device, username]) => {
-        //   console.log(device, username);
-        //   const arr = data.value.split(' ');
-        //   const index = arr.findIndex((id) => Number(id) === Number(device));
-        //   if (username === dashboardStore.account.username) {
-        //     if (index > -1) this.correctPositions.push({ index: data.index, position: data.value});
-        //       //this.correctPositions.push({ index: data.index, position: index + 1});
-        //   }
-        //   this.totalPositions = data.index;
-        // })
         this.correctPositions.push({ index: data.index, position: data.value});
         this.totalPositions = data.index;
       }
@@ -174,16 +150,12 @@ class SocketStore {
 
     this.socket.on('dance', (data) => {
       const username = this.deviceUsers[`${data.id}`];
-      // if (data.move === 'logout') {
-        // this.leaveSession(data.id);
-      // } else {
-        if (username === dashboardStore.account.username) {
-          this.currDanceMove = data.move;
-        } else if (username != '') {
-          this.currMoveOthers[username] = data.move;
-          console.log(this.currMoveOthers);
-        }
-      // }
+      if (username === dashboardStore.account.username) {
+        this.currDanceMove = data.move;
+      } else if (username != '') {
+        this.currMoveOthers[username] = data.move;
+        console.log(this.currMoveOthers);
+      }
     })
 
     this.socket.on('update_joined', (data) => {
@@ -339,7 +311,6 @@ class SocketStore {
         if (res.status === 200) {
           runInAction(() => this.startSession = false);
           this.socket.emit('stop_session', { sid: sid, deviceId: deviceId, username: dashboardStore.account.username })
-          // ls.set('session', 0);
           this.sessions = [];
         } else {
           alert(res.data.error);
@@ -351,6 +322,7 @@ class SocketStore {
     this.totalPositions = 0;
     this.correctPositions = [];
     this.dancers = new Map();
+    this.predictPositions = [];
   }
 
   @action

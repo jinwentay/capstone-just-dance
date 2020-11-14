@@ -1,9 +1,7 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { observer } from 'mobx-react';
-// import socketStore from '../store/store';
 import { Grid, Text, Flex } from 'theme-ui';
 import { Profile } from './index';
-import dashboardStore from '../store/dashboardStore';
 
 const DancePosition = observer(({ socketStore }) => {
   const {
@@ -11,14 +9,8 @@ const DancePosition = observer(({ socketStore }) => {
     second,
     third,
     deviceUsers,
-    // isUpdated
   } = socketStore;
 
-  // useEffect(() => {
-  //   console.log("FIRST", first);
-  //   console.log("SECOND", second);
-  //   console.log("THIRD", third);
-  // }, [first, second, third])
   return (
     <Grid
       sx={{
@@ -100,7 +92,7 @@ const DancePosition = observer(({ socketStore }) => {
                 my: 2,
               }}
             >
-              <Profile user= {device} /*isSelf={user === dashboardStore.account.username} *//>
+              <Profile user= {device}/>
               <Text variant="lb.lg" sx={{ textAlign: 'center' }}>{user}</Text>
             </Flex>
           )

@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { 
   Navbar, 
@@ -91,7 +91,7 @@ const Home = observer(() => {
               my: 3,
               mx: 'auto',
               px: 3,
-              height: 'calc(100vh - 100px)',
+              height: [undefined, 'calc(100vh - 100px)'],
               gridTemplateColumns: ['1fr','50% 50%'],
               gridTemplateRows: ['repeat(4, minmax(250px,auto))','250px 1fr'],
               maxWidth: '1500px',
@@ -102,7 +102,9 @@ const Home = observer(() => {
             <Grid
               sx={{
                 gridTemplateColumns: isSmall ? '1fr' : '1fr 250px',
+                gridAutoRows: 'auto',
                 gap: '0px',
+                height: '100%'
               }}
             >
               <Card title='ACCURACY' children={<AccuracyGraph accuracy={accuracy} totalPositions={totalPositions}/>} isSmall={isSmall}/>
@@ -212,7 +214,6 @@ const Home = observer(() => {
                       name="session"
                       defaultValue={sessions.length ? selectedSession : 0}
                       onChange={(e) => {
-                        // ls.set('session', e.target.value);
                         console.log(e.target.value);
                         setSession(e.target.value);
                       }}
@@ -239,7 +240,6 @@ const Home = observer(() => {
                     >
                       Join session
                     </Button>
-                    {/* <Button onClick={play}>PLAY</Button> */}
                   </>
                 )}
               </STabPanel>

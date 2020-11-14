@@ -38,12 +38,10 @@ const BubbleGraph = observer(() => {
           r: 20
         }]
       }
-      // console.log("NEW DATA SET: ", newDataset);
       chartRef.current.props.data.datasets.push(newDataset);
     }
 
     function insertData(danceData) {
-      console.log("Dance data", danceData);
       const danceValue = danceMove.findIndex((move) => {
         return move === danceData.move
       });
@@ -101,7 +99,6 @@ const BubbleGraph = observer(() => {
               family: 'Quicksand',
             },
             formatter: function(value, context) {
-                // console.log("CHART LABEL: ", value);
                 return value.y;
             },
             clip: true,

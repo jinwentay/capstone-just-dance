@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 const amqp = require('amqplib/callback_api');
 
-const danceMove = ['zigzag', 'elbow', 'hair', 'pushback', 'rocket', 'scarecrow', 'shrug', 'windows', 'waving', 'rest'];
+const danceMove = ['zigzag', 'elbowlock', 'hair', 'pushback', 'rocket', 'scarecrow', 'shouldershrug', 'windowwipe', 'rest'];
 amqp.connect('amqp://localhost', (connError, connection) => {
   if (connError) {
     throw connError;
@@ -17,17 +17,17 @@ amqp.connect('amqp://localhost', (connError, connection) => {
 
     let msgOrder = 1;
     setInterval(() => {
-      // var date = new Date();
-      // date.setMilliseconds(Math.random() * 999);
-      // let msg1 = JSON.stringify({
-      //   index: msgOrder,
-      //   time: date,
-      //   move: danceMove[Math.ceil(Math.random() * 10) - 1],
-      //   id: 1, //device id
-      // });
-      // channel.publish(EXCHANGE, 'dance', Buffer.from(msg1), {
-      //   persistent: true
-      // });
+      var date = new Date();
+      date.setMilliseconds(Math.random() * 999);
+      let msg1 = JSON.stringify({
+        index: msgOrder,
+        time: date,
+        move: danceMove[Math.ceil(Math.random() * 10) - 1],
+        id: 1, //device id
+      });
+      channel.publish(EXCHANGE, 'dance', Buffer.from(msg1), {
+        persistent: true
+      });
       var date1 = new Date();
       date1.setMilliseconds(Math.random() * 999);
       let msg2 = JSON.stringify({

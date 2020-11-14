@@ -19,8 +19,6 @@ const Offline = observer(() => {
   const { 
     getAllSessionAccuracy, 
     getAllSessionTotalPositions, 
-    totalPositions, 
-    accuracyData, 
     getUserSessions, 
     sessions, 
     isOpen,
@@ -28,8 +26,7 @@ const Offline = observer(() => {
     setOpen,
     setSid
   } = offlineStore;
-  // const [isOpen, setOpen] = useState(false);
-  // const [sid, setSid] = useState(null);
+
   useEffect(() => {
     console.log(account);
     if (account.id === -1) {
@@ -66,7 +63,7 @@ const Offline = observer(() => {
             backgroundColor: 'white' 
           }}
           >
-          <Text variant="hd.lg" mb="3">How's your dance progress so far?</Text>
+          <Text variant="hd.lg" mb="3" sx={{ textAlign: 'center' }}>How's your dance progress so far?</Text>
           <Grid 
             sx={{
               m: 3,
@@ -78,8 +75,7 @@ const Offline = observer(() => {
             <DataTable 
               headers={['Session', 'Date', 'Duration']} 
               rowItems={sessions} 
-              rowFunc={(session) => { 
-                // ls.set('session', session.sid);
+              rowFunc={(session) => {
                 setSid(session.sid);
                 setOpen(true); 
               }}

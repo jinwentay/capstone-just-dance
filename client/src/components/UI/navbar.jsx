@@ -68,7 +68,6 @@ const Navbar = observer(() => {
           justifyContent: 'space-between',
           alignItems: 'center',
           height: '80px',
-          // maxWidth: '1160px',
           mx: 'auto',
           px: 3,
           backgroundColor: 'white',

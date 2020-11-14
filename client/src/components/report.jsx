@@ -18,10 +18,6 @@ const Report = observer((props) => {
     getSessionPositions(props.sid);
   }, [props.sid])
 
-  useEffect(() => {
-    // console.log("SESSION: ", props.sid);
-  }, [props.sid]);
-
   return (
     <Flex
       sx={{
@@ -57,7 +53,8 @@ const Report = observer((props) => {
           width: '100%',
           height: 'calc(100vh - 200px)',
           alignItems: 'center',
-          overflow: 'scroll'
+          overflow: 'scroll',
+          maxWidth: '1600px'
         }}
       >
         <Text variant="hd.lg" color="primary">Congratulations on completing session {props.sid}!</Text>
@@ -72,7 +69,6 @@ const Report = observer((props) => {
             sx={{
               flexDirection: 'column',
               alignItems: 'center',
-              minHeight: 'calc(100vh - 250px)'
             }}
           >
             <Text variant="hd.sm" mb="3" sx={{ textAlign: 'center' }}>Dance Moves Predicted</Text>
@@ -92,7 +88,6 @@ const Report = observer((props) => {
             sx={{
               flexDirection: 'column',
               alignItems: 'center',
-              minHeight: 'calc(100vh - 250px)'
             }}
           >
             <Text variant="hd.sm" mb="3" sx={{ textAlign: 'center' }}>Position Changes</Text>

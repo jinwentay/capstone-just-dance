@@ -26,7 +26,6 @@ const DanceReport = observer(() => {
         newMoves = sessionMoves;
       }
     }
-    // console.log(newMoves);
     return newMoves;
   }, [sessionMoves])
   return (
