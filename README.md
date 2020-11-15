@@ -56,7 +56,7 @@ Next, it declares the api routes to handle requests from the client side.
 Lastly, it subscribes to the rabbitMQ queue to receive information from external communications server
 <br>
 
-## How to start application
+## How to start the application
 1. yarn install in both the client and server directory to download all the node modules
 2. yarn start in client directory
 3. yarn start in server directory
