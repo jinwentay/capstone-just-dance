@@ -60,4 +60,15 @@ Lastly, it subscribes to the rabbitMQ queue to receive information from external
 1. yarn install in both the client and server directory to download all the node modules
 2. yarn start in client directory
 3. yarn start in server directory
+<br>
 **Take note: As the backend database is connected to AWS RDS, you may not have the security permissions to read/write to the database
+<br>
+
+### Testing with fake data
+1. Make sure that you have rabbitMQ installed on your local
+2. cd server
+3. In index.js, Uncomment line 30: connectFakeRabbitMQ to add the local rabbitMQ subscriber.
+4. In index.js, Uncomment line 71-73: this subscribes to all the rabbitMQ queues locally.
+5. cd pubsub
+6. ./positions.producer.js: run the data for real time fake positions
+7. ./dance.producer.js: run the data fro real time fake dance moves
