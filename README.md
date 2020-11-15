@@ -57,6 +57,7 @@ Lastly, it subscribes to the rabbitMQ queue to receive information from external
 <br>
 
 ## How to start application
-1. yarn start in client directory
-2. yarn start in server directory
+1. yarn install in both the client and server directory to download all the node modules
+2. yarn start in client directory
+3. yarn start in server directory
 **Take note: As the backend database is connected to AWS RDS, you may not have the security permissions to read/write to the database
