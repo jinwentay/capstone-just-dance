@@ -1,4 +1,4 @@
-# capstone
+# JustDance! - Capstone Project
 
 ## client - front-end built with React, MobX, ThemeUI
 File structure:
